@@ -1,0 +1,80 @@
+name: Validate Metadata
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'tasks/_metadata/**'
+      - 'workflows/_metadata/**'
+      - '.github/workflows/validate-metadata.yml'
+
+jobs:
+  validate-metadata-schema:
+    name: Validate Metadata JSON Schema
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema
+      
+      - name: Validate task metadata
+        run: |
+          echo "Validating task metadata files..."
+          for file in tasks/_metadata/*.json; do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              python -m json.tool "$file" > /dev/null || (echo "❌ Invalid JSON in $file" && exit 1)
+            fi
+          done
+          echo "✅ All task metadata files are valid JSON"
+      
+      - name: Validate workflow metadata
+        run: |
+          echo "Validating workflow metadata files..."
+          for file in workflows/_metadata/*.json; do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              python -m json.tool "$file" > /dev/null || (echo "❌ Invalid JSON in $file" && exit 1)
+            fi
+          done
+          echo "✅ All workflow metadata files are valid JSON"
+      
+      - name: Check metadata completeness
+        run: |
+          echo "Checking for missing metadata files..."
+          
+          # Check tasks
+          for task_file in tasks/*/*.py; do
+            if [[ "$task_file" == *"__init__.py"* ]]; then
+              continue
+            fi
+            
+            task_name=$(basename "$task_file" .py)
+            metadata_file="tasks/_metadata/${task_name}.json"
+            
+            if [ ! -f "$metadata_file" ]; then
+              echo "⚠️  Missing metadata for task: $task_name"
+            fi
+          done
+          
+          # Check workflows
+          for workflow_file in workflows/*.json; do
+            workflow_name=$(basename "$workflow_file" .json)
+            metadata_file="workflows/_metadata/${workflow_name}.json"
+            
+            if [ ! -f "$metadata_file" ]; then
+              echo "⚠️  Missing metadata for workflow: $workflow_name"
+            fi
+          done
+          
+          echo "✅ Metadata completeness check complete"

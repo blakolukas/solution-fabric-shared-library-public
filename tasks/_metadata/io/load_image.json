@@ -1,0 +1,41 @@
+{
+  "id": "load_image",
+  "category": "io",
+  "display_name": "Load Image",
+  "description": "Load an image from file path or pass through from workflow input.",
+  "inputs": {
+    "image_path": {
+      "type": "str",
+      "required": false,
+      "description": "Input parameter: image_path",
+      "default": null
+    },
+    "image": {
+      "type": "np.ndarray",
+      "required": false,
+      "description": "Input parameter: image",
+      "default": null
+    }
+  },
+  "outputs": {
+    "image": {
+      "type": "image",
+      "description": "Output: image"
+    }
+  },
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0",
+      "opencv-python>=4.8.0"
+    ],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "io"
+  ]
+}

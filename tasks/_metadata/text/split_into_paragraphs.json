@@ -1,0 +1,31 @@
+{
+  "id": "split_into_paragraphs",
+  "category": "text",
+  "display_name": "Split Into Paragraphs",
+  "description": "Split text into paragraphs.",
+  "inputs": {
+    "text": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: text"
+    }
+  },
+  "outputs": {
+    "paragraphs": {
+      "type": "list",
+      "description": "Output: paragraphs"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "text"
+  ]
+}

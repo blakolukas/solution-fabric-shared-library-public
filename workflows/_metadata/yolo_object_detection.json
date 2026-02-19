@@ -1,0 +1,59 @@
+{
+  "id": "yolo_object_detection",
+  "version": "2.1.0",
+  "display_name": "YOLO Object Detection",
+  "description": "Detect objects in images using YOLO11 model with bounding box visualization",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2025-02-01",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "vision",
+    "yolo",
+    "object-detection",
+    "ml",
+    "computer-vision"
+  ],
+  "category": "vision",
+  "required_tasks": [
+    "check_file_exists",
+    "draw_detection_boxes",
+    "load_image",
+    "load_yolo_model",
+    "yolo_detect_objects"
+  ],
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0",
+      "opencv-python>=4.8.0",
+      "ultralytics>=8.0.0"
+    ],
+    "models": [
+      "yolo11n.pt"
+    ]
+  },
+  "inputs": {
+    "image_path": {
+      "type": "string",
+      "required": false,
+      "default": "samples/media/object_detection_sample.jpg",
+      "description": "Workflow input: image path"
+    },
+    "confidence_threshold": {
+      "type": "float",
+      "required": false,
+      "default": 0.8,
+      "description": "Workflow input: confidence threshold"
+    }
+  },
+  "outputs": {
+    "detections": {
+      "type": "any",
+      "description": "Workflow output: detections"
+    },
+    "annotated_image": {
+      "type": "any",
+      "description": "Workflow output: annotated image"
+    }
+  }
+}

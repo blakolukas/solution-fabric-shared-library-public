@@ -1,0 +1,43 @@
+{
+  "id": "visualize_segmentation_mask",
+  "category": "vision",
+  "display_name": "Visualize Segmentation Mask",
+  "description": "Visualize a semantic segmentation mask by colorizing class IDs.",
+  "inputs": {
+    "mask_array": {
+      "type": "any",
+      "required": true,
+      "description": "Input parameter: mask_array"
+    },
+    "class_names": {
+      "type": "any",
+      "required": false,
+      "description": "Input parameter: class_names",
+      "default": null
+    }
+  },
+  "outputs": {
+    "colored_mask": {
+      "type": "image",
+      "description": "Output: colored_mask"
+    },
+    "class_summary": {
+      "type": "str",
+      "description": "Output: class_summary"
+    }
+  },
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0"
+    ],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "vision"
+  ]
+}

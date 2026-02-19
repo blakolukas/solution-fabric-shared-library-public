@@ -1,0 +1,109 @@
+{
+  "id": "document_scanning",
+  "version": "1.0.0",
+  "display_name": "Document Scanning",
+  "description": "Workflow: Document Scanning",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "computer-vision",
+    "document-processing",
+    "llm",
+    "ml",
+    "ocr",
+    "text-generation"
+  ],
+  "category": "llm",
+  "required_tasks": [
+    "check_file_exists",
+    "convert_bgr_to_rgb",
+    "convert_to_grayscale",
+    "create_searchable_pdf",
+    "delete_file",
+    "download_hf_model",
+    "ensure_directory_exists",
+    "extract_ocr_data",
+    "extract_text_with_ocr",
+    "format_template",
+    "generate_temp_filename",
+    "get_image_dimensions",
+    "llm_inference",
+    "load_gguf_model",
+    "load_image",
+    "save_image_to_disk",
+    "save_text_to_file"
+  ],
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0",
+      "opencv-python>=4.8.0",
+      "pytesseract>=0.3.10",
+      "reportlab>=4.0.0",
+      "torch>=2.0.0",
+      "transformers>=4.30.0"
+    ],
+    "models": []
+  },
+  "inputs": {
+    "document_image_path": {
+      "type": "string",
+      "required": false,
+      "default": "samples/media/document_sample.jpg",
+      "description": "Workflow input: document image path"
+    },
+    "ocr_language": {
+      "type": "string",
+      "required": false,
+      "default": "eng",
+      "description": "Workflow input: ocr language"
+    },
+    "output_directory": {
+      "type": "string",
+      "required": false,
+      "default": "output",
+      "description": "Workflow input: output directory"
+    },
+    "llm_repository": {
+      "type": "string",
+      "required": false,
+      "default": "TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF",
+      "description": "Workflow input: llm repository"
+    },
+    "llm_model_name": {
+      "type": "string",
+      "required": false,
+      "default": "tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf",
+      "description": "Workflow input: llm model name"
+    },
+    "summary_prompt_template": {
+      "type": "string",
+      "required": false,
+      "default": "Provide a brief, one-sentence summary of the main topic of this document:\n\n{text}\n\nBrief summary:",
+      "description": "Workflow input: summary prompt template"
+    }
+  },
+  "outputs": {
+    "summary": {
+      "type": "any",
+      "description": "Workflow output: summary"
+    },
+    "summary_path": {
+      "type": "any",
+      "description": "Workflow output: summary path"
+    },
+    "extracted_text_path": {
+      "type": "any",
+      "description": "Workflow output: extracted text path"
+    },
+    "pdf_path": {
+      "type": "any",
+      "description": "Workflow output: pdf path"
+    },
+    "document_image": {
+      "type": "any",
+      "description": "Workflow output: document image"
+    }
+  }
+}

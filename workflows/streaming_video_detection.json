@@ -1,0 +1,114 @@
+{
+  "inputs": {
+    "video_path": "samples/media/video_stream_sample.mp4",
+    "yolo_model_path": "yolo11n.pt",
+    "target_fps": 15,
+    "confidence_threshold": 0.25
+  },
+  "tasks": [
+    {
+      "name": "validate_video_path",
+      "task": "check_file_exists",
+      "inputs": {
+        "file_path": "inputs.video_path"
+      },
+      "outputs": [
+        "file_path"
+      ]
+    },
+    {
+      "name": "load_yolo",
+      "task": "load_yolo_model",
+      "inputs": {
+        "model_path": "yolo11n.pt"
+      },
+      "outputs": [
+        "yolo_model"
+      ]
+    },
+    {
+      "name": "video_source",
+      "task": "video_source",
+      "inputs": {
+        "video_path": "tasks.validate_video_path.file_path",
+        "target_fps": "inputs.target_fps"
+      },
+      "outputs": [
+        "frame_generator",
+        "metadata"
+      ],
+      "dependencies": [
+        "validate_video_path"
+      ]
+    },
+    {
+      "name": "yolo_detect_objects",
+      "task": "yolo_detect_objects",
+      "inputs": {
+        "image": "tasks.video_source.frame_generator",
+        "yolo_model": "tasks.load_yolo.yolo_model",
+        "confidence_threshold": "inputs.confidence_threshold"
+      },
+      "outputs": [
+        "detections"
+      ],
+      "dependencies": [
+        "load_yolo",
+        "video_source"
+      ]
+    },
+    {
+      "name": "draw_detection_boxes",
+      "task": "draw_detection_boxes",
+      "inputs": {
+        "image": "tasks.video_source.frame_generator",
+        "detections": "tasks.yolo_detect_objects.detections"
+      },
+      "outputs": [
+        "annotated_image"
+      ],
+      "dependencies": [
+        "yolo_detect_objects"
+      ]
+    }
+  ],
+  "inputs": {
+    "video_path": "samples/media/video_stream_sample.mp4",
+    "yolo_model_path": "yolo11n.pt",
+    "target_fps": 15,
+    "confidence_threshold": 0.25
+  },
+  "description": "Stream video frames through YOLO detection with direct task connections.",
+  "outputs": {
+    "annotated_image": "tasks.draw_detection_boxes.annotated_image",
+    "metadata": "tasks.video_source.metadata"
+  },
+  "_designer": {
+    "layout": {
+      "validate_video_path": {
+        "x": -200,
+        "y": 450
+      },
+      "validate_model_path": {
+        "x": -200,
+        "y": 150
+      },
+      "load_yolo": {
+        "x": 100,
+        "y": 150
+      },
+      "video_source": {
+        "x": 100,
+        "y": 450
+      },
+      "yolo_detect_objects": {
+        "x": 550,
+        "y": 300
+      },
+      "draw_detection_boxes": {
+        "x": 939.8998330550918,
+        "y": 601.7529215358932
+      }
+    }
+  }
+}

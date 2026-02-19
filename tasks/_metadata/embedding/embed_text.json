@@ -1,0 +1,42 @@
+{
+  "id": "embed_text",
+  "category": "embedding",
+  "display_name": "Embed Text",
+  "description": "Generate embedding vector for a single text.",
+  "inputs": {
+    "text": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: text"
+    },
+    "model": {
+      "type": "object",
+      "required": true,
+      "description": "Input parameter: model"
+    },
+    "normalize": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: normalize",
+      "default": true
+    }
+  },
+  "outputs": {
+    "embedding": {
+      "type": "array",
+      "description": "Output: embedding"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "embedding"
+  ]
+}

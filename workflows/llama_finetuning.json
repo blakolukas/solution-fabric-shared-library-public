@@ -1,0 +1,222 @@
+{
+  "inputs": {
+    "huggingface_token": "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",
+    "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "device_map": "auto",
+    "torch_dtype": "bfloat16",
+    "padding_side": "right",
+    "dataset_name": "HuggingFaceH4/ultrachat_200k",
+    "dataset_split": "train_sft[:1000]",
+    "output_dir": "./llama_finetuned",
+    "lr_scheduler_type": "cosine",
+    "optimizer": "paged_adamw_32bit",
+    "final_output_dir": "./llama_finetuned_final"
+  },
+  "tasks": [
+    {
+      "name": "hf_login",
+      "task": "huggingface_login",
+      "inputs": {
+        "token": "inputs.huggingface_token"
+      },
+      "outputs": [
+        "login_status"
+      ]
+    },
+    {
+      "name": "load_model",
+      "task": "load_llama_model",
+      "inputs": {
+        "model_name": "inputs.model_name",
+        "device_map": "inputs.device_map",
+        "torch_dtype": "inputs.torch_dtype",
+        "load_in_4bit": false
+      },
+      "outputs": [
+        "model"
+      ],
+      "dependencies": [
+        "hf_login"
+      ]
+    },
+    {
+      "name": "load_tokenizer",
+      "task": "load_llama_tokenizer",
+      "inputs": {
+        "model_name": "inputs.model_name",
+        "padding_side": "inputs.padding_side"
+      },
+      "outputs": [
+        "tokenizer"
+      ],
+      "dependencies": [
+        "hf_login"
+      ]
+    },
+    {
+      "name": "load_dataset",
+      "task": "load_training_dataset",
+      "inputs": {
+        "dataset_name": "inputs.dataset_name",
+        "split": "inputs.dataset_split"
+      },
+      "outputs": [
+        "dataset"
+      ],
+      "dependencies": [
+        "hf_login"
+      ]
+    },
+    {
+      "name": "prepare_dataset",
+      "task": "prepare_llama_dataset_for_training",
+      "inputs": {
+        "dataset": "tasks.load_dataset.dataset",
+        "tokenizer": "tasks.load_tokenizer.tokenizer",
+        "max_length": 2048,
+        "num_proc": 4
+      },
+      "outputs": [
+        "processed_dataset"
+      ],
+      "dependencies": [
+        "load_dataset",
+        "load_tokenizer"
+      ]
+    },
+    {
+      "name": "configure_lora",
+      "task": "configure_llama_lora",
+      "inputs": {
+        "r": 16,
+        "lora_alpha": 32,
+        "lora_dropout": 0.05
+      },
+      "outputs": [
+        "lora_config"
+      ]
+    },
+    {
+      "name": "configure_training",
+      "task": "configure_llama_training_arguments",
+      "inputs": {
+        "output_dir": "inputs.output_dir",
+        "num_train_epochs": 1,
+        "per_device_train_batch_size": 2,
+        "gradient_accumulation_steps": 8,
+        "learning_rate": 0.0002,
+        "warmup_ratio": 0.03,
+        "lr_scheduler_type": "inputs.lr_scheduler_type",
+        "logging_steps": 10,
+        "save_steps": 100,
+        "save_total_limit": 2,
+        "bf16": true,
+        "gradient_checkpointing": true,
+        "optim": "inputs.optimizer",
+        "group_by_length": true
+      },
+      "outputs": [
+        "training_args"
+      ]
+    },
+    {
+      "name": "initialize_trainer",
+      "task": "initialize_llama_trainer",
+      "inputs": {
+        "model": "tasks.load_model.model",
+        "lora_config": "tasks.configure_lora.lora_config",
+        "training_args": "tasks.configure_training.training_args",
+        "processed_dataset": "tasks.prepare_dataset.processed_dataset",
+        "tokenizer": "tasks.load_tokenizer.tokenizer"
+      },
+      "outputs": [
+        "trainer"
+      ],
+      "dependencies": [
+        "load_model",
+        "configure_lora",
+        "configure_training",
+        "prepare_dataset",
+        "load_tokenizer"
+      ]
+    },
+    {
+      "name": "execute_training",
+      "task": "execute_training",
+      "inputs": {
+        "trainer": "tasks.initialize_trainer.trainer"
+      },
+      "outputs": [
+        "training_result",
+        "trained_model"
+      ],
+      "dependencies": [
+        "initialize_trainer"
+      ]
+    },
+    {
+      "name": "save_model",
+      "task": "save_llama_model",
+      "inputs": {
+        "trained_model": "tasks.execute_training.trained_model",
+        "tokenizer": "tasks.load_tokenizer.tokenizer",
+        "output_dir": "inputs.final_output_dir"
+      },
+      "outputs": [
+        "saved_model_path"
+      ],
+      "dependencies": [
+        "execute_training",
+        "load_tokenizer"
+      ]
+    }
+  ],
+  "outputs": {
+    "saved_model_path": "tasks.save_model.saved_model_path",
+    "training_result": "tasks.execute_training.training_result"
+  },
+  "_designer": {
+    "layout": {
+      "hf_login": {
+        "x": 37.08806141291446,
+        "y": 268.54403070645725
+      },
+      "load_model": {
+        "x": 382.2458675610987,
+        "y": -163.6970361281627
+      },
+      "load_tokenizer": {
+        "x": 388.20401151492143,
+        "y": 388.46991363808905
+      },
+      "load_dataset": {
+        "x": 396.87846295515914,
+        "y": 745.040658020009
+      },
+      "prepare_dataset": {
+        "x": 749.9999999999999,
+        "y": 291.87010555344676
+      },
+      "configure_lora": {
+        "x": 759.829990404232,
+        "y": -175.23973131849922
+      },
+      "configure_training": {
+        "x": 744.1020057574607,
+        "y": 837.8857677824171
+      },
+      "initialize_trainer": {
+        "x": 1123.5919769701572,
+        "y": 248.884049897993
+      },
+      "execute_training": {
+        "x": 1398.884049897993,
+        "y": 305.8979942425393
+      },
+      "save_model": {
+        "x": 1638.7881573705931,
+        "y": 388.46991363808905
+      }
+    }
+  }
+}

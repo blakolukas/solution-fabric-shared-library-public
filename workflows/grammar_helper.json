@@ -1,0 +1,390 @@
+{
+  "tasks": [
+    {
+      "name": "download_model",
+      "task": "download_hf_model",
+      "inputs": {
+        "repository_id": "inputs.model_repository",
+        "model_name": "inputs.model_filename"
+      },
+      "outputs": [
+        "model_path"
+      ]
+    },
+    {
+      "name": "load_llm",
+      "task": "load_gguf_model",
+      "inputs": {
+        "model_path": "tasks.download_model.model_path",
+        "n_ctx": "inputs.context_size",
+        "n_threads": "inputs.thread_count"
+      },
+      "outputs": [
+        "model"
+      ],
+      "dependencies": [
+        "download_model"
+      ]
+    },
+    {
+      "name": "correction_user_prompt",
+      "task": "format_template",
+      "inputs": {
+        "template": {
+          "literal": "Fix all grammar and spelling errors in this text. Keep the same meaning.\n\nText: {text}\n\nCorrected text:"
+        },
+        "text": "inputs.input_text"
+      },
+      "outputs": [
+        "result"
+      ]
+    },
+    {
+      "name": "correction_prompt",
+      "task": "build_chat_prompt",
+      "inputs": {
+        "system_message": {
+          "literal": "You are a proofreader. Output only the corrected text."
+        },
+        "user_message": "tasks.correction_user_prompt.result",
+        "format_style": {
+          "literal": "chatml"
+        }
+      },
+      "outputs": [
+        "prompt"
+      ],
+      "dependencies": [
+        "correction_user_prompt"
+      ]
+    },
+    {
+      "name": "run_correction",
+      "task": "llm_inference",
+      "inputs": {
+        "model": "tasks.load_llm.model",
+        "prompt": "tasks.correction_prompt.prompt",
+        "max_tokens": "inputs.max_tokens",
+        "temperature": "inputs.temperature",
+        "repeat_penalty": 1.1,
+        "top_k": 40
+      },
+      "outputs": [
+        "response"
+      ],
+      "dependencies": [
+        "load_llm",
+        "correction_prompt"
+      ]
+    },
+    {
+      "name": "corrected_text_clean",
+      "task": "trim",
+      "inputs": {
+        "text": "tasks.run_correction.response"
+      },
+      "outputs": [
+        "trimmed"
+      ],
+      "dependencies": [
+        "run_correction"
+      ]
+    },
+    {
+      "name": "style_user_prompt",
+      "task": "format_template",
+      "inputs": {
+        "template": {
+          "literal": "Rewrite this text in a {style} tone. Keep the same meaning.\n\nText: {text}\n\nRewritten text:"
+        },
+        "text": "tasks.corrected_text_clean.trimmed",
+        "style": "inputs.correction_style"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "corrected_text_clean"
+      ]
+    },
+    {
+      "name": "style_prompt",
+      "task": "build_chat_prompt",
+      "inputs": {
+        "system_message": {
+          "literal": "You are a writing assistant. Output only the rewritten text."
+        },
+        "user_message": "tasks.style_user_prompt.result",
+        "format_style": {
+          "literal": "chatml"
+        }
+      },
+      "outputs": [
+        "prompt"
+      ],
+      "dependencies": [
+        "style_user_prompt"
+      ]
+    },
+    {
+      "name": "run_style",
+      "task": "llm_inference",
+      "inputs": {
+        "model": "tasks.load_llm.model",
+        "prompt": "tasks.style_prompt.prompt",
+        "max_tokens": "inputs.max_tokens",
+        "temperature": 0.3,
+        "repeat_penalty": 1.1,
+        "top_k": 40
+      },
+      "outputs": [
+        "response"
+      ],
+      "dependencies": [
+        "load_llm",
+        "style_prompt"
+      ]
+    },
+    {
+      "name": "styled_text_clean",
+      "task": "trim",
+      "inputs": {
+        "text": "tasks.run_style.response"
+      },
+      "outputs": [
+        "trimmed"
+      ],
+      "dependencies": [
+        "run_style"
+      ]
+    },
+    {
+      "name": "explanation_user_prompt",
+      "task": "format_template",
+      "inputs": {
+        "template": {
+          "literal": "List the grammar errors that were fixed between these texts.\n\nOriginal: {original}\n\nCorrected: {corrected}\n\nErrors fixed:"
+        },
+        "original": "inputs.input_text",
+        "corrected": "tasks.corrected_text_clean.trimmed"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "corrected_text_clean"
+      ]
+    },
+    {
+      "name": "explanation_prompt",
+      "task": "build_chat_prompt",
+      "inputs": {
+        "system_message": {
+          "literal": "List grammar corrections briefly."
+        },
+        "user_message": "tasks.explanation_user_prompt.result",
+        "format_style": {
+          "literal": "chatml"
+        }
+      },
+      "outputs": [
+        "prompt"
+      ],
+      "dependencies": [
+        "explanation_user_prompt"
+      ]
+    },
+    {
+      "name": "run_explanation",
+      "task": "llm_inference",
+      "inputs": {
+        "model": "tasks.load_llm.model",
+        "prompt": "tasks.explanation_prompt.prompt",
+        "max_tokens": "inputs.max_tokens",
+        "temperature": 0.3,
+        "repeat_penalty": 1.2,
+        "top_k": 40
+      },
+      "outputs": [
+        "response"
+      ],
+      "dependencies": [
+        "load_llm",
+        "explanation_prompt"
+      ]
+    },
+    {
+      "name": "explanation_clean",
+      "task": "trim",
+      "inputs": {
+        "text": "tasks.run_explanation.response"
+      },
+      "outputs": [
+        "trimmed"
+      ],
+      "dependencies": [
+        "run_explanation"
+      ]
+    },
+    {
+      "name": "word_count_original",
+      "task": "word_count",
+      "inputs": {
+        "text": "inputs.input_text"
+      },
+      "outputs": [
+        "word_count"
+      ]
+    },
+    {
+      "name": "word_count_corrected",
+      "task": "word_count",
+      "inputs": {
+        "text": "tasks.corrected_text_clean.trimmed"
+      },
+      "outputs": [
+        "word_count"
+      ],
+      "dependencies": [
+        "corrected_text_clean"
+      ]
+    },
+    {
+      "name": "word_count_styled",
+      "task": "word_count",
+      "inputs": {
+        "text": "tasks.styled_text_clean.trimmed"
+      },
+      "outputs": [
+        "word_count"
+      ],
+      "dependencies": [
+        "styled_text_clean"
+      ]
+    },
+    {
+      "name": "summary_template",
+      "task": "format_template",
+      "inputs": {
+        "template": {
+          "literal": "=== GRAMMAR CHECK RESULTS ===\n\nSTYLE: {style}\n\nORIGINAL ({original_words} words):\n{original}\n\nCORRECTED ({corrected_words} words):\n{corrected}\n\nSTYLED ({styled_words} words):\n{styled}\n\nCHANGES MADE:\n{explanation}"
+        },
+        "style": "inputs.correction_style",
+        "original": "inputs.input_text",
+        "corrected": "tasks.corrected_text_clean.trimmed",
+        "styled": "tasks.styled_text_clean.trimmed",
+        "original_words": "tasks.word_count_original.word_count",
+        "corrected_words": "tasks.word_count_corrected.word_count",
+        "styled_words": "tasks.word_count_styled.word_count",
+        "explanation": "tasks.explanation_clean.trimmed"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "corrected_text_clean",
+        "styled_text_clean",
+        "word_count_original",
+        "word_count_corrected",
+        "word_count_styled",
+        "explanation_clean"
+      ]
+    }
+  ],
+  "inputs": {
+    "model_repository": "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
+    "model_filename": "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+    "context_size": 4096,
+    "thread_count": 8,
+    "input_text": "me and sarah was working on the project when suddenly the computer crash and we loosed all our work its very frustrating because we was almost finished the report that was suppose to be submited yesterday but we didnt have no backup so now we got to start over from scratch which is gonna take alot of time the manager he dont understand how much effort we already putted into this and between you and I i think there being unreasonable with the deadline everyone in team is stressing out and morale is pretty low we should of backed up the files more regular but hindsight is 20/20 right irregardless we need to focus on getting this done asap",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "correction_style": "professional"
+  },
+  "outputs": {
+    "summary_report": "tasks.summary_template.result",
+    "original_text": "inputs.input_text",
+    "corrected_text": "tasks.corrected_text_clean.trimmed",
+    "styled_text": "tasks.styled_text_clean.trimmed",
+    "changes_explained": "tasks.explanation_clean.trimmed",
+    "word_count_original": "tasks.word_count_original.word_count",
+    "word_count_corrected": "tasks.word_count_corrected.word_count",
+    "word_count_styled": "tasks.word_count_styled.word_count"
+  },
+  "_designer": {
+    "layout": {
+      "download_model": {
+        "x": 100,
+        "y": 500
+      },
+      "load_llm": {
+        "x": 400,
+        "y": 500
+      },
+      "correction_user_prompt": {
+        "x": 100,
+        "y": 100
+      },
+      "correction_prompt": {
+        "x": 400,
+        "y": 100
+      },
+      "run_correction": {
+        "x": 706.7669125782816,
+        "y": 134.58651174327832
+      },
+      "corrected_text_clean": {
+        "x": 1000,
+        "y": 200
+      },
+      "style_user_prompt": {
+        "x": 1293.2330874217184,
+        "y": 683.4583794359547
+      },
+      "style_prompt": {
+        "x": 1590.9774498956247,
+        "y": 708.2703922229871
+      },
+      "run_style": {
+        "x": 1893.2406124843576,
+        "y": 859.0745287777905
+      },
+      "styled_text_clean": {
+        "x": 2204.5112750521876,
+        "y": 363.15785073062784
+      },
+      "explanation_user_prompt": {
+        "x": 1300,
+        "y": 100
+      },
+      "explanation_prompt": {
+        "x": 1600,
+        "y": 100
+      },
+      "run_explanation": {
+        "x": 1900,
+        "y": 100
+      },
+      "explanation_clean": {
+        "x": 2227.0676503131263,
+        "y": 100
+      },
+      "word_count_original": {
+        "x": 97.74624373956594,
+        "y": 792.4040066777964
+      },
+      "word_count_corrected": {
+        "x": 1000,
+        "y": 700
+      },
+      "word_count_styled": {
+        "x": 2200,
+        "y": 700
+      },
+      "summary_template": {
+        "x": 2500,
+        "y": 400
+      }
+    }
+  }
+}

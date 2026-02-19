@@ -1,0 +1,139 @@
+{
+    "inputs": {
+        "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "prompt": "What is the capital of France?"
+    },
+    "tasks": [
+        {
+            "name": "hf_login",
+            "task": "huggingface_login",
+            "inputs": {
+                "token": {
+                    "literal": "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"
+                }
+            },
+            "outputs": [
+                "login_status"
+            ]
+        },
+        {
+            "name": "load_tokenizer",
+            "task": "load_llama_tokenizer",
+            "inputs": {
+                "model_name": "inputs.model_name"
+            },
+            "outputs": [
+                "tokenizer"
+            ],
+            "dependencies": [
+                "hf_login"
+            ]
+        },
+        {
+            "name": "load_model",
+            "task": "load_llama_model",
+            "inputs": {
+                "model_name": "inputs.model_name",
+                "device_map": {
+                    "literal": "auto"
+                },
+                "torch_dtype": {
+                    "literal": "bfloat16"
+                },
+                "load_in_4bit": {
+                    "literal": true
+                }
+            },
+            "outputs": [
+                "model"
+            ],
+            "dependencies": [
+                "hf_login"
+            ]
+        },
+        {
+            "name": "tokenize",
+            "task": "tokenize_prompt",
+            "inputs": {
+                "prompt": "inputs.prompt",
+                "tokenizer": "tasks.load_tokenizer.tokenizer",
+                "max_length": {
+                    "literal": 512
+                }
+            },
+            "outputs": [
+                "tokenized"
+            ],
+            "dependencies": [
+                "load_tokenizer"
+            ]
+        },
+        {
+            "name": "inference",
+            "task": "run_llm_inference",
+            "inputs": {
+                "tokenized": "tasks.tokenize.tokenized",
+                "model": "tasks.load_model.model",
+                "tokenizer": "tasks.load_tokenizer.tokenizer",
+                "max_new_tokens": {
+                    "literal": 100
+                },
+                "temperature": {
+                    "literal": 0.7
+                }
+            },
+            "outputs": [
+                "generated_ids"
+            ],
+            "dependencies": [
+                "tokenize",
+                "load_model"
+            ]
+        },
+        {
+            "name": "decode",
+            "task": "decode_llm_output",
+            "inputs": {
+                "output_ids": "tasks.inference.generated_ids",
+                "tokenizer": "tasks.load_tokenizer.tokenizer"
+            },
+            "outputs": [
+                "decoded_text"
+            ],
+            "dependencies": [
+                "inference"
+            ]
+        }
+    ],
+    "outputs": {
+        "response": "tasks.decode.decoded_text"
+    },
+    "_designer": {
+        "layout": {
+            "hf_login": {
+                "x": 50,
+                "y": 250
+            },
+            "load_tokenizer": {
+                "x": 350,
+                "y": 150
+            },
+            "load_model": {
+                "x": 350,
+                "y": 350
+            },
+            "tokenize": {
+                "x": 650,
+                "y": 150
+            },
+            "inference": {
+                "x": 950,
+                "y": 250
+            },
+            "decode": {
+                "x": 1250,
+                "y": 250
+            }
+        }
+    }
+}

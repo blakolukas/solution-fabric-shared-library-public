@@ -1,0 +1,375 @@
+{
+  "tasks": [
+    {
+      "name": "validate_document_path",
+      "task": "check_file_exists",
+      "inputs": {
+        "file_path": "inputs.document_image_path"
+      },
+      "outputs": [
+        "file_path"
+      ]
+    },
+    {
+      "name": "load_image",
+      "task": "load_image",
+      "inputs": {
+        "image_path": "tasks.validate_document_path.file_path"
+      },
+      "outputs": [
+        "image"
+      ],
+      "dependencies": [
+        "validate_document_path"
+      ]
+    },
+    {
+      "name": "to_grayscale",
+      "task": "convert_to_grayscale",
+      "inputs": {
+        "image": "tasks.load_image.image"
+      },
+      "outputs": [
+        "grayscale_image"
+      ],
+      "dependencies": [
+        "load_image"
+      ]
+    },
+    {
+      "name": "extract_text",
+      "task": "extract_text_with_ocr",
+      "inputs": {
+        "grayscale_image": "tasks.to_grayscale.grayscale_image",
+        "language": "inputs.ocr_language"
+      },
+      "outputs": [
+        "extracted_text"
+      ],
+      "dependencies": [
+        "to_grayscale"
+      ]
+    },
+    {
+      "name": "ensure_output_dir",
+      "task": "ensure_directory_exists",
+      "inputs": {
+        "directory_path": "inputs.output_directory"
+      },
+      "outputs": [
+        "directory_path"
+      ]
+    },
+    {
+      "name": "save_extracted_text",
+      "task": "save_text_to_file",
+      "inputs": {
+        "text": "tasks.extract_text.extracted_text",
+        "directory": "tasks.ensure_output_dir.directory_path",
+        "filename": {
+          "literal": "extracted_text.txt"
+        }
+      },
+      "outputs": [
+        "file_path"
+      ],
+      "dependencies": [
+        "extract_text",
+        "ensure_output_dir"
+      ]
+    },
+    {
+      "name": "extract_ocr_positions",
+      "task": "extract_ocr_data",
+      "inputs": {
+        "grayscale_image": "tasks.to_grayscale.grayscale_image",
+        "language": "inputs.ocr_language"
+      },
+      "outputs": [
+        "ocr_data"
+      ],
+      "dependencies": [
+        "to_grayscale"
+      ]
+    },
+    {
+      "name": "get_dimensions",
+      "task": "get_image_dimensions",
+      "inputs": {
+        "image": "tasks.load_image.image"
+      },
+      "outputs": [
+        "image_dimensions"
+      ],
+      "dependencies": [
+        "load_image"
+      ]
+    },
+    {
+      "name": "convert_to_rgb",
+      "task": "convert_bgr_to_rgb",
+      "inputs": {
+        "image": "tasks.load_image.image"
+      },
+      "outputs": [
+        "rgb_image"
+      ],
+      "dependencies": [
+        "load_image"
+      ]
+    },
+    {
+      "name": "generate_temp_name",
+      "task": "generate_temp_filename",
+      "inputs": {
+        "prefix": {
+          "literal": "doc_scan"
+        },
+        "extension": {
+          "literal": "png"
+        }
+      },
+      "outputs": [
+        "temp_filename"
+      ]
+    },
+    {
+      "name": "ensure_temp_dir",
+      "task": "ensure_directory_exists",
+      "inputs": {
+        "directory_path": {
+          "literal": "temp"
+        }
+      },
+      "outputs": [
+        "directory_path"
+      ]
+    },
+    {
+      "name": "save_image_temp",
+      "task": "save_image_to_disk",
+      "inputs": {
+        "image_array": "tasks.convert_to_rgb.rgb_image",
+        "save_path": "tasks.ensure_temp_dir.directory_path",
+        "save_name": "tasks.generate_temp_name.temp_filename"
+      },
+      "outputs": [
+        "saved_image_path"
+      ],
+      "dependencies": [
+        "convert_to_rgb",
+        "ensure_temp_dir",
+        "generate_temp_name"
+      ]
+    },
+    {
+      "name": "generate_pdf",
+      "task": "create_searchable_pdf",
+      "inputs": {
+        "image_path": "tasks.save_image_temp.saved_image_path",
+        "ocr_data": "tasks.extract_ocr_positions.ocr_data",
+        "image_dimensions": "tasks.get_dimensions.image_dimensions",
+        "output_directory": "tasks.ensure_output_dir.directory_path",
+        "output_name": {
+          "literal": "scanned_document.pdf"
+        }
+      },
+      "outputs": [
+        "pdf"
+      ],
+      "dependencies": [
+        "save_image_temp",
+        "extract_ocr_positions",
+        "get_dimensions",
+        "ensure_output_dir"
+      ]
+    },
+    {
+      "name": "cleanup",
+      "task": "delete_file",
+      "inputs": {
+        "file_path": "tasks.save_image_temp.saved_image_path"
+      },
+      "outputs": [
+        "deleted"
+      ],
+      "dependencies": [
+        "generate_pdf"
+      ]
+    },
+    {
+      "name": "download_llm",
+      "task": "download_hf_model",
+      "inputs": {
+        "repository_id": "inputs.llm_repository",
+        "model_name": "inputs.llm_model_name"
+      },
+      "outputs": [
+        "model_path"
+      ]
+    },
+    {
+      "name": "load_gguf",
+      "task": "load_gguf_model",
+      "inputs": {
+        "model_path": "tasks.download_llm.model_path",
+        "n_ctx": 4096,
+        "n_gpu_layers": -1
+      },
+      "outputs": [
+        "model"
+      ],
+      "dependencies": [
+        "download_llm"
+      ]
+    },
+    {
+      "name": "format_prompt",
+      "task": "format_template",
+      "inputs": {
+        "template": "inputs.summary_prompt_template",
+        "text": "tasks.extract_text.extracted_text"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "extract_text"
+      ]
+    },
+    {
+      "name": "generate_summary",
+      "task": "llm_inference",
+      "inputs": {
+        "model": "tasks.load_gguf.model",
+        "max_tokens": 100,
+        "temperature": 0.3,
+        "prompt": "tasks.format_prompt.result"
+      },
+      "outputs": [
+        "response"
+      ],
+      "dependencies": [
+        "load_gguf",
+        "format_prompt"
+      ]
+    },
+    {
+      "name": "save_summary",
+      "task": "save_text_to_file",
+      "inputs": {
+        "text": "tasks.generate_summary.response",
+        "directory": "tasks.ensure_output_dir.directory_path",
+        "filename": {
+          "literal": "summary.txt"
+        }
+      },
+      "outputs": [
+        "file_path"
+      ],
+      "dependencies": [
+        "generate_summary",
+        "ensure_output_dir"
+      ]
+    }
+  ],
+  "inputs": {
+    "document_image_path": "samples/media/document_sample.jpg",
+    "ocr_language": "eng",
+    "output_directory": "output",
+    "llm_repository": "TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF",
+    "llm_model_name": "tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf",
+    "summary_prompt_template": "Provide a brief, one-sentence summary of the main topic of this document:\n\n{text}\n\nBrief summary:"
+  },
+  "outputs": {
+    "summary": "tasks.generate_summary.response",
+    "summary_path": "tasks.save_summary.file_path",
+    "extracted_text_path": "tasks.save_extracted_text.file_path",
+    "pdf_path": "tasks.generate_pdf.pdf",
+    "document_image": "tasks.convert_to_rgb.rgb_image"
+  },
+  "_designer": {
+    "layout": {
+      "validate_document_path": {
+        "x": -150,
+        "y": 257.0371409893406
+      },
+      "load_image": {
+        "x": 167.38608391673978,
+        "y": 257.0371409893406
+      },
+      "to_grayscale": {
+        "x": 489.19781221513216,
+        "y": 235.3236098450319
+      },
+      "extract_text": {
+        "x": 768.5328274712874,
+        "y": 12.55596319221543
+      },
+      "ensure_output_dir": {
+        "x": 781.7537071011893,
+        "y": 899.7927831370012
+      },
+      "save_extracted_text": {
+        "x": 1108.3743485278603,
+        "y": 678.2798258392575
+      },
+      "extract_ocr_positions": {
+        "x": 766.5093916163046,
+        "y": 265.16646053199537
+      },
+      "get_dimensions": {
+        "x": 487.10118505013673,
+        "y": 412.26071103008206
+      },
+      "convert_to_rgb": {
+        "x": 482.2138779480358,
+        "y": 584.7678614154523
+      },
+      "generate_temp_name": {
+        "x": 755.9708295350957,
+        "y": 509.5259799453054
+      },
+      "ensure_temp_dir": {
+        "x": 762.260711030082,
+        "y": 732.6992086766213
+      },
+      "save_image_temp": {
+        "x": 1126.1893390274627,
+        "y": 1126.613379847094
+      },
+      "generate_pdf": {
+        "x": 1735.744032835881,
+        "y": 563.586253205225
+      },
+      "cleanup": {
+        "x": 1449.4081901228321,
+        "y": 1163.710017555786
+      },
+      "download_llm": {
+        "x": 1129.7121170231524,
+        "y": -258.2521060453943
+      },
+      "load_gguf": {
+        "x": 1415.127942782672,
+        "y": -114.00485565989213
+      },
+      "format_prompt": {
+        "x": 1111.736989634216,
+        "y": 90.08220801961531
+      },
+      "generate_summary": {
+        "x": 1735.7542439995236,
+        "y": -110.98852057406538
+      },
+      "save_summary": {
+        "x": 2039.9309318974224,
+        "y": 61.81221530574135
+      },
+      "format_prompt": {
+        "x": 1081.051530036291,
+        "y": 63.00680249203468
+      }
+    }
+  }
+}

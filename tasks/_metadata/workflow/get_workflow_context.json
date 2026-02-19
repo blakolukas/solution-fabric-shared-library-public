@@ -1,0 +1,25 @@
+{
+  "id": "get_workflow_context",
+  "category": "workflow",
+  "display_name": "Get Workflow Context",
+  "description": "Return the current workflow context.",
+  "inputs": {},
+  "outputs": {
+    "context": {
+      "type": "any",
+      "description": "Output: context"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "workflow"
+  ]
+}

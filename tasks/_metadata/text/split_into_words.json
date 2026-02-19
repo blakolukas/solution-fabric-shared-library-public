@@ -1,0 +1,37 @@
+{
+  "id": "split_into_words",
+  "category": "text",
+  "display_name": "Split Into Words",
+  "description": "Split text into words.",
+  "inputs": {
+    "text": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: text"
+    },
+    "lowercase": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: lowercase",
+      "default": false
+    }
+  },
+  "outputs": {
+    "words": {
+      "type": "list",
+      "description": "Output: words"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "text"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "embed_texts",
+  "category": "embedding",
+  "display_name": "Embed Texts",
+  "description": "Generate embedding vectors for multiple texts.",
+  "inputs": {
+    "texts": {
+      "type": "List[str]",
+      "required": true,
+      "description": "Input parameter: texts"
+    },
+    "model": {
+      "type": "object",
+      "required": true,
+      "description": "Input parameter: model"
+    },
+    "normalize": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: normalize",
+      "default": true
+    },
+    "batch_size": {
+      "type": "int",
+      "required": false,
+      "description": "Input parameter: batch_size",
+      "default": 32
+    },
+    "show_progress": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: show_progress",
+      "default": false
+    }
+  },
+  "outputs": {
+    "embeddings": {
+      "type": "list",
+      "description": "Output: embeddings"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "embedding"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "stable_diffusion",
+  "version": "1.0.0",
+  "display_name": "Stable Diffusion",
+  "description": "Workflow: Stable Diffusion",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "computer-vision",
+    "diffusion",
+    "image-generation",
+    "llm",
+    "ml"
+  ],
+  "category": "llm",
+  "required_tasks": [
+    "convert_pil_to_numpy",
+    "extract_first_element",
+    "generate_image_from_prompt",
+    "load_stable_diffusion_pipeline",
+    "save_images_to_directory"
+  ],
+  "dependencies": {
+    "python": [
+      "diffusers>=0.20.0",
+      "numpy>=1.24.0",
+      "opencv-python>=4.8.0",
+      "torch>=2.0.0",
+      "transformers>=4.30.0"
+    ],
+    "models": []
+  },
+  "inputs": {
+    "prompt": {
+      "type": "string",
+      "required": false,
+      "default": "a beautiful sunset over mountains, digital art, highly detailed",
+      "description": "Workflow input: prompt"
+    },
+    "negative_prompt": {
+      "type": "string",
+      "required": false,
+      "default": "blurry, low quality, distorted",
+      "description": "Workflow input: negative prompt"
+    }
+  },
+  "outputs": {
+    "saved_image_paths": {
+      "type": "any",
+      "description": "Workflow output: saved image paths"
+    },
+    "generated_images": {
+      "type": "any",
+      "description": "Workflow output: generated images"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "min_max_normalize_image",
+  "category": "image",
+  "display_name": "Min-Max Normalize Image",
+  "description": "Normalize image array to specified range using min-max normalization.",
+  "inputs": {
+    "image_array": {
+      "type": "any",
+      "required": true,
+      "description": "Input parameter: image_array"
+    },
+    "min_value": {
+      "type": "float",
+      "required": false,
+      "description": "Input parameter: min_value",
+      "default": 0
+    },
+    "max_value": {
+      "type": "float",
+      "required": false,
+      "description": "Input parameter: max_value",
+      "default": 1
+    }
+  },
+  "outputs": {
+    "normalized_image_array": {
+      "type": "any",
+      "description": "Output: normalized_image_array"
+    }
+  },
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0"
+    ],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "image"
+  ]
+}

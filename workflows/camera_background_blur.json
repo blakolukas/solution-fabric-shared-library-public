@@ -1,0 +1,420 @@
+{
+  "tasks": [
+    {
+      "name": "validate_image_path",
+      "task": "check_file_exists",
+      "inputs": {
+        "file_path": "inputs.image_path"
+      },
+      "outputs": [
+        "file_path"
+      ]
+    },
+    {
+      "name": "load_image",
+      "task": "load_image",
+      "inputs": {
+        "image_path": "tasks.validate_image_path.file_path"
+      },
+      "outputs": [
+        "image"
+      ],
+      "dependencies": [
+        "validate_image_path"
+      ]
+    },
+    {
+      "name": "download_model",
+      "task": "download_hf_model",
+      "inputs": {
+        "repository_id": "inputs.model_repository",
+        "model_name": "inputs.model_name"
+      },
+      "outputs": [
+        "model_path"
+      ]
+    },
+    {
+      "name": "extract_model",
+      "task": "extract_onnx_model",
+      "inputs": {
+        "model_path": "tasks.download_model.model_path",
+        "repository_id": "inputs.model_repository",
+        "base_directory": "inputs.base_directory"
+      },
+      "outputs": [
+        "onnx_model_path"
+      ],
+      "dependencies": [
+        "download_model"
+      ]
+    },
+    {
+      "name": "load_model",
+      "task": "onnx_load_model",
+      "inputs": {
+        "onnx_model_path": "tasks.extract_model.onnx_model_path"
+      },
+      "outputs": [
+        "onnx_session"
+      ],
+      "dependencies": [
+        "extract_model"
+      ]
+    },
+    {
+      "name": "get_input_info",
+      "task": "onnx_get_input_info",
+      "inputs": {
+        "onnx_session": "tasks.load_model.onnx_session"
+      },
+      "outputs": [
+        "input_name",
+        "input_shape",
+        "input_type"
+      ],
+      "dependencies": [
+        "load_model"
+      ]
+    },
+    {
+      "name": "extract_hw",
+      "task": "extract_hw_from_shape",
+      "inputs": {
+        "input_shape": "tasks.get_input_info.input_shape"
+      },
+      "outputs": [
+        "height",
+        "width"
+      ],
+      "dependencies": [
+        "get_input_info"
+      ]
+    },
+    {
+      "name": "extract_original_hw",
+      "task": "extract_array_hw",
+      "inputs": {
+        "array": "tasks.load_image.image"
+      },
+      "outputs": [
+        "orig_height",
+        "orig_width"
+      ],
+      "dependencies": [
+        "load_image"
+      ]
+    },
+    {
+      "name": "resize_image",
+      "task": "resize_image",
+      "inputs": {
+        "image": "tasks.load_image.image",
+        "target_width": "tasks.extract_hw.width",
+        "target_height": "tasks.extract_hw.height"
+      },
+      "outputs": [
+        "resized_image"
+      ],
+      "dependencies": [
+        "extract_hw",
+        "load_image"
+      ]
+    },
+    {
+      "name": "to_float32",
+      "task": "convert_array_dtype",
+      "inputs": {
+        "array": "tasks.resize_image.resized_image",
+        "target_dtype": {
+          "literal": "float32"
+        }
+      },
+      "outputs": [
+        "converted_array"
+      ],
+      "dependencies": [
+        "resize_image"
+      ]
+    },
+    {
+      "name": "min_max_normalize_image",
+      "task": "min_max_normalize_image",
+      "inputs": {
+        "image_array": "tasks.to_float32.converted_array",
+        "min_value": 0,
+        "max_value": 1
+      },
+      "outputs": [
+        "normalized_image_array"
+      ],
+      "dependencies": [
+        "to_float32"
+      ]
+    },
+    {
+      "name": "to_channel_first",
+      "task": "convert_channel_format",
+      "inputs": {
+        "array": "tasks.min_max_normalize_image.normalized_image_array",
+        "to_format": {
+          "literal": "channel_first"
+        }
+      },
+      "outputs": [
+        "converted_array"
+      ],
+      "dependencies": [
+        "min_max_normalize_image"
+      ]
+    },
+    {
+      "name": "batch_image",
+      "task": "batch_array",
+      "inputs": {
+        "array": "tasks.to_channel_first.converted_array"
+      },
+      "outputs": [
+        "batched_array"
+      ],
+      "dependencies": [
+        "to_channel_first"
+      ]
+    },
+    {
+      "name": "ensure_contiguous",
+      "task": "ensure_array_contiguous",
+      "inputs": {
+        "array": "tasks.batch_image.batched_array"
+      },
+      "outputs": [
+        "contiguous_array"
+      ],
+      "dependencies": [
+        "batch_image"
+      ]
+    },
+    {
+      "name": "run_inference",
+      "task": "onnx_inference",
+      "inputs": {
+        "onnx_session": "tasks.load_model.onnx_session",
+        "input_array": "tasks.ensure_contiguous.contiguous_array",
+        "input_name": "tasks.get_input_info.input_name"
+      },
+      "outputs": [
+        "output"
+      ],
+      "dependencies": [
+        "ensure_contiguous",
+        "load_model",
+        "get_input_info"
+      ]
+    },
+    {
+      "name": "extract_first_element",
+      "task": "extract_first_element",
+      "inputs": {
+        "output_list": "tasks.run_inference.output"
+      },
+      "outputs": [
+        "first_element"
+      ],
+      "dependencies": [
+        "run_inference"
+      ]
+    },
+    {
+      "name": "unbatch_output",
+      "task": "unbatch_array",
+      "inputs": {
+        "array": "tasks.extract_first_element.first_element"
+      },
+      "outputs": [
+        "unbatched_array"
+      ],
+      "dependencies": [
+        "extract_first_element"
+      ]
+    },
+    {
+      "name": "resize_mask_to_original_size",
+      "task": "resize_image",
+      "inputs": {
+        "image": "tasks.unbatch_output.unbatched_array",
+        "target_width": "tasks.extract_original_hw.orig_width",
+        "target_height": "tasks.extract_original_hw.orig_height"
+      },
+      "outputs": [
+        "resized_image"
+      ],
+      "dependencies": [
+        "unbatch_output",
+        "extract_original_hw"
+      ]
+    },
+    {
+      "name": "visualize_mask",
+      "task": "visualize_segmentation_mask",
+      "inputs": {
+        "mask_array": "tasks.resize_mask_to_original_size.resized_image"
+      },
+      "outputs": [
+        "colored_mask",
+        "class_summary"
+      ],
+      "dependencies": [
+        "resize_mask_to_original_size"
+      ]
+    },
+    {
+      "name": "process_mask",
+      "task": "process_segmentation_mask",
+      "inputs": {
+        "mask_array": "tasks.resize_mask_to_original_size.resized_image",
+        "keep_class_id": "inputs.keep_class_id"
+      },
+      "outputs": [
+        "processed_mask"
+      ],
+      "dependencies": [
+        "resize_mask_to_original_size"
+      ]
+    },
+    {
+      "name": "blur_background",
+      "task": "blur_image_with_mask",
+      "inputs": {
+        "image_array": "tasks.load_image.image",
+        "mask_array": "tasks.process_mask.processed_mask",
+        "blur_radius": "inputs.blur_radius"
+      },
+      "outputs": [
+        "blurred_image_array"
+      ],
+      "dependencies": [
+        "process_mask",
+        "load_image"
+      ]
+    },
+    {
+      "name": "final_uint8",
+      "task": "convert_array_dtype",
+      "inputs": {
+        "array": "tasks.blur_background.blurred_image_array",
+        "target_dtype": {
+          "literal": "uint8"
+        }
+      },
+      "outputs": [
+        "converted_array"
+      ],
+      "dependencies": [
+        "blur_background"
+      ]
+    }
+  ],
+  "inputs": {
+    "image_path": "samples/media/object_detection_sample.jpg",
+    "model_repository": "qualcomm/FCN-ResNet50",
+    "model_name": "FCN-ResNet50_float.onnx.zip",
+    "base_directory": "models",
+    "keep_class_id": 12,
+    "blur_radius": 90
+  },
+  "outputs": {
+    "blurred_image": "tasks.final_uint8.converted_array"
+  },
+  "_designer": {
+    "layout": {
+      "validate_image_path": {
+        "x": -100,
+        "y": 145.37428123618713
+      },
+      "load_image": {
+        "x": 238.85756899090697,
+        "y": 145.37428123618713
+      },
+      "download_model": {
+        "x": -99.37751661273965,
+        "y": -235.63979296386105
+      },
+      "extract_model": {
+        "x": 212.70096462650275,
+        "y": -280.83093203442934
+      },
+      "load_model": {
+        "x": 523.5095218317952,
+        "y": -279.3624290112381
+      },
+      "get_input_info": {
+        "x": 882.6983661774057,
+        "y": -324.9729602965501
+      },
+      "extract_hw": {
+        "x": 1189.2640521170376,
+        "y": -246.61356532874896
+      },
+      "extract_original_hw": {
+        "x": 688.560923211089,
+        "y": 170.88421303991595
+      },
+      "resize_image": {
+        "x": 1508.0423417999436,
+        "y": -457.13229141636674
+      },
+      "to_float32": {
+        "x": 1852.9960137625014,
+        "y": -163.701949627722
+      },
+      "min_max_normalize_image": {
+        "x": 2172.4723775559723,
+        "y": -111.14566365577501
+      },
+      "to_channel_first": {
+        "x": 1523.2595314836651,
+        "y": 80.71367511187077
+      },
+      "batch_image": {
+        "x": 1838.3066202272105,
+        "y": 91.08542186574348
+      },
+      "ensure_contiguous": {
+        "x": 2167.917226918886,
+        "y": 152.03386084551596
+      },
+      "run_inference": {
+        "x": 1203.0819430934682,
+        "y": -39.37691060657455
+      },
+      "extract_first_element": {
+        "x": 1522.9190534100353,
+        "y": 292.19000279408147
+      },
+      "unbatch_output": {
+        "x": 1791.8504759570471,
+        "y": 301.44867638983186
+      },
+      "resize_mask_to_original_size": {
+        "x": 1013.3425680999138,
+        "y": 225.68193831375132
+      },
+      "visualize_mask": {
+        "x": 1958.5444096223769,
+        "y": 688.5289673386551
+      },
+      "process_mask": {
+        "x": 1358.3485551062204,
+        "y": 655.3496921142282
+      },
+      "blur_background": {
+        "x": 2260.954663987539,
+        "y": 689.7485580500398
+      },
+      "final_uint8": {
+        "x": 2600,
+        "y": 700
+      }
+    }
+  }
+}

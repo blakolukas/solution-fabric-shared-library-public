@@ -1,0 +1,44 @@
+{
+  "id": "yolo_detect_objects",
+  "category": "vision",
+  "display_name": "Detect Objects (YOLO)",
+  "description": "Perform object detection using YOLO model.",
+  "inputs": {
+    "yolo_model": {
+      "type": "any",
+      "required": true,
+      "description": "Input parameter: yolo_model"
+    },
+    "image": {
+      "type": "np.ndarray",
+      "required": true,
+      "description": "Input parameter: image"
+    },
+    "confidence_threshold": {
+      "type": "float",
+      "required": false,
+      "description": "Input parameter: confidence_threshold",
+      "default": 0.25
+    }
+  },
+  "outputs": {
+    "detections": {
+      "type": "json",
+      "description": "Output: detections"
+    }
+  },
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0"
+    ],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "vision"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "load_gguf_model",
+  "category": "llm",
+  "display_name": "Load LLM (GGUF)",
+  "description": "Load a GGUF format LLM model.",
+  "inputs": {
+    "model_path": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: model_path"
+    },
+    "n_ctx": {
+      "type": "int",
+      "required": false,
+      "description": "Input parameter: n_ctx",
+      "default": 4096
+    },
+    "n_gpu_layers": {
+      "type": "int",
+      "required": false,
+      "description": "Input parameter: n_gpu_layers"
+    },
+    "verbose": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: verbose",
+      "default": false
+    }
+  },
+  "outputs": {
+    "model": {
+      "type": "object",
+      "description": "Output: model"
+    }
+  },
+  "dependencies": {
+    "python": [
+      "llama-cpp-python>=0.2.0"
+    ],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "llm"
+  ]
+}

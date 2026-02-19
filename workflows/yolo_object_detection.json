@@ -1,0 +1,97 @@
+{
+  "tasks": [
+    {
+      "name": "validate_image_path",
+      "task": "check_file_exists",
+      "inputs": {
+        "file_path": "inputs.image_path"
+      },
+      "outputs": [
+        "file_path"
+      ]
+    },
+    {
+      "name": "load_yolo_model",
+      "task": "load_yolo_model",
+      "outputs": [
+        "yolo_model"
+      ]
+    },
+    {
+      "name": "load_image",
+      "task": "load_image",
+      "inputs": {
+        "image_path": "tasks.validate_image_path.file_path"
+      },
+      "outputs": [
+        "image"
+      ],
+      "dependencies": [
+        "validate_image_path"
+      ]
+    },
+    {
+      "name": "yolo_detect_objects",
+      "task": "yolo_detect_objects",
+      "inputs": {
+        "yolo_model": "tasks.load_yolo_model.yolo_model",
+        "confidence_threshold": "inputs.confidence_threshold",
+        "image": "tasks.load_image.image"
+      },
+      "outputs": [
+        "detections"
+      ],
+      "dependencies": [
+        "load_yolo_model",
+        "load_image"
+      ]
+    },
+    {
+      "name": "draw_detection_boxes",
+      "task": "draw_detection_boxes",
+      "inputs": {
+        "detections": "tasks.yolo_detect_objects.detections",
+        "image": "tasks.load_image.image"
+      },
+      "outputs": [
+        "annotated_image"
+      ],
+      "dependencies": [
+        "yolo_detect_objects",
+        "load_image"
+      ]
+    }
+  ],
+  "inputs": {
+    "image_path": "samples/media/object_detection_sample.jpg",
+    "confidence_threshold": 0.8
+  },
+  "outputs": {
+    "detections": "tasks.yolo_detect_objects.detections",
+    "annotated_image": "tasks.draw_detection_boxes.annotated_image"
+  },
+  "_designer": {
+    "layout": {
+      "validate_image_path": {
+        "x": -200,
+        "y": 200
+      },
+      "load_yolo_model": {
+        "x": 113.7729549248748,
+        "y": 511.2687813021703
+      },
+      "load_image": {
+        "x": 110.35058430717868,
+        "y": 315.8764569468809
+      },
+      "yolo_detect_objects": {
+        "x": 550,
+        "y": 350
+      },
+      "draw_detection_boxes": {
+        "x": 1000,
+        "y": 350
+      }
+    }
+  }
+}

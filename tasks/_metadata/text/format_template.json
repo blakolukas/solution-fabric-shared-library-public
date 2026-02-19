@@ -1,0 +1,37 @@
+{
+  "id": "format_template",
+  "category": "text",
+  "display_name": "Format Template",
+  "description": "Format a template string by replacing placeholders with values.",
+  "inputs": {
+    "template": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: template"
+    },
+    "values": {
+      "type": "Optional[Dict[str, Any]]",
+      "required": false,
+      "description": "Input parameter: values",
+      "default": null
+    }
+  },
+  "outputs": {
+    "result": {
+      "type": "text",
+      "description": "Output: result"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-12",
+  "tags": [
+    "text"
+  ]
+}

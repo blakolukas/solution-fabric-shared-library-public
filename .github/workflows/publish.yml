@@ -1,0 +1,127 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v2.1.3, etc.
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    name: Validate Before Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Validate tasks
+        run: |
+          python scripts/validate_task.py --all
+      
+      - name: Validate workflows
+        run: |
+          python scripts/validate_workflow.py --all
+      
+      - name: Generate manifests
+        run: |
+          python scripts/generate_manifest.py --output-dir ./manifests
+  
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get all history for changelog
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Generate manifests
+        run: |
+          python scripts/generate_manifest.py --output-dir ./manifests
+      
+      - name: Get version from tag
+        id: get_version
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          # Extract the section for this version from CHANGELOG.md
+          sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d' > release_notes.md || \
+          echo "Release $VERSION" > release_notes.md
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.TAG }}
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            manifests/tasks.json
+            manifests/workflows.json
+            VERSION
+            CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Update VERSION file
+        run: |
+          echo "${{ steps.get_version.outputs.VERSION }}" > VERSION
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add VERSION
+          git commit -m "Update VERSION to ${{ steps.get_version.outputs.VERSION }}" || echo "No changes to commit"
+          git push origin HEAD:main || echo "Nothing to push"
+  
+  announce:
+    name: Announce Release
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Get release info
+        id: release_info
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Count tasks and workflows
+          TASK_COUNT=$(find tasks -name '*.py' ! -name '__init__.py' | wc -l)
+          WORKFLOW_COUNT=$(find workflows -name '*.json' | wc -l)
+          echo "TASK_COUNT=$TASK_COUNT" >> $GITHUB_OUTPUT
+          echo "WORKFLOW_COUNT=$WORKFLOW_COUNT" >> $GITHUB_OUTPUT
+      
+      - name: Create announcement message
+        run: |
+          echo "🎉 FabricFlow Shared Library ${{ steps.release_info.outputs.VERSION }} Released!"
+          echo ""
+          echo "📦 Contents:"
+          echo "- ${{ steps.release_info.outputs.TASK_COUNT }} tasks"
+          echo "- ${{ steps.release_info.outputs.WORKFLOW_COUNT }} workflows"
+          echo ""
+          echo "🔗 Download: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.release_info.outputs.VERSION }}"
+          echo ""
+          echo "📚 Documentation: https://github.com/${{ github.repository }}/blob/main/README.md"
