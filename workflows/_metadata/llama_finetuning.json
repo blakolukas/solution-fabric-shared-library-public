@@ -37,7 +37,7 @@
     "huggingface_token": {
       "type": "string",
       "required": false,
-      "default": "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",
+      "default": "",
       "description": "Workflow input: huggingface token"
     },
     "model_name": {

@@ -1,6 +1,6 @@
 {
   "inputs": {
-    "huggingface_token": "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",
+    "huggingface_token": "",
     "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
     "device_map": "auto",
     "torch_dtype": "bfloat16",
