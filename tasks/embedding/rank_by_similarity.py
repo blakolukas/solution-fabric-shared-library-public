@@ -11,6 +11,7 @@ from core.task import task
     description="Rank embeddings by similarity to a query embedding",
     category="embedding",
     output_types={"scores": "list", "indices": "list"},
+    is_collapsed=True,
     parameters={
         "query_embedding": {
             "type": "array",

@@ -11,6 +11,7 @@ from core.task import task
     description="Generate embedding vectors for multiple texts",
     category="embedding",
     output_types={"embeddings": "list"},
+    is_collapsed=True,
     parameters={
         "texts": {
             "type": "list",

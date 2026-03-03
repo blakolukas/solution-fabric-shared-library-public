@@ -11,6 +11,7 @@ from core.task import task
     description="Build a messages list for chat-style LLM APIs",
     category="llm",
     output_types={"messages": "list"},
+    is_collapsed=True,
     parameters={
         "user_message": {
             "type": "str",

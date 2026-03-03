@@ -11,6 +11,7 @@ from core.task import task
     description="Split text into words",
     category="text",
     output_types={"words": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

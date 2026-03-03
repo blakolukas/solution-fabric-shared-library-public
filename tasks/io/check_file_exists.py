@@ -11,6 +11,7 @@ from core.task import task
     display_name="Check File Exists",
     description="Validate that a file exists and return its absolute path",
     category="io",
+    is_collapsed=True,
     parameters={
         "file_path": {
             "type": "str",

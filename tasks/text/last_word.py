@@ -9,6 +9,7 @@ from core.task import task
     description="Extract the last word from text",
     category="text",
     output_types={"word": "str"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

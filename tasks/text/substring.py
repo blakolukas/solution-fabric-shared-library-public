@@ -11,6 +11,7 @@ from core.task import task
     description="Extract a substring from text",
     category="text",
     output_types={"substring": "str"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

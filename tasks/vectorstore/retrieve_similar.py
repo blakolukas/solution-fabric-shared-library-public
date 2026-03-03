@@ -11,6 +11,7 @@ from core.task import task
     description="Retrieve similar documents using embedding query",
     category="vectorstore",
     output_types={"documents": "list", "scores": "list"},
+    is_collapsed=True,
     parameters={
         "collection": {
             "type": "object",

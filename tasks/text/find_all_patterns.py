@@ -12,6 +12,7 @@ from core.task import task
     description="Find all occurrences matching a regex pattern",
     category="text",
     output_types={"matches": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

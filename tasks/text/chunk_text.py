@@ -9,6 +9,7 @@ from core.task import task
     description="Split text into chunks with metadata",
     category="text",
     output_types={"chunks": "list", "count": "int"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

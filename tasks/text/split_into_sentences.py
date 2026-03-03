@@ -12,6 +12,7 @@ from core.task import task
     description="Split text into sentences",
     category="text",
     output_types={"sentences": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

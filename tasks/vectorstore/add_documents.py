@@ -11,6 +11,7 @@ from core.task import task
     description="Add documents with embeddings to a ChromaDB collection",
     category="vectorstore",
     output_types={"success": "bool", "ids": "list"},
+    is_collapsed=True,
     parameters={
         "collection": {
             "type": "object",

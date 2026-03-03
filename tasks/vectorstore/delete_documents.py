@@ -11,6 +11,7 @@ from core.task import task
     description="Delete documents from a collection by IDs",
     category="vectorstore",
     output_types={"success": "bool"},
+    is_collapsed=True,
     parameters={
         "collection": {
             "type": "object",

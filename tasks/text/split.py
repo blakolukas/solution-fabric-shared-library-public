@@ -11,6 +11,7 @@ from core.task import task
     description="Split text by a delimiter",
     category="text",
     output_types={"parts": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

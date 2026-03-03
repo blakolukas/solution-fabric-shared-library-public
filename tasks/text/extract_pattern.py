@@ -11,6 +11,7 @@ from core.task import task
     description="Extract text matching a regex pattern",
     category="text",
     output_types={"match": "str"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

@@ -11,6 +11,7 @@ from core.task import task
     description="Split text into overlapping chunks of specified size",
     category="text",
     output_types={"chunks": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

@@ -9,6 +9,7 @@ from core.task import task
     description="Save text content to a file",
     category="io",
     output_types={"file_path": "text"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

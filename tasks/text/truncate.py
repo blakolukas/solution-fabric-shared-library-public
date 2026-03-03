@@ -9,6 +9,7 @@ from core.task import task
     description="Truncate text to a maximum length",
     category="text",
     output_types={"truncated": "str"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",
