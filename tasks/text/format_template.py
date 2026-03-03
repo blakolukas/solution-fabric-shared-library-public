@@ -12,6 +12,7 @@ from core.task import task
     description="Format a template string by replacing placeholders with values",
     category="text",
     output_types={"result": "text"},
+    is_collapsed=True,
     parameters={
         "template": {
             "type": "str",

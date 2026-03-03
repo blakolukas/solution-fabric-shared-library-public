@@ -12,6 +12,7 @@ from core.task import task
     description="Split text into paragraphs",
     category="text",
     output_types={"paragraphs": "list"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

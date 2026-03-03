@@ -9,6 +9,7 @@ from core.task import task
     description="Count the number of words in text",
     category="text",
     output_types={"word_count": "int"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

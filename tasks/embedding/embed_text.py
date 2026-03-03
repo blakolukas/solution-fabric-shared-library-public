@@ -9,6 +9,7 @@ from core.task import task
     description="Generate embedding vector for a single text",
     category="embedding",
     output_types={"embedding": "array"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

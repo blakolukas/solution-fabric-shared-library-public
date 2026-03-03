@@ -9,6 +9,7 @@ from core.task import task
     description="Count the number of characters in text",
     category="text",
     output_types={"char_count": "int"},
+    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

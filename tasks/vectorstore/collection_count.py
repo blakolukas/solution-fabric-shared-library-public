@@ -9,6 +9,7 @@ from core.task import task
     description="Get the number of documents in a collection",
     category="vectorstore",
     output_types={"count": "int"},
+    is_collapsed=True,
     parameters={
         "collection": {
             "type": "object",

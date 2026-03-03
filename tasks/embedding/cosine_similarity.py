@@ -9,6 +9,7 @@ from core.task import task
     description="Calculate cosine similarity between two embeddings",
     category="embedding",
     output_types={"similarity": "float"},
+    is_collapsed=True,
     parameters={
         "embedding_a": {
             "type": "array",

@@ -6,6 +6,7 @@ from core.task import task
 @task(
     outputs=["detections"],
     output_types={"detections": "json"},
+    is_collapsed=True,
     display_name="Detect Objects (YOLO)",
     description="Perform object detection using YOLO model",
     category="vision",

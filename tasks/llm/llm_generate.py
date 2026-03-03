@@ -11,6 +11,7 @@ from core.task import task
     description="Generate text with token usage tracking",
     category="llm",
     output_types={"response": "text", "tokens_used": "int"},
+    is_collapsed=True,
     parameters={
         "model": {
             "type": "object",

@@ -11,6 +11,7 @@ from core.task import task
     description="Query a ChromaDB collection for similar documents",
     category="vectorstore",
     output_types={"documents": "list", "metadatas": "list", "distances": "list", "ids": "list"},
+    is_collapsed=True,
     parameters={
         "collection": {
             "type": "object",
