@@ -236,6 +236,9 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
     if not description:
         description = f"Task: {display_name}"
     
+    # Extract is_collapsed flag
+    is_collapsed = decorator_kwargs.get('is_collapsed', False)
+
     # Extract outputs
     outputs = decorator_kwargs.get('outputs', [])
     if isinstance(outputs, str):
@@ -278,6 +281,7 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
         'category': category,
         'display_name': display_name,
         'description': description,
+        'is_collapsed': is_collapsed,
         'inputs': inputs_dict,
         'outputs': outputs_dict,
         'dependencies': {
@@ -324,7 +328,7 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
                     new_metadata["description"] = existing["description"]
         
         # Preserve updated_at if content hasn't changed to avoid spurious diffs
-        CONTENT_FIELDS = ["inputs", "outputs", "category", "dependencies", "id", "display_name"]
+        CONTENT_FIELDS = ["inputs", "outputs", "category", "dependencies", "id", "display_name", "is_collapsed"]
         existing_content = {k: existing.get(k) for k in CONTENT_FIELDS}
         new_content = {k: new_metadata.get(k) for k in CONTENT_FIELDS}
         if existing_content == new_content:
