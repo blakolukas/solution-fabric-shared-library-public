@@ -323,11 +323,12 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
                 if len(existing["description"]) > len(new_metadata.get("id", "")) + 20:
                     new_metadata["description"] = existing["description"]
         
-        # Preserve display_name if customized
-        if "display_name" in existing:
-            auto_name = new_metadata.get("id", "").replace("_", " ").title()
-            if existing["display_name"] != auto_name:
-                new_metadata["display_name"] = existing["display_name"]
+        # Preserve updated_at if content hasn't changed to avoid spurious diffs
+        CONTENT_FIELDS = ["inputs", "outputs", "category", "dependencies", "id", "display_name"]
+        existing_content = {k: existing.get(k) for k in CONTENT_FIELDS}
+        new_content = {k: new_metadata.get(k) for k in CONTENT_FIELDS}
+        if existing_content == new_content:
+            new_metadata["updated_at"] = existing.get("updated_at", new_metadata["updated_at"])
         
         return new_metadata
     
