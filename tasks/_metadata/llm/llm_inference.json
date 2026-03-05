@@ -14,6 +14,12 @@
       "required": true,
       "description": "Input parameter: prompt"
     },
+    "streaming": {
+      "type": "bool",
+      "required": false,
+      "description": "Emit tokens one-by-one as they are generated (token streaming mode)",
+      "default": false
+    },
     "max_tokens": {
       "type": "int",
       "required": false,

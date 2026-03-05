@@ -8,10 +8,10 @@ from core.task import task
 @task(
     outputs=["file_path"],
     output_types={"file_path": "str"},
+    is_collapsed=True,
     display_name="Check File Exists",
     description="Validate that a file exists and return its absolute path",
     category="io",
-    is_collapsed=True,
     parameters={
         "file_path": {
             "type": "str",
