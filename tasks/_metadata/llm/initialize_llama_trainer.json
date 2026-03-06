@@ -3,6 +3,7 @@
   "category": "llm",
   "display_name": "Initialize Llama Trainer",
   "description": "Initialize HuggingFace Trainer with PEFT model for LLaMA fine-tuning.",
+  "is_collapsed": false,
   "inputs": {
     "model": {
       "type": "any",
@@ -46,7 +47,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-03",
+  "updated_at": "2026-03-06",
   "tags": [
     "llm"
   ]
