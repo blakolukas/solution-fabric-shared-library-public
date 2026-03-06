@@ -1,0 +1,86 @@
+{
+  "id": "llm_text_generation",
+  "version": "1.0.0",
+  "display_name": "Llm Text Generation",
+  "description": "Workflow: Llm Text Generation",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-03-04",
+  "updated_at": "2026-03-04",
+  "tags": [
+    "computer-vision",
+    "llm",
+    "ml",
+    "text-generation"
+  ],
+  "category": "llm",
+  "required_tasks": [
+    "build_chat_prompt",
+    "download_hf_model",
+    "llm_inference",
+    "load_gguf_model"
+  ],
+  "dependencies": {
+    "python": [
+      "torch>=2.0.0",
+      "transformers>=4.30.0"
+    ],
+    "models": []
+  },
+  "inputs": {
+    "model_repository": {
+      "type": "string",
+      "required": false,
+      "default": "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
+      "description": "Workflow input: model repository"
+    },
+    "model_filename": {
+      "type": "string",
+      "required": false,
+      "default": "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+      "description": "Workflow input: model filename"
+    },
+    "context_size": {
+      "type": "int",
+      "required": false,
+      "default": 4096,
+      "description": "Workflow input: context size"
+    },
+    "system_message": {
+      "type": "string",
+      "required": false,
+      "default": "You are a helpful assistant.",
+      "description": "Workflow input: system message"
+    },
+    "user_message": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "Workflow input: user message"
+    },
+    "max_tokens": {
+      "type": "int",
+      "required": false,
+      "default": 512,
+      "description": "Workflow input: max tokens"
+    },
+    "temperature": {
+      "type": "float",
+      "required": false,
+      "default": 0.7,
+      "description": "Workflow input: temperature"
+    },
+    "format_style": {
+      "type": "string",
+      "required": false,
+      "default": "chatml",
+      "description": "Workflow input: format style"
+    }
+  },
+  "outputs": {
+    "response": {
+      "type": "any",
+      "description": "Workflow output: response"
+    }
+  }
+}

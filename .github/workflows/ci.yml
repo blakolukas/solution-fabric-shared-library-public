@@ -47,10 +47,16 @@ jobs:
     name: Generate and Validate Manifests
     runs-on: ubuntu-latest
     needs: validate-workflows
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref || github.ref_name }}
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -61,20 +67,30 @@ jobs:
         run: |
           python scripts/generate_manifest.py
       
-      - name: Check if manifests are committed
+      - name: Commit updated manifests
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tasks/_metadata/ workflows/_metadata/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update metadata manifests [skip ci]"
+            git push
+            echo "✅ Metadata manifests updated and committed"
+          else
+            echo "✅ Manifests already up to date, nothing to commit"
+          fi
+
+      - name: Verify manifests are up to date
+        if: github.event_name == 'push'
         run: |
           if ! git diff --quiet tasks/_metadata/ workflows/_metadata/; then
-            echo "❌ Metadata manifests are out of date or not committed!"
-            echo ""
-            echo "Changed files:"
+            echo "❌ Metadata manifests are out of date."
+            echo "Please run 'python scripts/generate_manifest.py' locally and commit the updated manifests."
             git diff --name-only tasks/_metadata/ workflows/_metadata/
-            echo ""
-            echo "To fix this, run locally:"
-            echo "  python scripts/generate_manifest.py"
-            echo "Then commit the changes."
             exit 1
           fi
-          echo "✅ All metadata manifests are up to date"
+          echo "✅ Metadata manifests are up to date"
       
       - name: Upload manifests artifact
         uses: actions/upload-artifact@v4

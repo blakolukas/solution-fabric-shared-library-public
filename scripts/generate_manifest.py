@@ -236,6 +236,9 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
     if not description:
         description = f"Task: {display_name}"
     
+    # Extract is_collapsed flag
+    is_collapsed = decorator_kwargs.get('is_collapsed', False)
+
     # Extract outputs
     outputs = decorator_kwargs.get('outputs', [])
     if isinstance(outputs, str):
@@ -278,6 +281,7 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
         'category': category,
         'display_name': display_name,
         'description': description,
+        'is_collapsed': is_collapsed,
         'inputs': inputs_dict,
         'outputs': outputs_dict,
         'dependencies': {
@@ -305,7 +309,14 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
     try:
         with open(existing_path, "r", encoding="utf-8") as f:
             existing = json.load(f)
-        
+
+        # Compare content BEFORE overwriting fields from existing, so that changes
+        # to any field (author, contributors, tags, description, etc.) are detected.
+        IGNORE_FOR_CONTENT = {"created_at", "updated_at"}
+        existing_content = {k: v for k, v in existing.items() if k not in IGNORE_FOR_CONTENT}
+        new_content = {k: v for k, v in new_metadata.items() if k not in IGNORE_FOR_CONTENT}
+        content_unchanged = (existing_content == new_content)
+
         # Preserve manually-edited fields
         preserve_fields = ["version", "author", "contributors", "tags", "created_at"]
         for field in preserve_fields:
@@ -322,12 +333,10 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
                 # Check if it looks manually edited (longer/more detailed)
                 if len(existing["description"]) > len(new_metadata.get("id", "")) + 20:
                     new_metadata["description"] = existing["description"]
-        
-        # Preserve display_name if customized
-        if "display_name" in existing:
-            auto_name = new_metadata.get("id", "").replace("_", " ").title()
-            if existing["display_name"] != auto_name:
-                new_metadata["display_name"] = existing["display_name"]
+
+        # Preserve updated_at if content hasn't changed to avoid spurious diffs
+        if content_unchanged:
+            new_metadata["updated_at"] = existing.get("updated_at", new_metadata["updated_at"])
         
         return new_metadata
     
