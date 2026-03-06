@@ -14,9 +14,15 @@ from core.task import task
             "required": True,
             "description": "Name of the model file to download",
         },
+        "revision": {
+            "type": "str",
+            "required": False,
+            "default": None,
+            "description": "Branch, tag, or commit hash to download from",
+        },
     },
 )
-def download_hf_model(repository_id: str, model_name: str):
+def download_hf_model(repository_id: str, model_name: str, revision: str = None):
     """
     Download a model from HuggingFace Hub.
 
@@ -29,4 +35,4 @@ def download_hf_model(repository_id: str, model_name: str):
     """
     from huggingface_hub import hf_hub_download
     
-    return hf_hub_download(repo_id=repository_id, filename=model_name)
+    return hf_hub_download(repo_id=repository_id, filename=model_name, revision=revision)
