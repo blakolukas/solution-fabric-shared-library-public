@@ -28,7 +28,8 @@
       "task": "download_hf_model",
       "inputs": {
         "repository_id": "inputs.model_repository",
-        "model_name": "inputs.model_name"
+        "model_name": "inputs.model_name",
+        "revision": "inputs.model_revision"
       },
       "outputs": [
         "model_path"
@@ -318,6 +319,7 @@
     "image_path": "samples/media/object_detection_sample.jpg",
     "model_repository": "qualcomm/FCN-ResNet50",
     "model_name": "FCN-ResNet50_float.onnx.zip",
+    "model_revision": "v0.45.0",
     "base_directory": "models",
     "keep_class_id": 12,
     "blur_radius": 90

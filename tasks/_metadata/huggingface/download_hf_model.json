@@ -14,6 +14,12 @@
       "type": "str",
       "required": true,
       "description": "Input parameter: model_name"
+    },
+    "revision": {
+      "type": "str",
+      "required": false,
+      "description": "Input parameter: revision",
+      "default": null
     }
   },
   "outputs": {
