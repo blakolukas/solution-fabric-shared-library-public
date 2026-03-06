@@ -309,7 +309,14 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
     try:
         with open(existing_path, "r", encoding="utf-8") as f:
             existing = json.load(f)
-        
+
+        # Compare content BEFORE overwriting fields from existing, so that changes
+        # to any field (author, contributors, tags, description, etc.) are detected.
+        IGNORE_FOR_CONTENT = {"created_at", "updated_at"}
+        existing_content = {k: v for k, v in existing.items() if k not in IGNORE_FOR_CONTENT}
+        new_content = {k: v for k, v in new_metadata.items() if k not in IGNORE_FOR_CONTENT}
+        content_unchanged = (existing_content == new_content)
+
         # Preserve manually-edited fields
         preserve_fields = ["version", "author", "contributors", "tags", "created_at"]
         for field in preserve_fields:
@@ -326,12 +333,9 @@ def merge_with_existing(new_metadata: Dict[str, Any], existing_path: Path) -> Di
                 # Check if it looks manually edited (longer/more detailed)
                 if len(existing["description"]) > len(new_metadata.get("id", "")) + 20:
                     new_metadata["description"] = existing["description"]
-        
+
         # Preserve updated_at if content hasn't changed to avoid spurious diffs
-        CONTENT_FIELDS = ["inputs", "outputs", "category", "dependencies", "id", "display_name", "is_collapsed"]
-        existing_content = {k: existing.get(k) for k in CONTENT_FIELDS}
-        new_content = {k: new_metadata.get(k) for k in CONTENT_FIELDS}
-        if existing_content == new_content:
+        if content_unchanged:
             new_metadata["updated_at"] = existing.get("updated_at", new_metadata["updated_at"])
         
         return new_metadata
