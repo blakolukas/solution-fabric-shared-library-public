@@ -35,6 +35,7 @@ def _detect_chat_format_stop_sequences(prompt: str) -> list[str]:
     description="Run inference on a loaded LLM model.",
     category="llm",
     output_types={"response": "text"},
+    is_collapsed=True,
     parameters={
         "model": {
             "type": "object",
@@ -94,7 +95,7 @@ def llm_inference(
     top_p: float = 0.9,
     repeat_penalty: float = 1.1,
     top_k: int = 40,
-):
+) -> str | Generator[str, None, None]:
     """
     Run inference on a loaded LLM model.
 
@@ -141,7 +142,14 @@ def llm_inference(
         # Return a generator so the workflow engine detects it as streamable and
         # enters reactive streaming mode, sending each token to the UI in real-time.
         return _token_stream_generator(
-            model, prompt, max_tokens, temperature, top_p, effective_stop, repeat_penalty, top_k
+            model,
+            prompt,
+            max_tokens,
+            temperature,
+            top_p,
+            effective_stop,
+            repeat_penalty,
+            top_k,
         )
 
     # --- Non-streaming path: return the full response string ---
@@ -205,4 +213,3 @@ def _token_stream_generator(
             token_text = str(chunk)
         if token_text:
             yield token_text
-

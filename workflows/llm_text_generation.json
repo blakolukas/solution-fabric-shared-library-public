@@ -1,0 +1,107 @@
+{
+  "tasks": [
+    {
+      "name": "download_model",
+      "task": "download_hf_model",
+      "displayName": "Download Hf Model",
+      "inputs": {
+        "repository_id": "inputs.model_repository",
+        "model_name": "inputs.model_filename"
+      },
+      "outputs": [
+        "model_path"
+      ]
+    },
+    {
+      "name": "load_llm",
+      "task": "load_gguf_model",
+      "displayName": "Load LLM (GGUF)",
+      "inputs": {
+        "model_path": "tasks.download_model.model_path",
+        "n_ctx": "inputs.context_size",
+        "n_gpu_layers": -1,
+        "verbose": false
+      },
+      "outputs": [
+        "model"
+      ],
+      "dependencies": [
+        "download_model"
+      ]
+    },
+    {
+      "name": "build_prompt",
+      "task": "build_chat_prompt",
+      "displayName": "Build Chat Prompt",
+      "inputs": {
+        "system_message": "inputs.system_message",
+        "user_message": "inputs.user_message",
+        "format_style": "inputs.format_style"
+      },
+      "outputs": [
+        "prompt"
+      ]
+    },
+    {
+      "name": "generate",
+      "task": "llm_inference",
+      "displayName": "LLM Inference",
+      "inputs": {
+        "model": "tasks.load_llm.model",
+        "prompt": "tasks.build_prompt.prompt",
+        "max_tokens": "inputs.max_tokens",
+        "temperature": "inputs.temperature",
+        "top_p": 0.9,
+        "repeat_penalty": 1.1,
+        "top_k": 40
+      },
+      "outputs": [
+        "response"
+      ],
+      "dependencies": [
+        "load_llm",
+        "build_prompt"
+      ]
+    }
+  ],
+  "inputs": {
+    "model_repository": "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
+    "model_filename": "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+    "context_size": 4096,
+    "system_message": "You are a helpful assistant.",
+    "user_message": "",
+    "format_style": "chatml",
+    "max_tokens": 512,
+    "temperature": 0.7
+  },
+  "outputs": {
+    "response": "tasks.generate.response"
+  },
+  "name": "Untitled Workflow",
+  "_designer": {
+    "layout": {
+      "download_model": {
+        "x": -19.77777777777777,
+        "y": 104.70370370370371
+      },
+      "load_llm": {
+        "x": 276.6666666666667,
+        "y": 104.23456790123457
+      },
+      "build_prompt": {
+        "x": 599.4691358024692,
+        "y": 106.17283950617283
+      },
+      "generate": {
+        "x": 929.8024691358024,
+        "y": 108.4074074074074
+      }
+    },
+    "taskDisplayNames": {
+      "download_model": "Download Hf Model",
+      "load_llm": "Load LLM (GGUF)",
+      "build_prompt": "Build Chat Prompt",
+      "generate": "LLM Inference"
+    }
+  }
+}

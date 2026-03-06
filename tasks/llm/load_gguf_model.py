@@ -2,7 +2,7 @@
 
 import threading
 from pathlib import Path
-from typing import Any
+from typing import Any, Generator
 
 from core.task import task
 
@@ -24,6 +24,18 @@ class ThreadSafeModel:
         """Execute inference with automatic thread synchronization."""
         with self._lock:
             return self._model(*args, **kwargs)
+
+    def stream(self, *args: Any, **kwargs: Any) -> Generator[Any, None, None]:
+        """
+        Streaming inference — yields token chunks while holding the lock.
+
+        The lock is acquired for the entire duration of streaming: llama.cpp
+        uses a single stateful context per model, so concurrent access would
+        corrupt the KV-cache. Callers should iterate fully or call .close().
+        """
+        kwargs["stream"] = True
+        with self._lock:
+            yield from self._model(*args, **kwargs)
 
     def __getattr__(self, name):
         """Proxy attribute access to the underlying model."""
