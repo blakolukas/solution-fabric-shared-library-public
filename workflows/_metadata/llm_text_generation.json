@@ -58,6 +58,12 @@
       "default": "",
       "description": "Workflow input: user message"
     },
+    "format_style": {
+      "type": "string",
+      "required": false,
+      "default": "chatml",
+      "description": "Workflow input: format style"
+    },
     "max_tokens": {
       "type": "int",
       "required": false,
@@ -69,12 +75,6 @@
       "required": false,
       "default": 0.7,
       "description": "Workflow input: temperature"
-    },
-    "format_style": {
-      "type": "string",
-      "required": false,
-      "default": "chatml",
-      "description": "Workflow input: format style"
     }
   },
   "outputs": {
