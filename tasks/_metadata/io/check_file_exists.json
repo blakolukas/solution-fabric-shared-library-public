@@ -3,7 +3,7 @@
   "category": "io",
   "display_name": "Check File Exists",
   "description": "Check if a file exists and return its absolute path.",
-  "is_collapsed": true,
+  "is_collapsed": false,
   "inputs": {
     "file_path": {
       "type": "str",

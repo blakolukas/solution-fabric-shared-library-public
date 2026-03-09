@@ -3,7 +3,7 @@
   "category": "text",
   "display_name": "Trim",
   "description": "Trim whitespace from text and optionally transform case.",
-  "is_collapsed": true,
+  "is_collapsed": false,
   "inputs": {
     "text": {
       "type": "str",

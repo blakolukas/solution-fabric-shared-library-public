@@ -3,7 +3,7 @@
   "category": "text",
   "display_name": "Replace",
   "description": "Replace occurrences of a pattern in text.",
-  "is_collapsed": true,
+  "is_collapsed": false,
   "inputs": {
     "text": {
       "type": "str",
