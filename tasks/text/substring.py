@@ -10,7 +10,7 @@ from core.task import task
     display_name="Substring",
     description="Extract a substring from text",
     category="text",
-    output_types={"substring": "str"},
+    output_types={"substring": "text"},
     is_collapsed=True,
     parameters={
         "text": {
