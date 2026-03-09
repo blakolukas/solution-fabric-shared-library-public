@@ -35,7 +35,6 @@ def _detect_chat_format_stop_sequences(prompt: str) -> list[str]:
     description="Run inference on a loaded LLM model.",
     category="llm",
     output_types={"response": "text"},
-    is_collapsed=False,
     parameters={
         "model": {
             "type": "object",
