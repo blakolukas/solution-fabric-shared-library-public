@@ -3,7 +3,7 @@
   "category": "llm",
   "display_name": "LLM Inference",
   "description": "Run inference on a loaded LLM model.",
-  "is_collapsed": true,
+  "is_collapsed": false,
   "inputs": {
     "model": {
       "type": "Any",

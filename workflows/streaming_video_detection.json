@@ -1,14 +1,9 @@
 {
-  "inputs": {
-    "video_path": "samples/media/video_stream_sample.mp4",
-    "yolo_model_path": "yolo11n.pt",
-    "target_fps": 15,
-    "confidence_threshold": 0.25
-  },
   "tasks": [
     {
       "name": "validate_video_path",
       "task": "check_file_exists",
+      "displayName": "Check File Exists",
       "inputs": {
         "file_path": "inputs.video_path"
       },
@@ -19,8 +14,11 @@
     {
       "name": "load_yolo",
       "task": "load_yolo_model",
+      "displayName": "Load YOLO Model",
       "inputs": {
-        "model_path": "yolo11n.pt"
+        "model_path": {
+          "literal": "yolo11n.pt"
+        }
       },
       "outputs": [
         "yolo_model"
@@ -29,6 +27,7 @@
     {
       "name": "video_source",
       "task": "video_source",
+      "displayName": "Video Source",
       "inputs": {
         "video_path": "tasks.validate_video_path.file_path",
         "target_fps": "inputs.target_fps"
@@ -44,6 +43,7 @@
     {
       "name": "yolo_detect_objects",
       "task": "yolo_detect_objects",
+      "displayName": "Detect Objects (YOLO)",
       "inputs": {
         "image": "tasks.video_source.frame_generator",
         "yolo_model": "tasks.load_yolo.yolo_model",
@@ -60,6 +60,7 @@
     {
       "name": "draw_detection_boxes",
       "task": "draw_detection_boxes",
+      "displayName": "Draw Detection Boxes",
       "inputs": {
         "image": "tasks.video_source.frame_generator",
         "detections": "tasks.yolo_detect_objects.detections"
@@ -74,41 +75,44 @@
   ],
   "inputs": {
     "video_path": "samples/media/video_stream_sample.mp4",
-    "yolo_model_path": "yolo11n.pt",
     "target_fps": 15,
     "confidence_threshold": 0.25
   },
-  "description": "Stream video frames through YOLO detection with direct task connections.",
   "outputs": {
     "annotated_image": "tasks.draw_detection_boxes.annotated_image",
-    "metadata": "tasks.video_source.metadata"
+    "metadata": "tasks.video_source.metadata",
+    "draw_detection_boxes.annotated_image": "tasks.draw_detection_boxes.annotated_image"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "validate_video_path": {
-        "x": -200,
-        "y": 450
-      },
-      "validate_model_path": {
-        "x": -200,
-        "y": 150
+        "x": 100,
+        "y": 100
       },
       "load_yolo": {
-        "x": 100,
-        "y": 150
+        "x": 427,
+        "y": 91
       },
       "video_source": {
-        "x": 100,
-        "y": 450
+        "x": 801,
+        "y": 84
       },
       "yolo_detect_objects": {
-        "x": 550,
-        "y": 300
+        "x": 1283,
+        "y": 80
       },
       "draw_detection_boxes": {
-        "x": 939.8998330550918,
-        "y": 601.7529215358932
+        "x": 299,
+        "y": 346
       }
+    },
+    "taskDisplayNames": {
+      "validate_video_path": "Check File Exists",
+      "load_yolo": "Load YOLO Model",
+      "video_source": "Video Source",
+      "yolo_detect_objects": "Detect Objects (YOLO)",
+      "draw_detection_boxes": "Draw Detection Boxes"
     }
   }
 }

@@ -10,7 +10,7 @@ from core.task import task
     display_name="Replace",
     description="Replace occurrences of a pattern in text",
     category="text",
-    output_types={"replaced": "str"},
+    output_types={"replaced": "text"},
     is_collapsed=True,
     parameters={
         "text": {

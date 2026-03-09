@@ -10,7 +10,7 @@ from core.task import task
     display_name="Extract Pattern",
     description="Extract text matching a regex pattern",
     category="text",
-    output_types={"match": "str"},
+    output_types={"match": "text"},
     is_collapsed=True,
     parameters={
         "text": {

@@ -5,7 +5,7 @@ from core.task import task
 
 @task(
     outputs=["colored_mask", "class_summary"],
-    output_types={"colored_mask": "image", "class_summary": "str"},
+    output_types={"colored_mask": "image", "class_summary": "text"},
     parameters={
         "mask_array": {
             "type": "ndarray",

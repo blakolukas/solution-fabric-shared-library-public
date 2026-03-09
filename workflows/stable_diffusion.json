@@ -1,104 +1,113 @@
 {
-    "inputs": {
-        "prompt": "a beautiful sunset over mountains, digital art, highly detailed",
-        "negative_prompt": "blurry, low quality, distorted"
+  "tasks": [
+    {
+      "name": "load_pipeline",
+      "task": "load_stable_diffusion_pipeline",
+      "displayName": "Load Stable Diffusion Pipeline",
+      "outputs": [
+        "pipeline"
+      ]
     },
-    "tasks": [
-        {
-            "name": "load_pipeline",
-            "task": "load_stable_diffusion_pipeline",
-            "outputs": [
-                "pipeline"
-            ]
-        },
-        {
-            "name": "generate_images",
-            "task": "generate_image_from_prompt",
-            "inputs": {
-                "pipeline": "tasks.load_pipeline.pipeline",
-                "prompt": "inputs.prompt",
-                "negative_prompt": "inputs.negative_prompt"
-            },
-            "outputs": [
-                "generated_images"
-            ],
-            "dependencies": [
-                "load_pipeline"
-            ]
-        },
-        {
-            "name": "get_first_image",
-            "task": "extract_first_element",
-            "inputs": {
-                "output_list": "tasks.generate_images.generated_images"
-            },
-            "outputs": [
-                "first_element"
-            ],
-            "dependencies": [
-                "generate_images"
-            ]
-        },
-        {
-            "name": "convert_to_numpy",
-            "task": "convert_pil_to_numpy",
-            "inputs": {
-                "pil_image": "tasks.get_first_image.first_element"
-            },
-            "outputs": [
-                "image_array"
-            ],
-            "dependencies": [
-                "get_first_image"
-            ]
-        },
-        {
-            "name": "save_images",
-            "task": "save_images_to_directory",
-            "inputs": {
-                "images": "tasks.generate_images.generated_images",
-                "output_dir": {
-                    "literal": "output/stable_diffusion"
-                }
-            },
-            "outputs": [
-                "saved_paths"
-            ],
-            "dependencies": [
-                "generate_images"
-            ]
+    {
+      "name": "generate_images",
+      "task": "generate_image_from_prompt",
+      "displayName": "Generate Image From Prompt",
+      "inputs": {
+        "pipeline": "tasks.load_pipeline.pipeline",
+        "prompt": "inputs.prompt",
+        "negative_prompt": "inputs.negative_prompt"
+      },
+      "outputs": [
+        "generated_images"
+      ],
+      "dependencies": [
+        "load_pipeline"
+      ]
+    },
+    {
+      "name": "get_first_image",
+      "task": "extract_first_element",
+      "displayName": "Get First Element",
+      "inputs": {
+        "output_list": "tasks.generate_images.generated_images"
+      },
+      "outputs": [
+        "first_element"
+      ],
+      "dependencies": [
+        "generate_images"
+      ]
+    },
+    {
+      "name": "convert_to_numpy",
+      "task": "convert_pil_to_numpy",
+      "displayName": "PIL to NumPy",
+      "inputs": {
+        "pil_image": "tasks.get_first_image.first_element"
+      },
+      "outputs": [
+        "image_array"
+      ],
+      "dependencies": [
+        "get_first_image"
+      ]
+    },
+    {
+      "name": "save_images",
+      "task": "save_images_to_directory",
+      "displayName": "Save Images To Directory",
+      "inputs": {
+        "images": "tasks.generate_images.generated_images",
+        "output_dir": {
+          "literal": "output/stable_diffusion"
         }
-    ],
-    "inputs": {
-        "prompt": "a beautiful sunset over mountains, digital art, highly detailed",
-        "negative_prompt": "blurry, low quality, distorted"
-    },
-    "outputs": {
-        "saved_image_paths": "tasks.save_images.saved_paths",
-        "generated_images": "tasks.generate_images.generated_images"
-    },
-    "_designer": {
-        "layout": {
-            "load_pipeline": {
-                "x": 86.03034134007585,
-                "y": 517.6991150442478
-            },
-            "generate_images": {
-                "x": 490.7134272915984,
-                "y": 157.54709619016404
-            },
-            "get_first_image": {
-                "x": 900,
-                "y": 200
-            },
-            "convert_to_numpy": {
-                "x": 1200,
-                "y": 200
-            },
-            "save_images": {
-                "x": 869.4869753866803,
-                "y": 400
-            }
-        }
+      },
+      "outputs": [
+        "saved_paths"
+      ],
+      "dependencies": [
+        "generate_images"
+      ]
     }
+  ],
+  "inputs": {
+    "prompt": "a beautiful sunset over mountains, digital art, highly detailed",
+    "negative_prompt": "blurry, low quality, distorted"
+  },
+  "outputs": {
+    "saved_image_paths": "tasks.save_images.saved_paths",
+    "generated_images": "tasks.generate_images.generated_images"
+  },
+  "name": "Untitled Workflow",
+  "_designer": {
+    "layout": {
+      "load_pipeline": {
+        "x": 100,
+        "y": 100
+      },
+      "generate_images": {
+        "x": 587,
+        "y": 137
+      },
+      "get_first_image": {
+        "x": 1024,
+        "y": 130
+      },
+      "convert_to_numpy": {
+        "x": 1259,
+        "y": 92
+      },
+      "save_images": {
+        "x": 98,
+        "y": 431
+      }
+    },
+    "taskDisplayNames": {
+      "load_pipeline": "Load Stable Diffusion Pipeline",
+      "generate_images": "Generate Image From Prompt",
+      "get_first_image": "Get First Element",
+      "convert_to_numpy": "PIL to NumPy",
+      "save_images": "Save Images To Directory"
+    }
+  }
 }

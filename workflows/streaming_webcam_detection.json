@@ -1,16 +1,13 @@
 {
-  "inputs": {
-    "yolo_model_path": "yolo11n.pt",
-    "camera_index": 0,
-    "target_fps": 15,
-    "confidence_threshold": 0.25
-  },
   "tasks": [
     {
       "name": "load_yolo",
       "task": "load_yolo_model",
+      "displayName": "Load YOLO Model",
       "inputs": {
-        "model_path": "yolo11n.pt"
+        "model_path": {
+          "literal": "yolo11n.pt"
+        }
       },
       "outputs": [
         "yolo_model"
@@ -19,6 +16,7 @@
     {
       "name": "camera_source",
       "task": "camera_source",
+      "displayName": "Camera Source",
       "inputs": {
         "camera_index": "inputs.camera_index",
         "target_fps": "inputs.target_fps"
@@ -31,6 +29,7 @@
     {
       "name": "yolo_detect_objects",
       "task": "yolo_detect_objects",
+      "displayName": "Detect Objects (YOLO)",
       "inputs": {
         "image": "tasks.camera_source.frame_generator",
         "yolo_model": "tasks.load_yolo.yolo_model",
@@ -47,6 +46,7 @@
     {
       "name": "draw_detection_boxes",
       "task": "draw_detection_boxes",
+      "displayName": "Draw Detection Boxes",
       "inputs": {
         "image": "tasks.camera_source.frame_generator",
         "detections": "tasks.yolo_detect_objects.detections"
@@ -60,38 +60,40 @@
     }
   ],
   "inputs": {
-    "yolo_model_path": "yolo11n.pt",
     "camera_index": 0,
     "target_fps": 15,
     "confidence_threshold": 0.25
   },
-  "description": "Stream webcam frames through YOLO detection with direct task connections.",
   "outputs": {
     "annotated_image": "tasks.draw_detection_boxes.annotated_image",
-    "metadata": "tasks.camera_source.metadata"
+    "metadata": "tasks.camera_source.metadata",
+    "draw_detection_boxes.annotated_image": "tasks.draw_detection_boxes.annotated_image"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
-      "validate_model_path": {
-        "x": -200,
-        "y": 150
-      },
       "load_yolo": {
-        "x": 100,
-        "y": 150
+        "x": 26,
+        "y": 92
       },
       "camera_source": {
-        "x": 113.85642737896495,
-        "y": 370.11686143572626
+        "x": 405,
+        "y": 85
       },
       "yolo_detect_objects": {
-        "x": 550,
-        "y": 300
+        "x": 759,
+        "y": 71
       },
       "draw_detection_boxes": {
-        "x": 914.8580968280468,
-        "y": 635.559265442404
+        "x": 1168,
+        "y": 108
       }
+    },
+    "taskDisplayNames": {
+      "load_yolo": "Load YOLO Model",
+      "camera_source": "Camera Source",
+      "yolo_detect_objects": "Detect Objects (YOLO)",
+      "draw_detection_boxes": "Draw Detection Boxes"
     }
   }
 }

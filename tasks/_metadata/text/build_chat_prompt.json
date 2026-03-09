@@ -3,7 +3,7 @@
   "category": "text",
   "display_name": "Build Chat Prompt",
   "description": "Build a chat-style prompt with system and user messages.",
-  "is_collapsed": true,
+  "is_collapsed": false,
   "inputs": {
     "user_message": {
       "type": "str",
@@ -43,7 +43,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-06",
+  "updated_at": "2026-03-09",
   "tags": [
     "text"
   ]

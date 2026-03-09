@@ -8,7 +8,7 @@ from core.task import task
     display_name="Trim",
     description="Trim whitespace and optionally transform text",
     category="text",
-    output_types={"trimmed": "str"},
+    output_types={"trimmed": "text"},
     is_collapsed=True,
     parameters={
         "text": {

@@ -246,6 +246,11 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
     
     # Extract output types
     output_types = decorator_kwargs.get('output_types', {})
+
+    # Auto-expand text-like outputs (like image tasks), so users see results immediately
+    # without needing to toggle the preview. This matches how image previews behave.
+    if any(t.lower() in ('text', 'json') for t in output_types.values()):
+        is_collapsed = False
     
     # Build outputs dict
     outputs_dict = {}

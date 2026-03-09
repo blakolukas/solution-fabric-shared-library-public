@@ -6,7 +6,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-03",
+  "updated_at": "2026-03-09",
   "tags": [
     "computer-vision",
     "detection",
@@ -35,12 +35,6 @@
     ]
   },
   "inputs": {
-    "yolo_model_path": {
-      "type": "string",
-      "required": false,
-      "default": "yolo11n.pt",
-      "description": "Workflow input: yolo model path"
-    },
     "camera_index": {
       "type": "int",
       "required": false,
@@ -68,6 +62,10 @@
     "metadata": {
       "type": "any",
       "description": "Workflow output: metadata"
+    },
+    "draw_detection_boxes.annotated_image": {
+      "type": "any",
+      "description": "Workflow output: draw detection boxes.annotated image"
     }
   }
 }
