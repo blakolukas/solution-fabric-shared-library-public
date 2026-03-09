@@ -3,6 +3,10 @@ from core.task import task
 
 @task(
     outputs=["model_path"],
+    display_name="Download HF Model",
+    category="huggingface",
+    output_types={"model_path": "str"},
+    is_collapsed=True,
     parameters={
         "repository_id": {
             "type": "str",

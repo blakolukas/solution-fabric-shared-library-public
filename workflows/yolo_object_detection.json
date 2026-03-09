@@ -3,6 +3,7 @@
     {
       "name": "validate_image_path",
       "task": "check_file_exists",
+      "displayName": "Check File Exists",
       "inputs": {
         "file_path": "inputs.image_path"
       },
@@ -13,6 +14,7 @@
     {
       "name": "load_yolo_model",
       "task": "load_yolo_model",
+      "displayName": "Load YOLO Model",
       "outputs": [
         "yolo_model"
       ]
@@ -20,6 +22,7 @@
     {
       "name": "load_image",
       "task": "load_image",
+      "displayName": "Load Image",
       "inputs": {
         "image_path": "tasks.validate_image_path.file_path"
       },
@@ -33,6 +36,7 @@
     {
       "name": "yolo_detect_objects",
       "task": "yolo_detect_objects",
+      "displayName": "Detect Objects (YOLO)",
       "inputs": {
         "yolo_model": "tasks.load_yolo_model.yolo_model",
         "confidence_threshold": "inputs.confidence_threshold",
@@ -49,6 +53,7 @@
     {
       "name": "draw_detection_boxes",
       "task": "draw_detection_boxes",
+      "displayName": "Draw Detection Boxes",
       "inputs": {
         "detections": "tasks.yolo_detect_objects.detections",
         "image": "tasks.load_image.image"
@@ -70,28 +75,36 @@
     "detections": "tasks.yolo_detect_objects.detections",
     "annotated_image": "tasks.draw_detection_boxes.annotated_image"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "validate_image_path": {
-        "x": -200,
-        "y": 200
+        "x": 100,
+        "y": 100
       },
       "load_yolo_model": {
-        "x": 113.7729549248748,
-        "y": 511.2687813021703
+        "x": 508,
+        "y": 70
       },
       "load_image": {
-        "x": 110.35058430717868,
-        "y": 315.8764569468809
+        "x": 858,
+        "y": 74
       },
       "yolo_detect_objects": {
-        "x": 550,
-        "y": 350
+        "x": 1144,
+        "y": 100
       },
       "draw_detection_boxes": {
-        "x": 1000,
-        "y": 350
+        "x": 291,
+        "y": 334
       }
+    },
+    "taskDisplayNames": {
+      "validate_image_path": "Check File Exists",
+      "load_yolo_model": "Load YOLO Model",
+      "load_image": "Load Image",
+      "yolo_detect_objects": "Detect Objects (YOLO)",
+      "draw_detection_boxes": "Draw Detection Boxes"
     }
   }
 }

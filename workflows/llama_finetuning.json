@@ -1,21 +1,9 @@
 {
-  "inputs": {
-    "huggingface_token": "",
-    "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
-    "device_map": "auto",
-    "torch_dtype": "bfloat16",
-    "padding_side": "right",
-    "dataset_name": "HuggingFaceH4/ultrachat_200k",
-    "dataset_split": "train_sft[:1000]",
-    "output_dir": "./llama_finetuned",
-    "lr_scheduler_type": "cosine",
-    "optimizer": "paged_adamw_32bit",
-    "final_output_dir": "./llama_finetuned_final"
-  },
   "tasks": [
     {
       "name": "hf_login",
       "task": "huggingface_login",
+      "displayName": "Huggingface Login",
       "inputs": {
         "token": "inputs.huggingface_token"
       },
@@ -26,6 +14,7 @@
     {
       "name": "load_model",
       "task": "load_llama_model",
+      "displayName": "Load LLaMA Model",
       "inputs": {
         "model_name": "inputs.model_name",
         "device_map": "inputs.device_map",
@@ -42,6 +31,7 @@
     {
       "name": "load_tokenizer",
       "task": "load_llama_tokenizer",
+      "displayName": "Load LLaMA Tokenizer",
       "inputs": {
         "model_name": "inputs.model_name",
         "padding_side": "inputs.padding_side"
@@ -56,6 +46,7 @@
     {
       "name": "load_dataset",
       "task": "load_training_dataset",
+      "displayName": "Load Training Dataset",
       "inputs": {
         "dataset_name": "inputs.dataset_name",
         "split": "inputs.dataset_split"
@@ -70,6 +61,7 @@
     {
       "name": "prepare_dataset",
       "task": "prepare_llama_dataset_for_training",
+      "displayName": "Prepare Llama Dataset For Training",
       "inputs": {
         "dataset": "tasks.load_dataset.dataset",
         "tokenizer": "tasks.load_tokenizer.tokenizer",
@@ -87,6 +79,7 @@
     {
       "name": "configure_lora",
       "task": "configure_llama_lora",
+      "displayName": "Configure Llama Lora",
       "inputs": {
         "r": 16,
         "lora_alpha": 32,
@@ -99,6 +92,7 @@
     {
       "name": "configure_training",
       "task": "configure_llama_training_arguments",
+      "displayName": "Configure Llama Training Arguments",
       "inputs": {
         "output_dir": "inputs.output_dir",
         "num_train_epochs": 1,
@@ -122,6 +116,7 @@
     {
       "name": "initialize_trainer",
       "task": "initialize_llama_trainer",
+      "displayName": "Initialize Llama Trainer",
       "inputs": {
         "model": "tasks.load_model.model",
         "lora_config": "tasks.configure_lora.lora_config",
@@ -143,6 +138,7 @@
     {
       "name": "execute_training",
       "task": "execute_training",
+      "displayName": "Execute Training",
       "inputs": {
         "trainer": "tasks.initialize_trainer.trainer"
       },
@@ -157,6 +153,7 @@
     {
       "name": "save_model",
       "task": "save_llama_model",
+      "displayName": "Save Llama Model",
       "inputs": {
         "trained_model": "tasks.execute_training.trained_model",
         "tokenizer": "tasks.load_tokenizer.tokenizer",
@@ -171,52 +168,78 @@
       ]
     }
   ],
+  "inputs": {
+    "huggingface_token": "",
+    "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "device_map": "auto",
+    "torch_dtype": "bfloat16",
+    "padding_side": "right",
+    "dataset_name": "HuggingFaceH4/ultrachat_200k",
+    "dataset_split": "train_sft[:1000]",
+    "output_dir": "./llama_finetuned",
+    "lr_scheduler_type": "cosine",
+    "optimizer": "paged_adamw_32bit",
+    "final_output_dir": "./llama_finetuned_final"
+  },
   "outputs": {
     "saved_model_path": "tasks.save_model.saved_model_path",
     "training_result": "tasks.execute_training.training_result"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "hf_login": {
-        "x": 37.08806141291446,
-        "y": 268.54403070645725
+        "x": -52,
+        "y": -133
       },
       "load_model": {
-        "x": 382.2458675610987,
-        "y": -163.6970361281627
+        "x": 273,
+        "y": -235
       },
       "load_tokenizer": {
-        "x": 388.20401151492143,
-        "y": 388.46991363808905
+        "x": 737.0803559462752,
+        "y": -20.64045888652008
       },
       "load_dataset": {
-        "x": 396.87846295515914,
-        "y": 745.040658020009
+        "x": 1128,
+        "y": 69
       },
       "prepare_dataset": {
-        "x": 749.9999999999999,
-        "y": 291.87010555344676
+        "x": -75,
+        "y": 281
       },
       "configure_lora": {
-        "x": 759.829990404232,
-        "y": -175.23973131849922
+        "x": 41,
+        "y": 695
       },
       "configure_training": {
-        "x": 744.1020057574607,
-        "y": 837.8857677824171
+        "x": 1490,
+        "y": 459
       },
       "initialize_trainer": {
-        "x": 1123.5919769701572,
-        "y": 248.884049897993
+        "x": 1010,
+        "y": 624
       },
       "execute_training": {
-        "x": 1398.884049897993,
-        "y": 305.8979942425393
+        "x": 481,
+        "y": 1026
       },
       "save_model": {
-        "x": 1638.7881573705931,
-        "y": 388.46991363808905
+        "x": 968.5185185185185,
+        "y": 1024.79012345679
       }
+    },
+    "taskDisplayNames": {
+      "hf_login": "Huggingface Login",
+      "load_model": "Load LLaMA Model",
+      "load_tokenizer": "Load LLaMA Tokenizer",
+      "load_dataset": "Load Training Dataset",
+      "prepare_dataset": "Prepare Llama Dataset For Training",
+      "configure_lora": "Configure Llama Lora",
+      "configure_training": "Configure Llama Training Arguments",
+      "initialize_trainer": "Initialize Llama Trainer",
+      "execute_training": "Execute Training",
+      "save_model": "Save Llama Model"
     }
   }
 }
