@@ -41,6 +41,12 @@
       "required": false,
       "default": "What is the capital of France?",
       "description": "Workflow input: prompt"
+    },
+    "hf_token": {
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "HuggingFace API token. Falls back to HF_TOKEN environment variable if not provided."
     }
   },
   "outputs": {
