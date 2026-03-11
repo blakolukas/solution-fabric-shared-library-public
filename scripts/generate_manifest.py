@@ -278,6 +278,7 @@ def extract_task_metadata_from_ast(file_path: Path, category_hint: str = "other"
     
     metadata = {
         'id': task_id,
+        'source_file': file_path.name,
         'category': category,
         'display_name': display_name,
         'description': description,

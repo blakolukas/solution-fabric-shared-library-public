@@ -1,0 +1,56 @@
+{
+  "id": "scheduled_text_report",
+  "version": "1.0.0",
+  "display_name": "Scheduled Text Report",
+  "description": "Processes text on a schedule and saves a Markdown analysis report to disk. Each run produces a uniquely-named file — ideal for verifying scheduler execution externally (ls, cat, watch).",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-03-11",
+  "updated_at": "2026-03-11",
+  "tags": [
+    "scheduler",
+    "file-io",
+    "text",
+    "report",
+    "demo"
+  ],
+  "category": "llm",
+  "required_tasks": [
+    "char_count",
+    "ensure_directory_exists",
+    "format_template",
+    "generate_temp_filename",
+    "save_text_to_file",
+    "word_count"
+  ],
+  "dependencies": {
+    "python": [],
+    "models": []
+  },
+  "inputs": {
+    "output_dir": {
+      "type": "string",
+      "required": false,
+      "default": "~/scheduler-reports",
+      "description": "Workflow input: output dir"
+    },
+    "report_label": {
+      "type": "string",
+      "required": false,
+      "default": "Heartbeat",
+      "description": "Workflow input: report label"
+    },
+    "content": {
+      "type": "string",
+      "required": false,
+      "default": "FabricFlow scheduler is running correctly.",
+      "description": "Workflow input: content"
+    }
+  },
+  "outputs": {
+    "report_file": {
+      "type": "any",
+      "description": "Workflow output: report file"
+    }
+  }
+}

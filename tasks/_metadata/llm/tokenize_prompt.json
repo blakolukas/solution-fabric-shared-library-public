@@ -1,5 +1,6 @@
 {
   "id": "tokenize_prompt",
+  "source_file": "tokenize_prompt.py",
   "category": "llm",
   "display_name": "Tokenize Prompt",
   "description": "Tokenize a text prompt for LLM input.",
@@ -54,7 +55,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-06",
+  "updated_at": "2026-03-11",
   "tags": [
     "llm"
   ]

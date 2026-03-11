@@ -1,5 +1,6 @@
 {
   "id": "process_segmentation_mask",
+  "source_file": "process_segmentation_mask.py",
   "category": "vision",
   "display_name": "Process Segmentation Mask",
   "description": "Process a segmentation mask to create a binary mask for background blur.",
@@ -33,7 +34,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-06",
+  "updated_at": "2026-03-11",
   "tags": [
     "vision"
   ]

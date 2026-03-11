@@ -1,5 +1,6 @@
 {
   "id": "char_count",
+  "source_file": "character_count.py",
   "category": "text",
   "display_name": "Character Count",
   "description": "Count the number of characters in text.",

@@ -1,5 +1,6 @@
 {
   "id": "load_embedding_model",
+  "source_file": "load_embedding_model.py",
   "category": "embedding",
   "display_name": "Load Embedding Model",
   "description": "Load a sentence transformer embedding model.",
@@ -32,7 +33,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-06",
+  "updated_at": "2026-03-11",
   "tags": [
     "embedding"
   ]
