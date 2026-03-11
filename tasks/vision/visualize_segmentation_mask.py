@@ -66,7 +66,7 @@ def visualize_segmentation_mask(mask_array, class_names=None):
     # Generate colormap at runtime based on the maximum class ID found
     max_class_id = int(mask_int.max())
     n_labels = max_class_id + 1
-    colormap = imgviz.label_colormap(n_label=n_labels)
+    colormap = imgviz.label_colormap(n_labels)
 
     # Create colored mask
     h, w = mask_int.shape
@@ -83,3 +83,4 @@ def visualize_segmentation_mask(mask_array, class_names=None):
         colored_mask[mask_int == cls_id] = color
 
     return colored_mask, class_summary
+
