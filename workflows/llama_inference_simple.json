@@ -9,7 +9,7 @@
             "task": "huggingface_login",
             "inputs": {
                 "token": {
-                    "literal": ""
+                    "literal": "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"
                 }
             },
             "outputs": [
