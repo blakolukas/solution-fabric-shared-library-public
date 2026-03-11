@@ -1,14 +1,15 @@
 {
     "inputs": {
         "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
-        "prompt": "What is the capital of France?"
+        "prompt": "What is the capital of France?",
+        "hf_token": null
     },
     "tasks": [
         {
             "name": "hf_login",
             "task": "huggingface_login",
             "inputs": {
-                "token":"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"
+                "token": "inputs.hf_token"
             },
             "outputs": [
                 "login_status"
