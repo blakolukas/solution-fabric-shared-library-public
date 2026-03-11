@@ -1,0 +1,73 @@
+{
+  "id": "streaming_webcam_detection",
+  "version": "1.0.0",
+  "display_name": "Streaming Webcam Detection",
+  "description": "Stream webcam frames through YOLO detection with direct task connections.",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-02-11",
+  "updated_at": "2026-03-03",
+  "tags": [
+    "computer-vision",
+    "detection",
+    "ml",
+    "object-detection",
+    "streaming",
+    "video-processing",
+    "vision",
+    "yolo"
+  ],
+  "category": "vision",
+  "required_tasks": [
+    "camera_source",
+    "draw_detection_boxes",
+    "load_yolo_model",
+    "yolo_detect_objects"
+  ],
+  "dependencies": {
+    "python": [
+      "numpy>=1.24.0",
+      "opencv-python>=4.8.0",
+      "ultralytics>=8.0.0"
+    ],
+    "models": [
+      "yolo11n.pt"
+    ]
+  },
+  "inputs": {
+    "yolo_model_path": {
+      "type": "string",
+      "required": false,
+      "default": "yolo11n.pt",
+      "description": "Workflow input: yolo model path"
+    },
+    "camera_index": {
+      "type": "int",
+      "required": false,
+      "default": 0,
+      "description": "Workflow input: camera index"
+    },
+    "target_fps": {
+      "type": "int",
+      "required": false,
+      "default": 15,
+      "description": "Workflow input: target fps"
+    },
+    "confidence_threshold": {
+      "type": "float",
+      "required": false,
+      "default": 0.25,
+      "description": "Workflow input: confidence threshold"
+    }
+  },
+  "outputs": {
+    "annotated_image": {
+      "type": "any",
+      "description": "Workflow output: annotated image"
+    },
+    "metadata": {
+      "type": "any",
+      "description": "Workflow output: metadata"
+    }
+  }
+}
