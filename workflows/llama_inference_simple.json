@@ -8,9 +8,7 @@
             "name": "hf_login",
             "task": "huggingface_login",
             "inputs": {
-                "token": {
-                    "literal": "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"
-                }
+                "token":"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"
             },
             "outputs": [
                 "login_status"
