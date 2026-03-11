@@ -20,7 +20,7 @@
       "name": "load_yolo",
       "task": "load_yolo_model",
       "inputs": {
-        "model_path": "yolo11n.pt"
+        "model_path": "inputs.yolo_model_path"
       },
       "outputs": [
         "yolo_model"
