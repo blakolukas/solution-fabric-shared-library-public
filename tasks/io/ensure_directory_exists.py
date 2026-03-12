@@ -26,6 +26,6 @@ def ensure_directory_exists(directory_path: str):
     Returns:
         Absolute path to the directory
     """
-    abs_path = os.path.abspath(directory_path)
+    abs_path = os.path.abspath(os.path.expanduser(directory_path))
     os.makedirs(abs_path, exist_ok=True)
     return abs_path
