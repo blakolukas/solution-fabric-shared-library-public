@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["saved_model_path"],
+    output_types={"saved_model_path": "str"},
     parameters={
         "trained_model": {
             "type": "object",
@@ -23,8 +24,11 @@ from core.task import task
             "description": "Directory to save the model and tokenizer",
         },
     },
+    is_collapsed=True,
 )
-def save_llama_model(trained_model, tokenizer, output_dir: str = "./llama_finetuned_final"):
+def save_llama_model(
+    trained_model, tokenizer, output_dir: str = "./llama_finetuned_final"
+):
     """Save the fine-tuned LLaMA PEFT model and tokenizer to disk.
 
     Args:

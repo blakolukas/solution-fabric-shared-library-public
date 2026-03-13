@@ -9,6 +9,7 @@ from core.task import task
 
 @task(
     outputs=["preview_video"],
+    output_types={"preview_video": "video"},
     display_name="Preview Video",
     description="Output video frames for preview/display",
     category="io",
@@ -59,7 +60,9 @@ def preview_video(frames: List[np.ndarray], fps: float = 30.0, format: str = "mp
         if first_shape is None:
             first_shape = frame.shape
         elif frame.shape != first_shape:
-            raise ValueError(f"Frame {i} has inconsistent shape: {frame.shape} vs {first_shape}")
+            raise ValueError(
+                f"Frame {i} has inconsistent shape: {frame.shape} vs {first_shape}"
+            )
 
     # Return video metadata and frames for the output system to encode
     return {

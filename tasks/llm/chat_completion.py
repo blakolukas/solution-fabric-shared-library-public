@@ -9,7 +9,6 @@ from core.task import task
     description="Run chat completion on a model with messages",
     category="llm",
     output_types={"response": "text"},
-    is_collapsed=True,
     parameters={
         "model": {
             "type": "object",

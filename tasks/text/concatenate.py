@@ -11,7 +11,6 @@ from core.task import task
     description="Concatenate multiple text values with a separator",
     category="text",
     output_types={"result": "text"},
-    is_collapsed=True,
     parameters={
         "text_1": {
             "type": "str",

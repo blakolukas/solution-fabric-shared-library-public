@@ -3,6 +3,7 @@
     {
       "name": "validate_document_path",
       "task": "check_file_exists",
+      "displayName": "Check File Exists",
       "inputs": {
         "file_path": "inputs.document_image_path"
       },
@@ -13,6 +14,7 @@
     {
       "name": "load_image",
       "task": "load_image",
+      "displayName": "Load Image",
       "inputs": {
         "image_path": "tasks.validate_document_path.file_path"
       },
@@ -26,6 +28,7 @@
     {
       "name": "to_grayscale",
       "task": "convert_to_grayscale",
+      "displayName": "Convert to Grayscale",
       "inputs": {
         "image": "tasks.load_image.image"
       },
@@ -39,6 +42,7 @@
     {
       "name": "extract_text",
       "task": "extract_text_with_ocr",
+      "displayName": "Extract Text With Ocr",
       "inputs": {
         "grayscale_image": "tasks.to_grayscale.grayscale_image",
         "language": "inputs.ocr_language"
@@ -53,6 +57,7 @@
     {
       "name": "ensure_output_dir",
       "task": "ensure_directory_exists",
+      "displayName": "Ensure Directory Exists",
       "inputs": {
         "directory_path": "inputs.output_directory"
       },
@@ -63,6 +68,7 @@
     {
       "name": "save_extracted_text",
       "task": "save_text_to_file",
+      "displayName": "Save Text to File",
       "inputs": {
         "text": "tasks.extract_text.extracted_text",
         "directory": "tasks.ensure_output_dir.directory_path",
@@ -81,6 +87,7 @@
     {
       "name": "extract_ocr_positions",
       "task": "extract_ocr_data",
+      "displayName": "Extract Ocr Data",
       "inputs": {
         "grayscale_image": "tasks.to_grayscale.grayscale_image",
         "language": "inputs.ocr_language"
@@ -95,6 +102,7 @@
     {
       "name": "get_dimensions",
       "task": "get_image_dimensions",
+      "displayName": "Get Image Dimensions",
       "inputs": {
         "image": "tasks.load_image.image"
       },
@@ -108,6 +116,7 @@
     {
       "name": "convert_to_rgb",
       "task": "convert_bgr_to_rgb",
+      "displayName": "BGR to RGB",
       "inputs": {
         "image": "tasks.load_image.image"
       },
@@ -121,6 +130,7 @@
     {
       "name": "generate_temp_name",
       "task": "generate_temp_filename",
+      "displayName": "Generate Temp Filename",
       "inputs": {
         "prefix": {
           "literal": "doc_scan"
@@ -136,6 +146,7 @@
     {
       "name": "ensure_temp_dir",
       "task": "ensure_directory_exists",
+      "displayName": "Ensure Directory Exists",
       "inputs": {
         "directory_path": {
           "literal": "temp"
@@ -148,6 +159,7 @@
     {
       "name": "save_image_temp",
       "task": "save_image_to_disk",
+      "displayName": "Save Image to Disk",
       "inputs": {
         "image_array": "tasks.convert_to_rgb.rgb_image",
         "save_path": "tasks.ensure_temp_dir.directory_path",
@@ -165,6 +177,7 @@
     {
       "name": "generate_pdf",
       "task": "create_searchable_pdf",
+      "displayName": "Create Searchable PDF",
       "inputs": {
         "image_path": "tasks.save_image_temp.saved_image_path",
         "ocr_data": "tasks.extract_ocr_positions.ocr_data",
@@ -187,6 +200,7 @@
     {
       "name": "cleanup",
       "task": "delete_file",
+      "displayName": "Delete File",
       "inputs": {
         "file_path": "tasks.save_image_temp.saved_image_path"
       },
@@ -200,6 +214,7 @@
     {
       "name": "download_llm",
       "task": "download_hf_model",
+      "displayName": "Download Hf Model",
       "inputs": {
         "repository_id": "inputs.llm_repository",
         "model_name": "inputs.llm_model_name"
@@ -211,6 +226,7 @@
     {
       "name": "load_gguf",
       "task": "load_gguf_model",
+      "displayName": "Load LLM (GGUF)",
       "inputs": {
         "model_path": "tasks.download_llm.model_path",
         "n_ctx": 4096,
@@ -226,6 +242,7 @@
     {
       "name": "format_prompt",
       "task": "format_template",
+      "displayName": "Format Template",
       "inputs": {
         "template": "inputs.summary_prompt_template",
         "text": "tasks.extract_text.extracted_text"
@@ -240,6 +257,7 @@
     {
       "name": "generate_summary",
       "task": "llm_inference",
+      "displayName": "LLM Inference",
       "inputs": {
         "model": "tasks.load_gguf.model",
         "max_tokens": 100,
@@ -257,6 +275,7 @@
     {
       "name": "save_summary",
       "task": "save_text_to_file",
+      "displayName": "Save Text to File",
       "inputs": {
         "text": "tasks.generate_summary.response",
         "directory": "tasks.ensure_output_dir.directory_path",
@@ -288,6 +307,7 @@
     "pdf_path": "tasks.generate_pdf.pdf",
     "document_image": "tasks.convert_to_rgb.rgb_image"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "validate_document_path": {
@@ -303,20 +323,20 @@
         "y": 235.3236098450319
       },
       "extract_text": {
-        "x": 768.5328274712874,
-        "y": 12.55596319221543
+        "x": 755.3334480613138,
+        "y": -233.8324524606254
       },
       "ensure_output_dir": {
-        "x": 781.7537071011893,
-        "y": 899.7927831370012
+        "x": 739.9556723029395,
+        "y": 1172.5799576097893
       },
       "save_extracted_text": {
         "x": 1108.3743485278603,
         "y": 678.2798258392575
       },
       "extract_ocr_positions": {
-        "x": 766.5093916163046,
-        "y": 265.16646053199537
+        "x": 773.1090813212913,
+        "y": 234.36790857539026
       },
       "get_dimensions": {
         "x": 487.10118505013673,
@@ -327,49 +347,66 @@
         "y": 584.7678614154523
       },
       "generate_temp_name": {
-        "x": 755.9708295350957,
-        "y": 509.5259799453054
+        "x": 736.1717604201353,
+        "y": 711.9164642315675
       },
       "ensure_temp_dir": {
-        "x": 762.260711030082,
-        "y": 732.6992086766213
+        "x": 729.262262505148,
+        "y": 970.2880380561464
       },
       "save_image_temp": {
-        "x": 1126.1893390274627,
-        "y": 1126.613379847094
+        "x": 1123.9894424591337,
+        "y": 1007.8189651573314
       },
       "generate_pdf": {
-        "x": 1735.744032835881,
-        "y": 563.586253205225
+        "x": 1740.143825972539,
+        "y": 559.1864600685672
       },
       "cleanup": {
-        "x": 1449.4081901228321,
-        "y": 1163.710017555786
+        "x": 1385.611189641293,
+        "y": 1088.9135342326022
       },
       "download_llm": {
-        "x": 1129.7121170231524,
-        "y": -258.2521060453943
+        "x": 1096.7136684982183,
+        "y": -284.65086486534153
       },
       "load_gguf": {
         "x": 1415.127942782672,
         "y": -114.00485565989213
       },
       "format_prompt": {
-        "x": 1111.736989634216,
-        "y": 90.08220801961531
+        "x": 1081.051530036291,
+        "y": 63.00680249203468
       },
       "generate_summary": {
         "x": 1735.7542439995236,
-        "y": -110.98852057406538
+        "y": -157.18634850897303
       },
       "save_summary": {
         "x": 2039.9309318974224,
         "y": 61.81221530574135
-      },
-      "format_prompt": {
-        "x": 1081.051530036291,
-        "y": 63.00680249203468
       }
+    },
+    "taskDisplayNames": {
+      "validate_document_path": "Check File Exists",
+      "load_image": "Load Image",
+      "to_grayscale": "Convert to Grayscale",
+      "extract_text": "Extract Text With Ocr",
+      "ensure_output_dir": "Ensure Directory Exists",
+      "save_extracted_text": "Save Text to File",
+      "extract_ocr_positions": "Extract Ocr Data",
+      "get_dimensions": "Get Image Dimensions",
+      "convert_to_rgb": "BGR to RGB",
+      "generate_temp_name": "Generate Temp Filename",
+      "ensure_temp_dir": "Ensure Directory Exists",
+      "save_image_temp": "Save Image to Disk",
+      "generate_pdf": "Create Searchable PDF",
+      "cleanup": "Delete File",
+      "download_llm": "Download Hf Model",
+      "load_gguf": "Load LLM (GGUF)",
+      "format_prompt": "Format Template",
+      "generate_summary": "LLM Inference",
+      "save_summary": "Save Text to File"
     }
   }
 }

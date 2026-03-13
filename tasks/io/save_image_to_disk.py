@@ -8,6 +8,7 @@ from core.task import task
 
 @task(
     outputs=["saved_image_path"],
+    output_types={"saved_image_path": "str"},
     display_name="Save Image to Disk",
     description="Save an image array to disk",
     category="io",
@@ -30,8 +31,11 @@ from core.task import task
             "description": "Filename for the saved image",
         },
     },
+    is_collapsed=True,
 )
-def save_image_to_disk(image_array, save_path: str = ".", save_name: str = "output.png"):
+def save_image_to_disk(
+    image_array, save_path: str = ".", save_name: str = "output.png"
+):
     """
     Save an image array to disk.
 

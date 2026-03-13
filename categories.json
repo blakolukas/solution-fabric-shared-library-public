@@ -1,0 +1,164 @@
+{
+    "io": {
+        "display_name": "Input/Output",
+        "color": "#10b981",
+        "order": 0,
+        "icon": "categories/icons/io.svg"
+    },
+    "workflow": {
+        "display_name": "Workflow",
+        "color": "#6366f1",
+        "order": 1,
+        "icon": "categories/icons/workflow.svg"
+    },
+    "control": {
+        "display_name": "Control Flow",
+        "color": "#f59e0b",
+        "order": 2,
+        "icon": "categories/icons/control.svg"
+    },
+    "vision": {
+        "display_name": "Vision",
+        "color": "#3b82f6",
+        "order": 10,
+        "icon": "categories/icons/vision.svg"
+    },
+    "image": {
+        "display_name": "Image",
+        "color": "#0ea5e9",
+        "order": 11,
+        "icon": "categories/icons/image.svg"
+    },
+    "camera": {
+        "display_name": "Camera",
+        "color": "#14b8a6",
+        "order": 12,
+        "icon": "categories/icons/camera.svg"
+    },
+    "streaming": {
+        "display_name": "Streaming",
+        "color": "#06b6d4",
+        "order": 13,
+        "icon": "categories/icons/streaming.svg"
+    },
+    "diffusion": {
+        "display_name": "Diffusion",
+        "color": "#ec4899",
+        "order": 20,
+        "icon": "categories/icons/diffusion.svg"
+    },
+    "llm": {
+        "display_name": "LLM",
+        "color": "#a855f7",
+        "order": 21,
+        "icon": "categories/icons/llm.svg"
+    },
+    "embedding": {
+        "display_name": "Embedding",
+        "color": "#d946ef",
+        "order": 22,
+        "icon": "categories/icons/embedding.svg"
+    },
+    "vectorstore": {
+        "display_name": "Vector Store",
+        "color": "#c026d3",
+        "order": 23,
+        "icon": "categories/icons/vectorstore.svg"
+    },
+    "huggingface": {
+        "display_name": "Hugging Face",
+        "color": "#fbbf24",
+        "order": 24,
+        "icon": "categories/icons/huggingface.svg"
+    },
+    "onnx": {
+        "display_name": "ONNX",
+        "color": "#f97316",
+        "order": 25,
+        "icon": "categories/icons/onnx.svg"
+    },
+    "ai": {
+        "display_name": "AI",
+        "color": "#8b5cf6",
+        "order": 26,
+        "icon": "categories/icons/ai.svg"
+    },
+    "video": {
+        "display_name": "Video",
+        "color": "#8b5cf6",
+        "order": 30,
+        "icon": "categories/icons/video.svg"
+    },
+    "audio": {
+        "display_name": "Audio",
+        "color": "#f59e0b",
+        "order": 31,
+        "icon": "categories/icons/audio.svg"
+    },
+    "array": {
+        "display_name": "Array",
+        "color": "#06b6d4",
+        "order": 40,
+        "icon": "categories/icons/array.svg"
+    },
+    "text": {
+        "display_name": "Text",
+        "color": "#6366f1",
+        "order": 41,
+        "icon": "categories/icons/text.svg"
+    },
+    "document": {
+        "display_name": "Document",
+        "color": "#f59e0b",
+        "order": 42,
+        "icon": "categories/icons/document.svg"
+    },
+    "file": {
+        "display_name": "File",
+        "color": "#64748b",
+        "order": 43,
+        "icon": "categories/icons/file.svg"
+    },
+    "math": {
+        "display_name": "Math",
+        "color": "#ec4899",
+        "order": 44,
+        "icon": "categories/icons/math.svg"
+    },
+    "utility": {
+        "display_name": "Utility",
+        "color": "#84cc16",
+        "order": 45,
+        "icon": "categories/icons/utility.svg"
+    },
+    "network": {
+        "display_name": "Network",
+        "color": "#14b8a6",
+        "order": 46,
+        "icon": "categories/icons/network.svg"
+    },
+    "web": {
+        "display_name": "Web",
+        "color": "#ef4444",
+        "order": 47,
+        "icon": "categories/icons/web.svg"
+    },
+    "internal": {
+        "display_name": "Internal",
+        "color": "#475569",
+        "order": -1,
+        "icon": "categories/icons/system.svg"
+    },
+    "system": {
+        "display_name": "System",
+        "color": "#22c55e",
+        "order": 50,
+        "icon": "categories/icons/system.svg"
+    },
+    "other": {
+        "display_name": "Other",
+        "color": "#94a3b8",
+        "order": 99,
+        "icon": "categories/icons/other.svg"
+    }
+}

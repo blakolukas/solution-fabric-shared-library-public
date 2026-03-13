@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["image_dimensions"],
+    output_types={"image_dimensions": "json"},
     display_name="Get Image Dimensions",
     description="Get the height and width of an image",
     category="image",
@@ -13,6 +14,7 @@ from core.task import task
             "description": "Input image as numpy array",
         },
     },
+    is_collapsed=True,
 )
 def get_image_dimensions(image):
     """

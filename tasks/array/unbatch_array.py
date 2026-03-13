@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["unbatched_array"],
+    output_types={"unbatched_array": "array"},
     display_name="Unbatch Array",
     description="Remove the batch dimension from an array",
     category="array",

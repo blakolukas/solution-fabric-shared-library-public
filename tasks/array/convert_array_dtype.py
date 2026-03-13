@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["converted_array"],
+    output_types={"converted_array": "array"},
     display_name="Convert Array Data Type",
     description="Convert array to a different data type",
     category="array",

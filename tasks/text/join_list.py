@@ -9,7 +9,6 @@ from core.task import task
     description="Join a list of strings with a separator",
     category="text",
     output_types={"result": "text"},
-    is_collapsed=True,
     parameters={
         "items": {
             "type": "list",

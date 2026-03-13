@@ -1,7 +1,7 @@
 from core.task import task
 
 
-@task(outputs=["decoded_text"])
+@task(outputs=["decoded_text"], output_types={"decoded_text": "text"})
 def decode_llm_output(output_ids, tokenizer):
     """
     Decode LLM output token IDs back to text.

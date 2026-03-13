@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["dataset"],
+    output_types={"dataset": "object"},
     parameters={
         "dataset_name": {
             "type": "str",
@@ -53,11 +54,21 @@ def load_training_dataset(
         trust_remote_code: Whether to trust remote code (needed for some datasets)
     """
     from datasets import load_dataset
-    
+
     if dataset_name:
-        dataset = load_dataset(dataset_name, split=split, streaming=streaming, trust_remote_code=trust_remote_code)
+        dataset = load_dataset(
+            dataset_name,
+            split=split,
+            streaming=streaming,
+            trust_remote_code=trust_remote_code,
+        )
     elif dataset_path:
-        dataset = load_dataset(dataset_path, split=split, streaming=streaming, trust_remote_code=trust_remote_code)
+        dataset = load_dataset(
+            dataset_path,
+            split=split,
+            streaming=streaming,
+            trust_remote_code=trust_remote_code,
+        )
     else:
         raise ValueError("Either dataset_name or dataset_path must be provided")
 

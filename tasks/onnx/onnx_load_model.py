@@ -7,6 +7,7 @@ from core.task import task
 
 @task(
     outputs=["onnx_session"],
+    output_types={"onnx_session": "object"},
     parameters={
         "onnx_model_path": {
             "type": "str",
@@ -27,7 +28,9 @@ from core.task import task
         },
     },
 )
-def onnx_load_model(onnx_model_path: str, device_id: int = 0, execution_mode: str = "parallel") -> ort.InferenceSession:
+def onnx_load_model(
+    onnx_model_path: str, device_id: int = 0, execution_mode: str = "parallel"
+) -> ort.InferenceSession:
     """
     Load an ONNX model and create an inference session with optimizations.
     Supports DirectML (Windows), CUDA (Linux/Windows), and CPU execution.

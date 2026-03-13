@@ -3,6 +3,7 @@
     {
       "name": "validate_image_path",
       "task": "check_file_exists",
+      "displayName": "Check File Exists",
       "inputs": {
         "file_path": "inputs.image_path"
       },
@@ -13,6 +14,7 @@
     {
       "name": "load_image",
       "task": "load_image",
+      "displayName": "Load Image",
       "inputs": {
         "image_path": "tasks.validate_image_path.file_path"
       },
@@ -26,6 +28,7 @@
     {
       "name": "download_model",
       "task": "download_hf_model",
+      "displayName": "Download Hf Model",
       "inputs": {
         "repository_id": "inputs.model_repository",
         "model_name": "inputs.model_name",
@@ -38,6 +41,7 @@
     {
       "name": "extract_model",
       "task": "extract_onnx_model",
+      "displayName": "Extract Onnx Model",
       "inputs": {
         "model_path": "tasks.download_model.model_path",
         "repository_id": "inputs.model_repository",
@@ -53,6 +57,7 @@
     {
       "name": "load_model",
       "task": "onnx_load_model",
+      "displayName": "Onnx Load Model",
       "inputs": {
         "onnx_model_path": "tasks.extract_model.onnx_model_path"
       },
@@ -66,6 +71,7 @@
     {
       "name": "get_input_info",
       "task": "onnx_get_input_info",
+      "displayName": "Onnx Get Input Info",
       "inputs": {
         "onnx_session": "tasks.load_model.onnx_session"
       },
@@ -81,6 +87,7 @@
     {
       "name": "extract_hw",
       "task": "extract_hw_from_shape",
+      "displayName": "Extract H/W from Shape",
       "inputs": {
         "input_shape": "tasks.get_input_info.input_shape"
       },
@@ -95,6 +102,7 @@
     {
       "name": "extract_original_hw",
       "task": "extract_array_hw",
+      "displayName": "Extract Array Height/Width",
       "inputs": {
         "array": "tasks.load_image.image"
       },
@@ -109,6 +117,7 @@
     {
       "name": "resize_image",
       "task": "resize_image",
+      "displayName": "Resize Image",
       "inputs": {
         "image": "tasks.load_image.image",
         "target_width": "tasks.extract_hw.width",
@@ -125,6 +134,7 @@
     {
       "name": "to_float32",
       "task": "convert_array_dtype",
+      "displayName": "Convert Array Data Type",
       "inputs": {
         "array": "tasks.resize_image.resized_image",
         "target_dtype": {
@@ -141,6 +151,7 @@
     {
       "name": "min_max_normalize_image",
       "task": "min_max_normalize_image",
+      "displayName": "Min-Max Normalize Image",
       "inputs": {
         "image_array": "tasks.to_float32.converted_array",
         "min_value": 0,
@@ -156,6 +167,7 @@
     {
       "name": "to_channel_first",
       "task": "convert_channel_format",
+      "displayName": "Convert Channel Format",
       "inputs": {
         "array": "tasks.min_max_normalize_image.normalized_image_array",
         "to_format": {
@@ -172,6 +184,7 @@
     {
       "name": "batch_image",
       "task": "batch_array",
+      "displayName": "Batch Array",
       "inputs": {
         "array": "tasks.to_channel_first.converted_array"
       },
@@ -185,6 +198,7 @@
     {
       "name": "ensure_contiguous",
       "task": "ensure_array_contiguous",
+      "displayName": "Ensure Array Contiguous",
       "inputs": {
         "array": "tasks.batch_image.batched_array"
       },
@@ -198,6 +212,7 @@
     {
       "name": "run_inference",
       "task": "onnx_inference",
+      "displayName": "Onnx Inference",
       "inputs": {
         "onnx_session": "tasks.load_model.onnx_session",
         "input_array": "tasks.ensure_contiguous.contiguous_array",
@@ -215,6 +230,7 @@
     {
       "name": "extract_first_element",
       "task": "extract_first_element",
+      "displayName": "Get First Element",
       "inputs": {
         "output_list": "tasks.run_inference.output"
       },
@@ -228,6 +244,7 @@
     {
       "name": "unbatch_output",
       "task": "unbatch_array",
+      "displayName": "Unbatch Array",
       "inputs": {
         "array": "tasks.extract_first_element.first_element"
       },
@@ -241,6 +258,7 @@
     {
       "name": "resize_mask_to_original_size",
       "task": "resize_image",
+      "displayName": "Resize Image",
       "inputs": {
         "image": "tasks.unbatch_output.unbatched_array",
         "target_width": "tasks.extract_original_hw.orig_width",
@@ -257,6 +275,7 @@
     {
       "name": "visualize_mask",
       "task": "visualize_segmentation_mask",
+      "displayName": "Visualize Segmentation Mask",
       "inputs": {
         "mask_array": "tasks.resize_mask_to_original_size.resized_image"
       },
@@ -271,6 +290,7 @@
     {
       "name": "process_mask",
       "task": "process_segmentation_mask",
+      "displayName": "Process Segmentation Mask",
       "inputs": {
         "mask_array": "tasks.resize_mask_to_original_size.resized_image",
         "keep_class_id": "inputs.keep_class_id"
@@ -285,6 +305,7 @@
     {
       "name": "blur_background",
       "task": "blur_image_with_mask",
+      "displayName": "Blur Image with Mask",
       "inputs": {
         "image_array": "tasks.load_image.image",
         "mask_array": "tasks.process_mask.processed_mask",
@@ -301,6 +322,7 @@
     {
       "name": "final_uint8",
       "task": "convert_array_dtype",
+      "displayName": "Convert Array Data Type",
       "inputs": {
         "array": "tasks.blur_background.blurred_image_array",
         "target_dtype": {
@@ -327,6 +349,7 @@
   "outputs": {
     "blurred_image": "tasks.final_uint8.converted_array"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "validate_image_path": {
@@ -334,89 +357,113 @@
         "y": 145.37428123618713
       },
       "load_image": {
-        "x": 238.85756899090697,
-        "y": 145.37428123618713
+        "x": 199.09929927080518,
+        "y": 169.2292430682482
       },
       "download_model": {
         "x": -99.37751661273965,
         "y": -235.63979296386105
       },
       "extract_model": {
-        "x": 212.70096462650275,
-        "y": -280.83093203442934
+        "x": 188.8460027944417,
+        "y": -219.86825179693994
       },
       "load_model": {
-        "x": 523.5095218317952,
-        "y": -279.3624290112381
+        "x": 478.45014948234643,
+        "y": -223.70085140309558
       },
       "get_input_info": {
-        "x": 882.6983661774057,
-        "y": -324.9729602965501
+        "x": 836.0476281564323,
+        "y": -226.4880689189398
       },
       "extract_hw": {
-        "x": 1189.2640521170376,
+        "x": 1106.3294067464185,
         "y": -246.61356532874896
       },
       "extract_original_hw": {
-        "x": 688.560923211089,
-        "y": 170.88421303991595
+        "x": 508.3234338132942,
+        "y": 125.82484069046725
       },
       "resize_image": {
-        "x": 1508.0423417999436,
-        "y": -457.13229141636674
+        "x": 1386.2320814118466,
+        "y": -213.51177064017278
       },
       "to_float32": {
-        "x": 1852.9960137625014,
-        "y": -163.701949627722
+        "x": 1707.8603843639178,
+        "y": -179.2521956347131
       },
       "min_max_normalize_image": {
-        "x": 2172.4723775559723,
-        "y": -111.14566365577501
+        "x": 2022.153332821725,
+        "y": -116.3290789914387
       },
       "to_channel_first": {
-        "x": 1523.2595314836651,
-        "y": 80.71367511187077
+        "x": 1393.6741480920725,
+        "y": 49.613183097888566
       },
       "batch_image": {
-        "x": 1838.3066202272105,
-        "y": 91.08542186574348
+        "x": 1690.579283160795,
+        "y": 72.94346819092053
       },
       "ensure_contiguous": {
-        "x": 2167.917226918886,
-        "y": 152.03386084551596
+        "x": 2030.556720523798,
+        "y": 141.66703017418857
       },
       "run_inference": {
-        "x": 1203.0819430934682,
-        "y": -39.37691060657455
+        "x": 1089.0468057088667,
+        "y": -0.5012955890967845
       },
       "extract_first_element": {
-        "x": 1522.9190534100353,
-        "y": 292.19000279408147
+        "x": 1377.7834240114516,
+        "y": 268.8646337835948
       },
       "unbatch_output": {
-        "x": 1791.8504759570471,
-        "y": 301.44867638983186
+        "x": 1625.9811852158086,
+        "y": 327.36575306815035
       },
       "resize_mask_to_original_size": {
-        "x": 1013.3425680999138,
-        "y": 225.68193831375132
+        "x": 817.2017708140784,
+        "y": 138.21374492952737
       },
       "visualize_mask": {
-        "x": 1958.5444096223769,
-        "y": 688.5289673386551
+        "x": 1880.7931795874213,
+        "y": 374.93233953100116
       },
       "process_mask": {
-        "x": 1358.3485551062204,
-        "y": 655.3496921142282
+        "x": 1360.9402627740521,
+        "y": 676.0833534568831
       },
       "blur_background": {
-        "x": 2260.954663987539,
-        "y": 689.7485580500398
+        "x": 2196.1619722917426,
+        "y": 394.29388391720886
       },
       "final_uint8": {
-        "x": 2600,
-        "y": 700
+        "x": 2509.290231625885,
+        "y": 391.5867875280098
       }
+    },
+    "taskDisplayNames": {
+      "validate_image_path": "Check File Exists",
+      "load_image": "Load Image",
+      "download_model": "Download Hf Model",
+      "extract_model": "Extract Onnx Model",
+      "load_model": "Onnx Load Model",
+      "get_input_info": "Onnx Get Input Info",
+      "extract_hw": "Extract H/W from Shape",
+      "extract_original_hw": "Extract Array Height/Width",
+      "resize_image": "Resize Image",
+      "to_float32": "Convert Array Data Type",
+      "min_max_normalize_image": "Min-Max Normalize Image",
+      "to_channel_first": "Convert Channel Format",
+      "batch_image": "Batch Array",
+      "ensure_contiguous": "Ensure Array Contiguous",
+      "run_inference": "Onnx Inference",
+      "extract_first_element": "Get First Element",
+      "unbatch_output": "Unbatch Array",
+      "resize_mask_to_original_size": "Resize Image",
+      "visualize_mask": "Visualize Segmentation Mask",
+      "process_mask": "Process Segmentation Mask",
+      "blur_background": "Blur Image with Mask",
+      "final_uint8": "Convert Array Data Type"
     }
   }
 }

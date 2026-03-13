@@ -78,7 +78,8 @@
   "outputs": {
     "response": "tasks.generate.response"
   },
-  "name": "Untitled Workflow",
+  "name": "LLM Text Generation Streaming",
+  "_internal": true,
   "_designer": {
     "layout": {
       "download_model": {
