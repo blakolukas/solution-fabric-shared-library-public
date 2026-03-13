@@ -8,33 +8,9 @@
     "previewable": true,
     "inputs": {},
     "outputs": {
-        "gpu_name": {
+        "gpus_json": {
             "type": "str",
-            "description": "Output: gpu_name"
-        },
-        "gpu_count": {
-            "type": "int",
-            "description": "Output: gpu_count"
-        },
-        "gpu_memory_total_mb": {
-            "type": "float",
-            "description": "Output: gpu_memory_total_mb"
-        },
-        "gpu_memory_used_mb": {
-            "type": "float",
-            "description": "Output: gpu_memory_used_mb"
-        },
-        "gpu_memory_percent": {
-            "type": "float",
-            "description": "Output: gpu_memory_percent"
-        },
-        "gpu_utilization_percent": {
-            "type": "float",
-            "description": "Output: gpu_utilization_percent"
-        },
-        "gpu_temperature_c": {
-            "type": "float",
-            "description": "Output: gpu_temperature_c"
+            "description": "JSON array of per-GPU stats. Each entry: { name, index, memory_total_mb, memory_used_mb, memory_percent, utilization_percent, temperature_c }. Empty array when no GPU detected."
         }
     },
     "dependencies": {

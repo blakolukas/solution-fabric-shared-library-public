@@ -1,32 +1,17 @@
 """Read current GPU usage from the host machine."""
 
+import json
 import subprocess
 
 from core.task import task
 
 
 @task(
-    outputs=[
-        "gpu_name",
-        "gpu_count",
-        "gpu_memory_total_mb",
-        "gpu_memory_used_mb",
-        "gpu_memory_percent",
-        "gpu_utilization_percent",
-        "gpu_temperature_c",
-    ],
+    outputs=["gpus_json"],
     display_name="Get GPU Usage",
-    description="Read current GPU utilization, memory, and temperature from the host machine. Supports NVIDIA (nvidia-smi) and AMD (rocm-smi). Returns zero/null values when no GPU is present.",
+    description="Read current GPU utilization, memory, and temperature from the host machine. Supports NVIDIA (nvidia-smi) and AMD (rocm-smi). Returns a JSON array of per-GPU stats; empty array when no GPU is present.",
     category="system",
-    output_types={
-        "gpu_name": "str",
-        "gpu_count": "int",
-        "gpu_memory_total_mb": "float",
-        "gpu_memory_used_mb": "float",
-        "gpu_memory_percent": "float",
-        "gpu_utilization_percent": "float",
-        "gpu_temperature_c": "float",
-    },
+    output_types={"gpus_json": "str"},
     is_collapsed=True,
     parameters={},
 )
@@ -35,58 +20,45 @@ def get_gpu_usage():
     Read current GPU usage from the host machine.
 
     Queries NVIDIA GPUs via nvidia-smi first, then falls back to AMD GPUs
-    via rocm-smi. Aggregates multi-GPU systems: name is the primary GPU,
-    memory/utilization/temperature are averaged across all detected GPUs.
-    Returns safe zero/null defaults when no GPU hardware is detected.
+    via rocm-smi. Returns one entry per detected GPU so the caller can
+    display or aggregate them independently.
 
     Returns:
-        gpu_name: Primary GPU name, or "No GPU" if none detected
-        gpu_count: Number of GPUs detected
-        gpu_memory_total_mb: Total GPU memory in MB (0.0 if no GPU)
-        gpu_memory_used_mb: Used GPU memory in MB (0.0 if no GPU)
-        gpu_memory_percent: GPU memory usage percentage (0.0 if no GPU)
-        gpu_utilization_percent: GPU utilization percentage (0.0 if no GPU)
-        gpu_temperature_c: GPU temperature in Celsius (0.0 if no GPU)
+        gpus_json: JSON array of GPU stat objects. Each object contains:
+            name, index, memory_total_mb, memory_used_mb, memory_percent,
+            utilization_percent, temperature_c.
+            Empty array [] when no GPU hardware is detected.
     """
-    gpus = _detect_gpus()
+    raw_gpus = _detect_gpus()
 
-    if not gpus:
-        return "No GPU", 0, 0.0, 0.0, 0.0, 0.0, 0.0
+    result = []
+    for g in raw_gpus:
+        memory_total = g["memory_total_mb"] or 0.0
+        memory_used = g["memory_used_mb"] or 0.0
+        memory_percent = round(
+            (memory_used / memory_total * 100) if memory_total > 0 else 0.0, 1
+        )
+        result.append(
+            {
+                "name": g["name"],
+                "index": g["index"],
+                "memory_total_mb": round(memory_total, 1),
+                "memory_used_mb": round(memory_used, 1),
+                "memory_percent": memory_percent,
+                "utilization_percent": (
+                    round(g["utilization_percent"], 1)
+                    if g["utilization_percent"] is not None
+                    else 0.0
+                ),
+                "temperature_c": (
+                    round(g["temperature_c"], 1)
+                    if g["temperature_c"] is not None
+                    else 0.0
+                ),
+            }
+        )
 
-    gpu_name = gpus[0]["name"]
-    gpu_count = len(gpus)
-    gpu_memory_total_mb = sum(g["memory_total_mb"] for g in gpus)
-    gpu_memory_used_mb = sum(g["memory_used_mb"] for g in gpus)
-    gpu_memory_percent = round(
-        (
-            (gpu_memory_used_mb / gpu_memory_total_mb * 100)
-            if gpu_memory_total_mb > 0
-            else 0.0
-        ),
-        1,
-    )
-    utilization_values = [
-        g["utilization_percent"] for g in gpus if g["utilization_percent"] is not None
-    ]
-    gpu_utilization_percent = (
-        round(sum(utilization_values) / len(utilization_values), 1)
-        if utilization_values
-        else 0.0
-    )
-    temperature_values = [
-        g["temperature_c"] for g in gpus if g["temperature_c"] is not None
-    ]
-    gpu_temperature_c = round(max(temperature_values), 1) if temperature_values else 0.0
-
-    return (
-        gpu_name,
-        gpu_count,
-        round(gpu_memory_total_mb, 1),
-        round(gpu_memory_used_mb, 1),
-        gpu_memory_percent,
-        gpu_utilization_percent,
-        gpu_temperature_c,
-    )
+    return json.dumps(result)
 
 
 def _safe_float(value: str, default=0.0):

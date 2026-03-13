@@ -40,13 +40,7 @@
       "task": "get_gpu_usage",
       "displayName": "Get GPU Usage",
       "outputs": [
-        "gpu_name",
-        "gpu_count",
-        "gpu_memory_total_mb",
-        "gpu_memory_used_mb",
-        "gpu_memory_percent",
-        "gpu_utilization_percent",
-        "gpu_temperature_c"
+        "gpus_json"
       ]
     },
     {
@@ -63,7 +57,7 @@
       "displayName": "Build JSON",
       "inputs": {
         "template": {
-          "literal": "{\"timestamp\": \"{timestamp}\", \"cpu\": {\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}, \"memory\": {\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}, \"disk\": {\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}, \"gpu\": {\"name\": \"{gpu_name}\", \"count\": {gpu_count}, \"memory_total_mb\": {gpu_memory_total_mb}, \"memory_used_mb\": {gpu_memory_used_mb}, \"memory_percent\": {gpu_memory_percent}, \"utilization_percent\": {gpu_utilization_percent}, \"temperature_c\": {gpu_temperature_c}}}"
+          "literal": "{\"timestamp\": \"{timestamp}\", \"cpu\": {\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}, \"memory\": {\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}, \"disk\": {\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}, \"gpus\": {gpus_json}}"
         },
         "timestamp": "tasks.ts.timestamp",
         "cpu_percent": "tasks.cpu.cpu_percent",
@@ -78,13 +72,7 @@
         "disk_used_gb": "tasks.disk.disk_used_gb",
         "disk_total_gb": "tasks.disk.disk_total_gb",
         "disk_free_gb": "tasks.disk.disk_free_gb",
-        "gpu_name": "tasks.gpu.gpu_name",
-        "gpu_count": "tasks.gpu.gpu_count",
-        "gpu_memory_total_mb": "tasks.gpu.gpu_memory_total_mb",
-        "gpu_memory_used_mb": "tasks.gpu.gpu_memory_used_mb",
-        "gpu_memory_percent": "tasks.gpu.gpu_memory_percent",
-        "gpu_utilization_percent": "tasks.gpu.gpu_utilization_percent",
-        "gpu_temperature_c": "tasks.gpu.gpu_temperature_c"
+        "gpus_json": "tasks.gpu.gpus_json"
       },
       "outputs": [
         "result"
