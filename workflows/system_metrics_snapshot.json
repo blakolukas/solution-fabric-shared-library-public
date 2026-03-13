@@ -36,6 +36,20 @@
       ]
     },
     {
+      "name": "gpu",
+      "task": "get_gpu_usage",
+      "displayName": "Get GPU Usage",
+      "outputs": [
+        "gpu_name",
+        "gpu_count",
+        "gpu_memory_total_mb",
+        "gpu_memory_used_mb",
+        "gpu_memory_percent",
+        "gpu_utilization_percent",
+        "gpu_temperature_c"
+      ]
+    },
+    {
       "name": "ts",
       "task": "get_current_timestamp",
       "displayName": "Get Current Timestamp",
@@ -49,7 +63,7 @@
       "displayName": "Build JSON",
       "inputs": {
         "template": {
-          "literal": "{{\"timestamp\": \"{timestamp}\", \"cpu\": {{\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}}, \"memory\": {{\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}}, \"disk\": {{\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}}}}"
+          "literal": "{\"timestamp\": \"{timestamp}\", \"cpu\": {\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}, \"memory\": {\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}, \"disk\": {\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}, \"gpu\": {\"name\": \"{gpu_name}\", \"count\": {gpu_count}, \"memory_total_mb\": {gpu_memory_total_mb}, \"memory_used_mb\": {gpu_memory_used_mb}, \"memory_percent\": {gpu_memory_percent}, \"utilization_percent\": {gpu_utilization_percent}, \"temperature_c\": {gpu_temperature_c}}}"
         },
         "timestamp": "tasks.ts.timestamp",
         "cpu_percent": "tasks.cpu.cpu_percent",
@@ -63,7 +77,14 @@
         "disk_percent": "tasks.disk.disk_percent",
         "disk_used_gb": "tasks.disk.disk_used_gb",
         "disk_total_gb": "tasks.disk.disk_total_gb",
-        "disk_free_gb": "tasks.disk.disk_free_gb"
+        "disk_free_gb": "tasks.disk.disk_free_gb",
+        "gpu_name": "tasks.gpu.gpu_name",
+        "gpu_count": "tasks.gpu.gpu_count",
+        "gpu_memory_total_mb": "tasks.gpu.gpu_memory_total_mb",
+        "gpu_memory_used_mb": "tasks.gpu.gpu_memory_used_mb",
+        "gpu_memory_percent": "tasks.gpu.gpu_memory_percent",
+        "gpu_utilization_percent": "tasks.gpu.gpu_utilization_percent",
+        "gpu_temperature_c": "tasks.gpu.gpu_temperature_c"
       },
       "outputs": [
         "result"
@@ -72,6 +93,7 @@
         "cpu",
         "memory",
         "disk",
+        "gpu",
         "ts"
       ]
     },
@@ -97,37 +119,43 @@
     "metrics": "tasks.parse.data"
   },
   "name": "System Metrics Snapshot",
+  "_internal": true,
   "_designer": {
     "layout": {
       "cpu": {
         "x": 100,
-        "y": 100
+        "y": 50
       },
       "memory": {
-        "x": 97.67441860465115,
-        "y": 311.62790697674416
+        "x": 100,
+        "y": 220
       },
       "disk": {
-        "x": 95.3488372093023,
-        "y": 576.1627906976744
+        "x": 100,
+        "y": 390
+      },
+      "gpu": {
+        "x": 100,
+        "y": 560
       },
       "ts": {
-        "x": 109.30232558139525,
-        "y": 1204.263565891473
+        "x": 100,
+        "y": 730
       },
       "build_json": {
-        "x": 452.71317829457365,
-        "y": 458.0232558139535
+        "x": 460,
+        "y": 390
       },
       "parse": {
-        "x": 813.5658914728683,
-        "y": 547.5581395348837
+        "x": 820,
+        "y": 390
       }
     },
     "taskDisplayNames": {
       "cpu": "Get CPU Usage",
       "memory": "Get Memory Usage",
       "disk": "Get Disk Usage",
+      "gpu": "Get GPU Usage",
       "ts": "Get Current Timestamp",
       "build_json": "Build JSON",
       "parse": "Parse JSON"

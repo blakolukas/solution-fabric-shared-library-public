@@ -347,7 +347,16 @@ def merge_with_existing(
         content_unchanged = existing_content == new_content
 
         # Preserve manually-edited fields
-        preserve_fields = ["version", "author", "contributors", "tags", "created_at"]
+        preserve_fields = [
+            "version",
+            "author",
+            "contributors",
+            "tags",
+            "created_at",
+            "category",
+            "internal",
+            "auto_schedule",
+        ]
         for field in preserve_fields:
             if field in existing:
                 new_metadata[field] = existing[field]

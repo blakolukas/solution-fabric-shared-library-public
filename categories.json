@@ -143,6 +143,12 @@
         "order": 47,
         "icon": "categories/icons/web.svg"
     },
+    "internal": {
+        "display_name": "Internal",
+        "color": "#475569",
+        "order": -1,
+        "icon": "categories/icons/system.svg"
+    },
     "system": {
         "display_name": "System",
         "color": "#22c55e",
