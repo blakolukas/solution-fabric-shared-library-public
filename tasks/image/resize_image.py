@@ -26,6 +26,7 @@ from core.task import task
             "description": "Target height in pixels",
         },
     },
+    is_collapsed=True,
 )
 def resize_image(image, target_width: int, target_height: int):
     """
@@ -39,4 +40,6 @@ def resize_image(image, target_width: int, target_height: int):
     Returns:
         Resized image as numpy array
     """
-    return cv2.resize(image, (target_width, target_height), interpolation=cv2.INTER_LINEAR)
+    return cv2.resize(
+        image, (target_width, target_height), interpolation=cv2.INTER_LINEAR
+    )

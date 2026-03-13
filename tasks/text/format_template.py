@@ -12,7 +12,6 @@ from core.task import task
     description="Format a template string by replacing placeholders with values",
     category="text",
     output_types={"result": "text"},
-    is_collapsed=True,
     parameters={
         "template": {
             "type": "str",
@@ -28,7 +27,9 @@ from core.task import task
         },
     },
 )
-def format_template(template: str, values: Optional[Dict[str, Any]] = None, **kwargs) -> str:
+def format_template(
+    template: str, values: Optional[Dict[str, Any]] = None, **kwargs
+) -> str:
     """
     Format a template string by replacing placeholders with values.
 

@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["saved_paths"],
+    output_types={"saved_paths": "list"},
     parameters={
         "images": {
             "type": "list",
@@ -30,8 +31,11 @@ from core.task import task
             "description": "Image format",
         },
     },
+    is_collapsed=True,
 )
-def save_images_to_directory(images: list, output_dir: str, base_name: str = "generated", format: str = "png"):
+def save_images_to_directory(
+    images: list, output_dir: str, base_name: str = "generated", format: str = "png"
+):
     """
     Save a list of PIL Images to a directory with sequential naming.
 

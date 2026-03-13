@@ -259,6 +259,17 @@ def extract_task_metadata_from_ast(
     # Extract output types
     output_types = decorator_kwargs.get("output_types", {})
 
+    # Resolve previewable: use explicit value if set, otherwise auto-infer from output_types
+    _non_previewable_types = {"object", "generator", "array"}
+    if "previewable" in decorator_kwargs:
+        previewable = bool(decorator_kwargs["previewable"])
+    elif output_types:
+        previewable = not any(
+            v.lower() in _non_previewable_types for v in output_types.values()
+        )
+    else:
+        previewable = False
+
     # Build outputs dict
     outputs_dict = {}
     for output_name in outputs:
@@ -295,6 +306,7 @@ def extract_task_metadata_from_ast(
         "display_name": display_name,
         "description": description,
         "is_collapsed": is_collapsed,
+        "previewable": previewable,
         "inputs": inputs_dict,
         "outputs": outputs_dict,
         "dependencies": {"python": dependencies, "system": []},
@@ -424,6 +436,28 @@ def extract_task_metadata(
         return None
 
 
+def validate_task_output_types(metadata: Dict[str, Any], file_path: Path) -> List[str]:
+    """
+    Validate output_types consistency for a task.
+
+    Returns a list of warning strings (empty means valid).
+    """
+    warnings = []
+    outputs = list(metadata.get("outputs", {}).keys())
+    output_types = {
+        k: v.get("type", "any") for k, v in metadata.get("outputs", {}).items()
+    }
+
+    # Warn if the task has outputs but none have a specific type declared
+    if outputs and all(t == "any" for t in output_types.values()):
+        warnings.append(
+            f"  ⚠  {file_path.name}: has {len(outputs)} output(s) but no specific output_types declared "
+            f"(all 'any') — add output_types={{...}} to @task decorator for preview support"
+        )
+
+    return warnings
+
+
 def generate_task_metadata(
     task_file: Path, project_root: Path, tasks_dir: Path, output_dir: Path
 ) -> bool:
@@ -449,6 +483,10 @@ def generate_task_metadata(
     rel_task = task_file.relative_to(project_root)
     rel_output = output_file.relative_to(project_root)
     print(f"  OK: {rel_task} -> {rel_output}")
+
+    for warning in validate_task_output_types(metadata, task_file):
+        print(warning)
+
     return True
 
 

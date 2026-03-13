@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["pipeline"],
+    output_types={"pipeline": "object"},
     parameters={
         "model_id": {
             "type": "str",
@@ -19,7 +20,9 @@ from core.task import task
         },
     },
 )
-def load_stable_diffusion_pipeline(model_id: str = "runwayml/stable-diffusion-v1-5", device: str = "cuda"):
+def load_stable_diffusion_pipeline(
+    model_id: str = "runwayml/stable-diffusion-v1-5", device: str = "cuda"
+):
     """
     Load a Stable Diffusion pipeline from HuggingFace.
 
@@ -32,7 +35,7 @@ def load_stable_diffusion_pipeline(model_id: str = "runwayml/stable-diffusion-v1
     """
     import torch
     from diffusers import StableDiffusionPipeline
-    
+
     # Check if CUDA is available, fallback to CPU if not
     if device == "cuda" and not torch.cuda.is_available():
         device = "cpu"

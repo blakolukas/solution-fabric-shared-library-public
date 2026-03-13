@@ -15,6 +15,7 @@ from core.task import task
             "description": "Input color image as numpy array",
         },
     },
+    is_collapsed=True,
 )
 def convert_to_grayscale(image):
     """

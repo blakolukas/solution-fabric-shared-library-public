@@ -9,7 +9,6 @@ from core.task import task
     description="Build a chat-style prompt with system and user messages",
     category="text",
     output_types={"prompt": "text"},
-    is_collapsed=True,
     parameters={
         "user_message": {
             "type": "str",

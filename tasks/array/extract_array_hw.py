@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["orig_height", "orig_width"],
+    output_types={"orig_height": "int", "orig_width": "int"},
     display_name="Extract Array Height/Width",
     description="Extract height and width from a numpy array",
     category="array",
@@ -15,6 +16,7 @@ from core.task import task
             "description": "Numpy array with at least 2 dimensions",
         },
     },
+    is_collapsed=True,
 )
 def extract_array_hw(array):
     """

@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["deleted"],
+    output_types={"deleted": "bool"},
     display_name="Delete File",
     description="Delete a file from disk",
     category="io",
@@ -15,6 +16,7 @@ from core.task import task
             "description": "Path to the file to delete",
         },
     },
+    is_collapsed=True,
 )
 def delete_file(file_path: str):
     """

@@ -5,6 +5,7 @@
   "display_name": "Get Disk Usage",
   "description": "Read current disk usage for a given path on the host machine.",
   "is_collapsed": true,
+  "previewable": true,
   "inputs": {
     "path": {
       "type": "str",

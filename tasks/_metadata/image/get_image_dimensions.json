@@ -4,7 +4,8 @@
   "category": "image",
   "display_name": "Get Image Dimensions",
   "description": "Get the dimensions (height, width) of an image.",
-  "is_collapsed": false,
+  "is_collapsed": true,
+  "previewable": true,
   "inputs": {
     "image": {
       "type": "any",
@@ -14,7 +15,7 @@
   },
   "outputs": {
     "image_dimensions": {
-      "type": "any",
+      "type": "json",
       "description": "Output: image_dimensions"
     }
   },
@@ -26,7 +27,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "image"
   ]

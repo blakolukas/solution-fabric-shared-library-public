@@ -1,139 +1,136 @@
 {
-    "tasks": [
-        {
-            "name": "cpu",
-            "task": "get_cpu_usage",
-            "displayName": "Get CPU Usage",
-            "inputs": {},
-            "outputs": [
-                "cpu_percent",
-                "core_count",
-                "frequency_mhz"
-            ]
-        },
-        {
-            "name": "memory",
-            "task": "get_memory_usage",
-            "displayName": "Get Memory Usage",
-            "inputs": {},
-            "outputs": [
-                "memory_percent",
-                "memory_used_gb",
-                "memory_total_gb",
-                "memory_available_gb"
-            ]
-        },
-        {
-            "name": "disk",
-            "task": "get_disk_usage",
-            "displayName": "Get Disk Usage",
-            "inputs": {
-                "path": "inputs.disk_path"
-            },
-            "outputs": [
-                "disk_percent",
-                "disk_used_gb",
-                "disk_total_gb",
-                "disk_free_gb"
-            ]
-        },
-        {
-            "name": "ts",
-            "task": "get_current_timestamp",
-            "displayName": "Get Current Timestamp",
-            "inputs": {},
-            "outputs": [
-                "timestamp"
-            ]
-        },
-        {
-            "name": "build_json",
-            "task": "format_template",
-            "displayName": "Build JSON",
-            "inputs": {
-                "template": {
-                    "literal": "{{\"timestamp\": \"{timestamp}\", \"cpu\": {{\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}}, \"memory\": {{\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}}, \"disk\": {{\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}}}}"
-                },
-                "timestamp": "tasks.ts.timestamp",
-                "cpu_percent": "tasks.cpu.cpu_percent",
-                "core_count": "tasks.cpu.core_count",
-                "frequency_mhz": "tasks.cpu.frequency_mhz",
-                "memory_percent": "tasks.memory.memory_percent",
-                "memory_used_gb": "tasks.memory.memory_used_gb",
-                "memory_total_gb": "tasks.memory.memory_total_gb",
-                "memory_available_gb": "tasks.memory.memory_available_gb",
-                "disk_path": "inputs.disk_path",
-                "disk_percent": "tasks.disk.disk_percent",
-                "disk_used_gb": "tasks.disk.disk_used_gb",
-                "disk_total_gb": "tasks.disk.disk_total_gb",
-                "disk_free_gb": "tasks.disk.disk_free_gb"
-            },
-            "outputs": [
-                "result"
-            ],
-            "dependencies": [
-                "cpu",
-                "memory",
-                "disk",
-                "ts"
-            ]
-        },
-        {
-            "name": "parse",
-            "task": "parse_json",
-            "displayName": "Parse JSON",
-            "inputs": {
-                "json_string": "tasks.build_json.result"
-            },
-            "outputs": [
-                "data"
-            ],
-            "dependencies": [
-                "build_json"
-            ]
-        }
-    ],
-    "inputs": {
-        "disk_path": "/"
+  "tasks": [
+    {
+      "name": "cpu",
+      "task": "get_cpu_usage",
+      "displayName": "Get CPU Usage",
+      "outputs": [
+        "cpu_percent",
+        "core_count",
+        "frequency_mhz"
+      ]
     },
-    "outputs": {
-        "metrics": "tasks.parse.data"
+    {
+      "name": "memory",
+      "task": "get_memory_usage",
+      "displayName": "Get Memory Usage",
+      "outputs": [
+        "memory_percent",
+        "memory_used_gb",
+        "memory_total_gb",
+        "memory_available_gb"
+      ]
     },
-    "name": "System Metrics Snapshot",
-    "_designer": {
-        "layout": {
-            "cpu": {
-                "x": 100,
-                "y": 100
-            },
-            "memory": {
-                "x": 350,
-                "y": 100
-            },
-            "disk": {
-                "x": 600,
-                "y": 100
-            },
-            "ts": {
-                "x": 850,
-                "y": 100
-            },
-            "build_json": {
-                "x": 100,
-                "y": 340
-            },
-            "parse": {
-                "x": 450,
-                "y": 340
-            }
+    {
+      "name": "disk",
+      "task": "get_disk_usage",
+      "displayName": "Get Disk Usage",
+      "inputs": {
+        "path": "inputs.disk_path"
+      },
+      "outputs": [
+        "disk_percent",
+        "disk_used_gb",
+        "disk_total_gb",
+        "disk_free_gb"
+      ]
+    },
+    {
+      "name": "ts",
+      "task": "get_current_timestamp",
+      "displayName": "Get Current Timestamp",
+      "outputs": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "build_json",
+      "task": "format_template",
+      "displayName": "Build JSON",
+      "inputs": {
+        "template": {
+          "literal": "{{\"timestamp\": \"{timestamp}\", \"cpu\": {{\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}}, \"memory\": {{\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}}, \"disk\": {{\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}}}}"
         },
-        "taskDisplayNames": {
-            "cpu": "Get CPU Usage",
-            "memory": "Get Memory Usage",
-            "disk": "Get Disk Usage",
-            "ts": "Get Current Timestamp",
-            "build_json": "Build JSON",
-            "parse": "Parse JSON"
-        }
+        "timestamp": "tasks.ts.timestamp",
+        "cpu_percent": "tasks.cpu.cpu_percent",
+        "core_count": "tasks.cpu.core_count",
+        "frequency_mhz": "tasks.cpu.frequency_mhz",
+        "memory_percent": "tasks.memory.memory_percent",
+        "memory_used_gb": "tasks.memory.memory_used_gb",
+        "memory_total_gb": "tasks.memory.memory_total_gb",
+        "memory_available_gb": "tasks.memory.memory_available_gb",
+        "disk_path": "inputs.disk_path",
+        "disk_percent": "tasks.disk.disk_percent",
+        "disk_used_gb": "tasks.disk.disk_used_gb",
+        "disk_total_gb": "tasks.disk.disk_total_gb",
+        "disk_free_gb": "tasks.disk.disk_free_gb"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "cpu",
+        "memory",
+        "disk",
+        "ts"
+      ]
+    },
+    {
+      "name": "parse",
+      "task": "parse_json",
+      "displayName": "Parse JSON",
+      "inputs": {
+        "json_string": "tasks.build_json.result"
+      },
+      "outputs": [
+        "data"
+      ],
+      "dependencies": [
+        "build_json"
+      ]
     }
+  ],
+  "inputs": {
+    "disk_path": "/"
+  },
+  "outputs": {
+    "metrics": "tasks.parse.data"
+  },
+  "name": "System Metrics Snapshot",
+  "_designer": {
+    "layout": {
+      "cpu": {
+        "x": 100,
+        "y": 100
+      },
+      "memory": {
+        "x": 97.67441860465115,
+        "y": 311.62790697674416
+      },
+      "disk": {
+        "x": 95.3488372093023,
+        "y": 576.1627906976744
+      },
+      "ts": {
+        "x": 109.30232558139525,
+        "y": 1204.263565891473
+      },
+      "build_json": {
+        "x": 452.71317829457365,
+        "y": 458.0232558139535
+      },
+      "parse": {
+        "x": 813.5658914728683,
+        "y": 547.5581395348837
+      }
+    },
+    "taskDisplayNames": {
+      "cpu": "Get CPU Usage",
+      "memory": "Get Memory Usage",
+      "disk": "Get Disk Usage",
+      "ts": "Get Current Timestamp",
+      "build_json": "Build JSON",
+      "parse": "Parse JSON"
+    }
+  }
 }

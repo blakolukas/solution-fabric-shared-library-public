@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["onnx_model_path"],
+    output_types={"onnx_model_path": "str"},
     parameters={
         "yolo_model": {
             "type": "object",
@@ -22,6 +23,7 @@ from core.task import task
             "description": "Whether to simplify the ONNX model",
         },
     },
+    is_collapsed=True,
 )
 def export_model_to_onnx(yolo_model, imgsz: int = 640, simplify: bool = True):
     """

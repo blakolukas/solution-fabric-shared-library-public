@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["model_path"],
+    output_types={"model_path": "str"},
     parameters={
         "repository_id": {
             "type": "str",
@@ -21,6 +22,7 @@ from core.task import task
             "description": "Branch, tag, or commit hash to download from",
         },
     },
+    is_collapsed=True,
 )
 def download_hf_model(repository_id: str, model_name: str, revision: str = None):
     """
@@ -34,5 +36,7 @@ def download_hf_model(repository_id: str, model_name: str, revision: str = None)
         Path to the cached file
     """
     from huggingface_hub import hf_hub_download
-    
-    return hf_hub_download(repo_id=repository_id, filename=model_name, revision=revision)
+
+    return hf_hub_download(
+        repo_id=repository_id, filename=model_name, revision=revision
+    )

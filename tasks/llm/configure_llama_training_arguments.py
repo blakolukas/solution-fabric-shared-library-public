@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["training_args"],
+    output_types={"training_args": "object"},
     parameters={
         "output_dir": {
             "type": "str",
@@ -173,7 +174,7 @@ def configure_llama_training_arguments(
         remove_unused_columns: Whether to remove unused columns from dataset
     """
     from transformers import TrainingArguments
-    
+
     training_args = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=num_train_epochs,
@@ -197,7 +198,11 @@ def configure_llama_training_arguments(
         remove_unused_columns=remove_unused_columns,
     )
 
-    print(f"Training config: {num_train_epochs} epochs, batch_size={per_device_train_batch_size}, lr={learning_rate}")
-    print(f"Effective batch size: {per_device_train_batch_size * gradient_accumulation_steps}")
+    print(
+        f"Training config: {num_train_epochs} epochs, batch_size={per_device_train_batch_size}, lr={learning_rate}"
+    )
+    print(
+        f"Effective batch size: {per_device_train_batch_size * gradient_accumulation_steps}"
+    )
 
     return training_args

@@ -11,7 +11,6 @@ from core.task import task
     description="Replace occurrences of a pattern in text",
     category="text",
     output_types={"replaced": "str"},
-    is_collapsed=True,
     parameters={
         "text": {
             "type": "str",

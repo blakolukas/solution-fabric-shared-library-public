@@ -5,6 +5,7 @@
   "display_name": "Get Current Timestamp",
   "description": "Return the current date and time as an ISO 8601 timestamp.",
   "is_collapsed": true,
+  "previewable": true,
   "inputs": {},
   "outputs": {
     "timestamp": {

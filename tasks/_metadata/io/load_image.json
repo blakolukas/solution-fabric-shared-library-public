@@ -5,6 +5,7 @@
   "display_name": "Load Image",
   "description": "Load an image from file path or pass through from workflow input.",
   "is_collapsed": false,
+  "previewable": true,
   "inputs": {
     "image_path": {
       "type": "str",
@@ -36,7 +37,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "io"
   ]

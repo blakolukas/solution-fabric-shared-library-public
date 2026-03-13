@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["normalized_image_array"],
+    output_types={"normalized_image_array": "image"},
     display_name="Min-Max Normalize Image",
     description="Normalize image array to [0, 1] range using min-max normalization",
     category="image",
@@ -27,6 +28,7 @@ from core.task import task
             "description": "Maximum value for normalization range",
         },
     },
+    is_collapsed=True,
 )
 def min_max_normalize_image(image_array, min_value: float = 0, max_value: float = 1):
     """

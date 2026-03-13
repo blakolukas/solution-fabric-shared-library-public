@@ -5,6 +5,7 @@
   "display_name": "Prepare Llama Dataset For Training",
   "description": "Prepare and tokenize ultrachat_200k dataset for LLaMA training.",
   "is_collapsed": false,
+  "previewable": false,
   "inputs": {
     "dataset": {
       "type": "any",
@@ -31,7 +32,7 @@
   },
   "outputs": {
     "processed_dataset": {
-      "type": "any",
+      "type": "object",
       "description": "Output: processed_dataset"
     }
   },
@@ -43,7 +44,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "llm"
   ]

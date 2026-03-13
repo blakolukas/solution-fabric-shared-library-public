@@ -5,6 +5,7 @@
   "display_name": "Decode Llm Output",
   "description": "Decode LLM output token IDs back to text.",
   "is_collapsed": false,
+  "previewable": true,
   "inputs": {
     "output_ids": {
       "type": "any",
@@ -19,7 +20,7 @@
   },
   "outputs": {
     "decoded_text": {
-      "type": "any",
+      "type": "text",
       "description": "Output: decoded_text"
     }
   },
@@ -31,7 +32,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "llm"
   ]

@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["directory_path"],
+    output_types={"directory_path": "str"},
     display_name="Ensure Directory Exists",
     description="Ensure a directory exists, creating it if necessary",
     category="io",
@@ -15,6 +16,7 @@ from core.task import task
             "description": "Path to the directory",
         },
     },
+    is_collapsed=True,
 )
 def ensure_directory_exists(directory_path: str):
     """

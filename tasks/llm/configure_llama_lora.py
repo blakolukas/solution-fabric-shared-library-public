@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["lora_config"],
+    output_types={"lora_config": "object"},
     parameters={
         "r": {
             "type": "int",
@@ -61,10 +62,18 @@ def configure_llama_lora(
         task_type: Type of task (CAUSAL_LM for language modeling)
     """
     from peft import LoraConfig, TaskType
-    
+
     # Default target modules for LLaMA 3 architecture
     if target_modules is None:
-        target_modules = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+        target_modules = [
+            "q_proj",
+            "k_proj",
+            "v_proj",
+            "o_proj",
+            "gate_proj",
+            "up_proj",
+            "down_proj",
+        ]
 
     # Map string task type to enum
     task_type_mapping = {

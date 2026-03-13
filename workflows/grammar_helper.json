@@ -3,6 +3,7 @@
     {
       "name": "download_model",
       "task": "download_hf_model",
+      "displayName": "Download Hf Model",
       "inputs": {
         "repository_id": "inputs.model_repository",
         "model_name": "inputs.model_filename"
@@ -14,6 +15,7 @@
     {
       "name": "load_llm",
       "task": "load_gguf_model",
+      "displayName": "Load LLM (GGUF)",
       "inputs": {
         "model_path": "tasks.download_model.model_path",
         "n_ctx": "inputs.context_size",
@@ -29,6 +31,7 @@
     {
       "name": "correction_user_prompt",
       "task": "format_template",
+      "displayName": "Format Template",
       "inputs": {
         "template": {
           "literal": "Fix all grammar and spelling errors in this text. Keep the same meaning.\n\nText: {text}\n\nCorrected text:"
@@ -42,6 +45,7 @@
     {
       "name": "correction_prompt",
       "task": "build_chat_prompt",
+      "displayName": "Build Chat Prompt",
       "inputs": {
         "system_message": {
           "literal": "You are a proofreader. Output only the corrected text."
@@ -61,6 +65,7 @@
     {
       "name": "run_correction",
       "task": "llm_inference",
+      "displayName": "LLM Inference",
       "inputs": {
         "model": "tasks.load_llm.model",
         "prompt": "tasks.correction_prompt.prompt",
@@ -80,6 +85,7 @@
     {
       "name": "corrected_text_clean",
       "task": "trim",
+      "displayName": "Trim",
       "inputs": {
         "text": "tasks.run_correction.response"
       },
@@ -93,6 +99,7 @@
     {
       "name": "style_user_prompt",
       "task": "format_template",
+      "displayName": "Format Template",
       "inputs": {
         "template": {
           "literal": "Rewrite this text in a {style} tone. Keep the same meaning.\n\nText: {text}\n\nRewritten text:"
@@ -110,6 +117,7 @@
     {
       "name": "style_prompt",
       "task": "build_chat_prompt",
+      "displayName": "Build Chat Prompt",
       "inputs": {
         "system_message": {
           "literal": "You are a writing assistant. Output only the rewritten text."
@@ -129,6 +137,7 @@
     {
       "name": "run_style",
       "task": "llm_inference",
+      "displayName": "LLM Inference",
       "inputs": {
         "model": "tasks.load_llm.model",
         "prompt": "tasks.style_prompt.prompt",
@@ -148,6 +157,7 @@
     {
       "name": "styled_text_clean",
       "task": "trim",
+      "displayName": "Trim",
       "inputs": {
         "text": "tasks.run_style.response"
       },
@@ -161,6 +171,7 @@
     {
       "name": "explanation_user_prompt",
       "task": "format_template",
+      "displayName": "Format Template",
       "inputs": {
         "template": {
           "literal": "List the grammar errors that were fixed between these texts.\n\nOriginal: {original}\n\nCorrected: {corrected}\n\nErrors fixed:"
@@ -178,6 +189,7 @@
     {
       "name": "explanation_prompt",
       "task": "build_chat_prompt",
+      "displayName": "Build Chat Prompt",
       "inputs": {
         "system_message": {
           "literal": "List grammar corrections briefly."
@@ -197,6 +209,7 @@
     {
       "name": "run_explanation",
       "task": "llm_inference",
+      "displayName": "LLM Inference",
       "inputs": {
         "model": "tasks.load_llm.model",
         "prompt": "tasks.explanation_prompt.prompt",
@@ -216,6 +229,7 @@
     {
       "name": "explanation_clean",
       "task": "trim",
+      "displayName": "Trim",
       "inputs": {
         "text": "tasks.run_explanation.response"
       },
@@ -229,6 +243,7 @@
     {
       "name": "word_count_original",
       "task": "word_count",
+      "displayName": "Word Count",
       "inputs": {
         "text": "inputs.input_text"
       },
@@ -239,6 +254,7 @@
     {
       "name": "word_count_corrected",
       "task": "word_count",
+      "displayName": "Word Count",
       "inputs": {
         "text": "tasks.corrected_text_clean.trimmed"
       },
@@ -252,6 +268,7 @@
     {
       "name": "word_count_styled",
       "task": "word_count",
+      "displayName": "Word Count",
       "inputs": {
         "text": "tasks.styled_text_clean.trimmed"
       },
@@ -265,6 +282,7 @@
     {
       "name": "summary_template",
       "task": "format_template",
+      "displayName": "Format Template",
       "inputs": {
         "template": {
           "literal": "=== GRAMMAR CHECK RESULTS ===\n\nSTYLE: {style}\n\nORIGINAL ({original_words} words):\n{original}\n\nCORRECTED ({corrected_words} words):\n{corrected}\n\nSTYLED ({styled_words} words):\n{styled}\n\nCHANGES MADE:\n{explanation}"
@@ -311,6 +329,7 @@
     "word_count_corrected": "tasks.word_count_corrected.word_count",
     "word_count_styled": "tasks.word_count_styled.word_count"
   },
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "download_model": {
@@ -334,8 +353,8 @@
         "y": 134.58651174327832
       },
       "corrected_text_clean": {
-        "x": 1000,
-        "y": 200
+        "x": 1037.2448036804344,
+        "y": 205.7299697969899
       },
       "style_user_prompt": {
         "x": 1293.2330874217184,
@@ -371,7 +390,7 @@
       },
       "word_count_original": {
         "x": 97.74624373956594,
-        "y": 792.4040066777964
+        "y": 835.3787801552205
       },
       "word_count_corrected": {
         "x": 1000,
@@ -385,6 +404,26 @@
         "x": 2500,
         "y": 400
       }
+    },
+    "taskDisplayNames": {
+      "download_model": "Download Hf Model",
+      "load_llm": "Load LLM (GGUF)",
+      "correction_user_prompt": "Format Template",
+      "correction_prompt": "Build Chat Prompt",
+      "run_correction": "LLM Inference",
+      "corrected_text_clean": "Trim",
+      "style_user_prompt": "Format Template",
+      "style_prompt": "Build Chat Prompt",
+      "run_style": "LLM Inference",
+      "styled_text_clean": "Trim",
+      "explanation_user_prompt": "Format Template",
+      "explanation_prompt": "Build Chat Prompt",
+      "run_explanation": "LLM Inference",
+      "explanation_clean": "Trim",
+      "word_count_original": "Word Count",
+      "word_count_corrected": "Word Count",
+      "word_count_styled": "Word Count",
+      "summary_template": "Format Template"
     }
   }
 }

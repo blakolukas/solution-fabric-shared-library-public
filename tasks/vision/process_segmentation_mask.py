@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["processed_mask"],
+    output_types={"processed_mask": "array"},
     parameters={
         "mask_array": {
             "type": "ndarray",

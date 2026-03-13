@@ -16,6 +16,7 @@ from core.task import task
             "description": "PIL Image object to convert",
         },
     },
+    is_collapsed=True,
 )
 def convert_pil_to_numpy(pil_image):
     """

@@ -5,6 +5,7 @@
   "display_name": "Parse JSON",
   "description": "Parse a JSON string into a Python dictionary or list.",
   "is_collapsed": false,
+  "previewable": true,
   "inputs": {
     "json_string": {
       "type": "str",

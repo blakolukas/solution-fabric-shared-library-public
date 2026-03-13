@@ -6,6 +6,7 @@ from core.task import task
 
 @task(
     outputs=["onnx_model_path"],
+    output_types={"onnx_model_path": "str"},
     parameters={
         "model_path": {
             "type": "str",
@@ -24,8 +25,11 @@ from core.task import task
             "description": "Base directory for model storage",
         },
     },
+    is_collapsed=True,
 )
-def extract_onnx_model(model_path: str, repository_id: str, base_directory: str = "models"):
+def extract_onnx_model(
+    model_path: str, repository_id: str, base_directory: str = "models"
+):
     """
     Extract ONNX model from a zip file.
 
@@ -84,6 +88,8 @@ def extract_onnx_model(model_path: str, repository_id: str, base_directory: str 
                     break
 
     if not actual_model_path:
-        raise FileNotFoundError(f"model.onnx not found in extracted contents at {model_directory}")
+        raise FileNotFoundError(
+            f"model.onnx not found in extracted contents at {model_directory}"
+        )
 
     return actual_model_path

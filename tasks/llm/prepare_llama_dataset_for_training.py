@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["processed_dataset"],
+    output_types={"processed_dataset": "object"},
     parameters={
         "dataset": {
             "type": "object",
@@ -28,7 +29,9 @@ from core.task import task
         },
     },
 )
-def prepare_llama_dataset_for_training(dataset, tokenizer, max_length: int = 2048, num_proc: int = 4):
+def prepare_llama_dataset_for_training(
+    dataset, tokenizer, max_length: int = 2048, num_proc: int = 4
+):
     """Prepare and tokenize ultrachat_200k dataset for LLaMA training.
 
     Args:
@@ -43,7 +46,9 @@ def prepare_llama_dataset_for_training(dataset, tokenizer, max_length: int = 204
         messages = example.get("messages", [])
 
         # Apply chat template
-        text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+        text = tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=False
+        )
 
         return {"text": text}
 
@@ -65,7 +70,9 @@ def prepare_llama_dataset_for_training(dataset, tokenizer, max_length: int = 204
 
     print("Formatting chat templates...")
     # Format the messages into chat format
-    formatted_dataset = dataset.map(format_chat_template, num_proc=num_proc, desc="Formatting chat templates")
+    formatted_dataset = dataset.map(
+        format_chat_template, num_proc=num_proc, desc="Formatting chat templates"
+    )
 
     print("Tokenizing dataset...")
     # Apply tokenization

@@ -5,6 +5,7 @@
   "display_name": "Detect Objects (YOLO)",
   "description": "Perform object detection using YOLO model.",
   "is_collapsed": true,
+  "previewable": true,
   "inputs": {
     "yolo_model": {
       "type": "any",
@@ -39,7 +40,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "vision"
   ]

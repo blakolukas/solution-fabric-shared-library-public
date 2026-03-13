@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["training_result", "trained_model"],
+    output_types={"training_result": "object", "trained_model": "object"},
     parameters={
         "trainer": {
             "type": "object",

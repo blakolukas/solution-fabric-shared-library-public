@@ -4,7 +4,8 @@
   "category": "llm",
   "display_name": "LLM Generate",
   "description": "Generate text with token usage tracking.",
-  "is_collapsed": true,
+  "is_collapsed": false,
+  "previewable": true,
   "inputs": {
     "model": {
       "type": "object",
@@ -59,7 +60,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "llm"
   ]

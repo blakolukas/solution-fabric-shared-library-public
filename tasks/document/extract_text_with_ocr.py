@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["extracted_text"],
+    output_types={"extracted_text": "text"},
     parameters={
         "grayscale_image": {
             "type": "array",
@@ -34,4 +35,6 @@ def extract_text_with_ocr(grayscale_image, language: str = "eng"):
         text = pytesseract.image_to_string(grayscale_image, lang=language)
         return text.strip()
     except Exception as e:
-        raise RuntimeError(f"OCR text extraction failed. Ensure Tesseract is installed and configured: {e}")
+        raise RuntimeError(
+            f"OCR text extraction failed. Ensure Tesseract is installed and configured: {e}"
+        )

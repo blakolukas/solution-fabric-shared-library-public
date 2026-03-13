@@ -92,6 +92,7 @@ COCO_CLASS_NAMES = [
 
 @task(
     outputs=["detections"],
+    output_types={"detections": "list"},
     parameters={
         "raw_output": {
             "type": "array",
@@ -122,6 +123,7 @@ COCO_CLASS_NAMES = [
             "description": "Model input size used during preprocessing",
         },
     },
+    is_collapsed=True,
 )
 def yolo_onnx_postprocess(
     raw_output: np.ndarray,
@@ -223,7 +225,11 @@ def yolo_onnx_postprocess(
         y2 = max(0, min(y2, orig_h))
 
         # Get class name
-        class_name = COCO_CLASS_NAMES[class_id] if class_id < len(COCO_CLASS_NAMES) else f"class_{class_id}"
+        class_name = (
+            COCO_CLASS_NAMES[class_id]
+            if class_id < len(COCO_CLASS_NAMES)
+            else f"class_{class_id}"
+        )
 
         detections.append(
             {

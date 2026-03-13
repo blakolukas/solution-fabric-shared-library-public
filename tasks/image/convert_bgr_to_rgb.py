@@ -15,6 +15,7 @@ from core.task import task
             "description": "Input image in BGR format (OpenCV default)",
         },
     },
+    is_collapsed=True,
 )
 def convert_bgr_to_rgb(image):
     """

@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["generated_images"],
+    output_types={"generated_images": "image"},
     parameters={
         "pipeline": {
             "type": "object",
@@ -97,7 +98,7 @@ def generate_image_from_prompt(
         List of generated PIL Images
     """
     import torch
-    
+
     all_images = []
 
     # Calculate number of batches needed

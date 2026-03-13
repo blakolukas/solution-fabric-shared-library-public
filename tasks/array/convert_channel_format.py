@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["converted_array"],
+    output_types={"converted_array": "array"},
     display_name="Convert Channel Format",
     description="Convert array between channel-first and channel-last formats",
     category="array",
@@ -34,7 +35,9 @@ def convert_channel_format(array, to_format: str):
         Converted array
     """
     if to_format not in ["channel_first", "channel_last"]:
-        raise ValueError("'to_format' must be either 'channel_first' or 'channel_last'.")
+        raise ValueError(
+            "'to_format' must be either 'channel_first' or 'channel_last'."
+        )
 
     if array.ndim < 3:
         raise ValueError("Input array must have at least 3 dimensions.")

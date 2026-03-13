@@ -5,6 +5,7 @@
   "display_name": "Convert Array Data Type",
   "description": "Convert array to a different data type.",
   "is_collapsed": false,
+  "previewable": false,
   "inputs": {
     "array": {
       "type": "any",
@@ -19,7 +20,7 @@
   },
   "outputs": {
     "converted_array": {
-      "type": "any",
+      "type": "array",
       "description": "Output: converted_array"
     }
   },
@@ -33,7 +34,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-11",
+  "updated_at": "2026-03-12",
   "tags": [
     "array"
   ]

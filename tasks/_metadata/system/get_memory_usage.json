@@ -5,6 +5,7 @@
   "display_name": "Get Memory Usage",
   "description": "Read current memory usage from the host machine.",
   "is_collapsed": true,
+  "previewable": true,
   "inputs": {},
   "outputs": {
     "memory_percent": {
