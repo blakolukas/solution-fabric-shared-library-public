@@ -106,37 +106,36 @@
   "outputs": {
     "metrics": "tasks.parse.data"
   },
-  "name": "System Metrics Snapshot",
-  "_internal": true,
+  "name": "Untitled Workflow",
   "_designer": {
     "layout": {
       "cpu": {
-        "x": 100,
-        "y": 50
+        "x": 107,
+        "y": 167
       },
       "memory": {
-        "x": 100,
-        "y": 220
+        "x": 109,
+        "y": 386
       },
       "disk": {
-        "x": 100,
-        "y": 390
+        "x": 109,
+        "y": 654
       },
       "gpu": {
-        "x": 100,
-        "y": 560
+        "x": 113,
+        "y": 987
       },
       "ts": {
-        "x": 100,
-        "y": 730
+        "x": 97,
+        "y": 1105
       },
       "build_json": {
-        "x": 460,
-        "y": 390
+        "x": 394,
+        "y": 186
       },
       "parse": {
-        "x": 820,
-        "y": 390
+        "x": 766,
+        "y": 203
       }
     },
     "taskDisplayNames": {
