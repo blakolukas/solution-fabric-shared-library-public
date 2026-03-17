@@ -1,6 +1,6 @@
 {
   "id": "get_workflow_state",
-  "source_file": "check_workflow_state.py",
+  "source_file": "get_workflow_state.py",
   "category": "workflow",
   "display_name": "Get Workflow State",
   "description": "Query the agent for instances of the workflow and return their state.",
