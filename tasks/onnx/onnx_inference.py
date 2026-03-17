@@ -9,6 +9,7 @@ logger = get_logger(__name__)
 
 @task(
     outputs=["output"],
+    output_types={"output": "array"},
     parameters={
         "onnx_session": {
             "type": "object",
@@ -28,7 +29,11 @@ logger = get_logger(__name__)
         },
     },
 )
-def onnx_inference(onnx_session: ort.InferenceSession, input_array: np.ndarray, input_name: str = "input"):
+def onnx_inference(
+    onnx_session: ort.InferenceSession,
+    input_array: np.ndarray,
+    input_name: str = "input",
+):
     """
     Run ONNX model inference on an input array with GPU optimization.
 

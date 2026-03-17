@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["ocr_data"],
+    output_types={"ocr_data": "json"},
     parameters={
         "grayscale_image": {
             "type": "array",
@@ -34,7 +35,11 @@ def extract_ocr_data(grayscale_image, language: str = "eng"):
     try:
         import pytesseract
 
-        data = pytesseract.image_to_data(grayscale_image, lang=language, output_type=pytesseract.Output.DICT)
+        data = pytesseract.image_to_data(
+            grayscale_image, lang=language, output_type=pytesseract.Output.DICT
+        )
         return data
     except Exception as e:
-        raise RuntimeError(f"OCR data extraction failed. Ensure Tesseract is installed and configured: {e}")
+        raise RuntimeError(
+            f"OCR data extraction failed. Ensure Tesseract is installed and configured: {e}"
+        )

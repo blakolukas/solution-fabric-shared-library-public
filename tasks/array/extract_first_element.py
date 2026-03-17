@@ -7,6 +7,7 @@ from core.task import task
 
 @task(
     outputs=["first_element"],
+    output_types={"first_element": "any"},
     display_name="Get First Element",
     description="Extract the first element from a list or tuple",
     category="array",

@@ -6,6 +6,7 @@ from core.task import task
 
 @task(
     outputs=["temp_filename"],
+    output_types={"temp_filename": "str"},
     display_name="Generate Temp Filename",
     description="Generate a unique temporary filename",
     category="io",
@@ -23,6 +24,7 @@ from core.task import task
             "description": "File extension without dot",
         },
     },
+    is_collapsed=True,
 )
 def generate_temp_filename(prefix: str = "temp", extension: str = "png"):
     """

@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["context"],
+    output_types={"context": "object"},
     parameters={
         "context": {
             "type": "dict",

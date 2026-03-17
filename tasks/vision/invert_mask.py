@@ -6,6 +6,7 @@ from core.task import task
 
 @task(
     outputs=["inverted_mask"],
+    output_types={"inverted_mask": "image"},
     display_name="Invert Mask",
     description="Invert a binary mask",
     category="vision",
@@ -16,6 +17,7 @@ from core.task import task
             "description": "Binary mask as numpy array",
         },
     },
+    is_collapsed=True,
 )
 def invert_mask(mask_array):
     """

@@ -1,0 +1,151 @@
+{
+  "tasks": [
+    {
+      "name": "cpu",
+      "task": "get_cpu_usage",
+      "displayName": "Get CPU Usage",
+      "outputs": [
+        "cpu_percent",
+        "core_count",
+        "frequency_mhz"
+      ]
+    },
+    {
+      "name": "memory",
+      "task": "get_memory_usage",
+      "displayName": "Get Memory Usage",
+      "outputs": [
+        "memory_percent",
+        "memory_used_gb",
+        "memory_total_gb",
+        "memory_available_gb"
+      ]
+    },
+    {
+      "name": "disk",
+      "task": "get_disk_usage",
+      "displayName": "Get Disk Usage",
+      "inputs": {
+        "path": "inputs.disk_path"
+      },
+      "outputs": [
+        "disk_percent",
+        "disk_used_gb",
+        "disk_total_gb",
+        "disk_free_gb"
+      ]
+    },
+    {
+      "name": "gpu",
+      "task": "get_gpu_usage",
+      "displayName": "Get GPU Usage",
+      "outputs": [
+        "gpus_json"
+      ]
+    },
+    {
+      "name": "ts",
+      "task": "get_current_timestamp",
+      "displayName": "Get Current Timestamp",
+      "outputs": [
+        "timestamp"
+      ]
+    },
+    {
+      "name": "build_json",
+      "task": "format_template",
+      "displayName": "Build JSON",
+      "inputs": {
+        "template": {
+          "literal": "{\"timestamp\": \"{timestamp}\", \"cpu\": {\"percent\": {cpu_percent}, \"core_count\": {core_count}, \"frequency_mhz\": {frequency_mhz}}, \"memory\": {\"percent\": {memory_percent}, \"used_gb\": {memory_used_gb}, \"total_gb\": {memory_total_gb}, \"available_gb\": {memory_available_gb}}, \"disk\": {\"path\": \"{disk_path}\", \"percent\": {disk_percent}, \"used_gb\": {disk_used_gb}, \"total_gb\": {disk_total_gb}, \"free_gb\": {disk_free_gb}}, \"gpus\": {gpus_json}}"
+        },
+        "timestamp": "tasks.ts.timestamp",
+        "cpu_percent": "tasks.cpu.cpu_percent",
+        "core_count": "tasks.cpu.core_count",
+        "frequency_mhz": "tasks.cpu.frequency_mhz",
+        "memory_percent": "tasks.memory.memory_percent",
+        "memory_used_gb": "tasks.memory.memory_used_gb",
+        "memory_total_gb": "tasks.memory.memory_total_gb",
+        "memory_available_gb": "tasks.memory.memory_available_gb",
+        "disk_path": "inputs.disk_path",
+        "disk_percent": "tasks.disk.disk_percent",
+        "disk_used_gb": "tasks.disk.disk_used_gb",
+        "disk_total_gb": "tasks.disk.disk_total_gb",
+        "disk_free_gb": "tasks.disk.disk_free_gb",
+        "gpus_json": "tasks.gpu.gpus_json"
+      },
+      "outputs": [
+        "result"
+      ],
+      "dependencies": [
+        "cpu",
+        "memory",
+        "disk",
+        "gpu",
+        "ts"
+      ]
+    },
+    {
+      "name": "parse",
+      "task": "parse_json",
+      "displayName": "Parse JSON",
+      "inputs": {
+        "json_string": "tasks.build_json.result"
+      },
+      "outputs": [
+        "data"
+      ],
+      "dependencies": [
+        "build_json"
+      ]
+    }
+  ],
+  "inputs": {
+    "disk_path": "/"
+  },
+  "outputs": {
+    "metrics": "tasks.parse.data"
+  },
+  "name": "Untitled Workflow",
+  "_designer": {
+    "layout": {
+      "cpu": {
+        "x": 107,
+        "y": 167
+      },
+      "memory": {
+        "x": 109,
+        "y": 386
+      },
+      "disk": {
+        "x": 109,
+        "y": 654
+      },
+      "gpu": {
+        "x": 113,
+        "y": 987
+      },
+      "ts": {
+        "x": 97,
+        "y": 1105
+      },
+      "build_json": {
+        "x": 394,
+        "y": 186
+      },
+      "parse": {
+        "x": 766,
+        "y": 203
+      }
+    },
+    "taskDisplayNames": {
+      "cpu": "Get CPU Usage",
+      "memory": "Get Memory Usage",
+      "disk": "Get Disk Usage",
+      "gpu": "Get GPU Usage",
+      "ts": "Get Current Timestamp",
+      "build_json": "Build JSON",
+      "parse": "Parse JSON"
+    }
+  }
+}

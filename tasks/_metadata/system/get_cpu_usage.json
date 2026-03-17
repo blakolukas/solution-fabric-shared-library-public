@@ -1,0 +1,36 @@
+{
+  "id": "get_cpu_usage",
+  "source_file": "get_cpu_usage.py",
+  "category": "system",
+  "display_name": "Get CPU Usage",
+  "description": "Read current CPU usage from the host machine.",
+  "is_collapsed": true,
+  "previewable": true,
+  "inputs": {},
+  "outputs": {
+    "cpu_percent": {
+      "type": "float",
+      "description": "Output: cpu_percent"
+    },
+    "core_count": {
+      "type": "int",
+      "description": "Output: core_count"
+    },
+    "frequency_mhz": {
+      "type": "float",
+      "description": "Output: frequency_mhz"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-03-12",
+  "updated_at": "2026-03-12",
+  "tags": [
+    "system"
+  ]
+}

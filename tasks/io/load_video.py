@@ -20,6 +20,7 @@ from core.task import task
             "description": "Path to video file",
         },
     },
+    previewable=True,
 )
 def load_video(video_path: str):
     """

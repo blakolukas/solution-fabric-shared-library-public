@@ -1,9 +1,11 @@
 {
   "id": "rank_by_similarity",
+  "source_file": "rank_by_similarity.py",
   "category": "embedding",
   "display_name": "Rank By Similarity",
   "description": "Rank embeddings by similarity to a query embedding.",
   "is_collapsed": true,
+  "previewable": true,
   "inputs": {
     "query_embedding": {
       "type": "list",
@@ -42,7 +44,7 @@
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-02-11",
-  "updated_at": "2026-03-06",
+  "updated_at": "2026-03-12",
   "tags": [
     "embedding"
   ]

@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["contiguous_array"],
+    output_types={"contiguous_array": "array"},
     display_name="Ensure Array Contiguous",
     description="Ensure that a numpy array is contiguous in memory",
     category="array",

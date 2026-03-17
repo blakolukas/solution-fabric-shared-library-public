@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["batched_array"],
+    output_types={"batched_array": "array"},
     display_name="Batch Array",
     description="Add a batch dimension to an array",
     category="array",

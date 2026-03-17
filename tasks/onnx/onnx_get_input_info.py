@@ -3,6 +3,7 @@ from core.task import task
 
 @task(
     outputs=["input_name", "input_shape", "input_type"],
+    output_types={"input_name": "str", "input_shape": "list", "input_type": "str"},
     parameters={
         "onnx_session": {
             "type": "object",
@@ -10,6 +11,7 @@ from core.task import task
             "description": "ONNX runtime inference session",
         },
     },
+    is_collapsed=True,
 )
 def onnx_get_input_info(onnx_session):
     """

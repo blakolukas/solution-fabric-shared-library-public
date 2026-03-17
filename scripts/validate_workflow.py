@@ -63,6 +63,7 @@ def validate_workflow_schema(workflow: Dict[str, Any], file_path: Path) -> List[
         "outputs",
         "description",
         "_designer",
+        "_internal",
         "metadata",
         "version",
         "name",

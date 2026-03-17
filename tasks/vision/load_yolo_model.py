@@ -5,6 +5,7 @@ from core.task import task
 
 @task(
     outputs=["yolo_model"],
+    output_types={"yolo_model": "object"},
     display_name="Load YOLO Model",
     description="Load YOLO v11 model for object detection",
     category="vision",
@@ -28,7 +29,7 @@ def load_yolo_model(model_path: str = "yolo11n.pt"):
     """
     import torch
     from ultralytics import YOLO
-    
+
     model = YOLO(model_path)
 
     # Move model to GPU if available for faster inference

@@ -7,6 +7,11 @@ from core.task import task
 
 @task(
     outputs=["preprocessed_image", "original_shape", "input_name"],
+    output_types={
+        "preprocessed_image": "array",
+        "original_shape": "list",
+        "input_name": "str",
+    },
     parameters={
         "image": {
             "type": "array",
@@ -26,7 +31,9 @@ from core.task import task
         },
     },
 )
-def yolo_onnx_preprocess(image: np.ndarray, onnx_session: ort.InferenceSession, target_size: int = 640):
+def yolo_onnx_preprocess(
+    image: np.ndarray, onnx_session: ort.InferenceSession, target_size: int = 640
+):
     """
     Preprocess image for YOLO ONNX inference.
     Handles resizing, padding, normalization, and format conversion.
