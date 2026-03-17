@@ -1,14 +1,14 @@
-"""Get the deployment state of a workflow on a FabricFlow agent."""
+"""Check if a workflow is deployed on a FabricFlow agent."""
 
 import requests
 from core.task import task
 
 
 @task(
-    outputs=["state", "is_deployed"],
-    output_types={"state": "str", "is_deployed": "bool"},
+    outputs=["is_deployed"],
+    output_types={"is_deployed": "bool"},
     display_name="Get Workflow State",
-    description="Get the deployment state of a workflow on a FabricFlow agent",
+    description="Check if a workflow is deployed on a FabricFlow agent",
     category="workflow",
     parameters={
         "agent_url": {
@@ -23,23 +23,18 @@ from core.task import task
         },
     },
 )
-def get_workflow_state(agent_url: str, workflow_name: str) -> tuple:
+def get_workflow_state(agent_url: str, workflow_name: str) -> bool:
     """
-    Query the agent for the workflow definition and return its deployment state.
+    Query the agent for the workflow definition and return whether it exists.
 
     Returns:
-        state: 'deployed', 'not_deployed', or 'unreachable'
-        is_deployed: True if the workflow exists on the agent
+        is_deployed: True if the workflow exists on the agent, False otherwise
     """
     try:
         response = requests.get(
             f"{agent_url}/workflows/{workflow_name}",
             timeout=5,
         )
-        if response.status_code == 200:
-            return "deployed", True
-        if response.status_code == 404:
-            return "not_deployed", False
-        return "unknown", False
+        return response.status_code == 200
     except requests.RequestException:
-        return "unreachable", False
+        return False
