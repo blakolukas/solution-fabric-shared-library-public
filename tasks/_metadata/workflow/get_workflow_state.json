@@ -19,10 +19,6 @@
     }
   },
   "outputs": {
-    "state": {
-      "type": "str",
-      "description": "Output: state"
-    },
     "is_deployed": {
       "type": "bool",
       "description": "Output: is_deployed"
