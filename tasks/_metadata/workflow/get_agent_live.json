@@ -1,0 +1,38 @@
+{
+  "id": "get_agent_live",
+  "source_file": "get_agent_live.py",
+  "category": "workflow",
+  "display_name": "Get Agent Live",
+  "description": "Hit the agent /health endpoint and return liveness + agent metadata.",
+  "is_collapsed": false,
+  "previewable": true,
+  "inputs": {
+    "agent_url": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: agent_url"
+    }
+  },
+  "outputs": {
+    "is_live": {
+      "type": "bool",
+      "description": "Output: is_live"
+    },
+    "agent_info": {
+      "type": "dict",
+      "description": "Output: agent_info"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-03-17",
+  "updated_at": "2026-03-17",
+  "tags": [
+    "workflow"
+  ]
+}
