@@ -1,14 +1,14 @@
-"""Get the state of a workflow on a FabricFlow agent."""
+"""Get the deployment state of a workflow on a FabricFlow agent."""
 
 import requests
 from core.task import task
 
 
 @task(
-    outputs=["state", "instance_count"],
-    output_types={"state": "str", "instance_count": "int"},
+    outputs=["state", "is_deployed"],
+    output_types={"state": "str", "is_deployed": "bool"},
     display_name="Get Workflow State",
-    description="Get the current state of a workflow on a FabricFlow agent",
+    description="Get the deployment state of a workflow on a FabricFlow agent",
     category="workflow",
     parameters={
         "agent_url": {
@@ -25,25 +25,21 @@ from core.task import task
 )
 def get_workflow_state(agent_url: str, workflow_name: str) -> tuple:
     """
-    Query the agent for instances of the workflow and return their state.
+    Query the agent for the workflow definition and return its deployment state.
 
     Returns:
-        state: 'idle', 'running', 'error', or 'not_loaded' if no instances exist
-        instance_count: number of instances found
+        state: 'deployed', 'not_deployed', or 'unreachable'
+        is_deployed: True if the workflow exists on the agent
     """
     try:
         response = requests.get(
-            f"{agent_url}/instances",
-            params={"workflow_name": workflow_name},
+            f"{agent_url}/workflows/{workflow_name}",
             timeout=5,
         )
         if response.status_code == 200:
-            data = response.json()
-            instances = data.get("instances", [])
-            if not instances:
-                return "not_loaded", 0
-            state = instances[0].get("status", "unknown")
-            return state, len(instances)
-        return "unknown", 0
+            return "deployed", True
+        if response.status_code == 404:
+            return "not_deployed", False
+        return "unknown", False
     except requests.RequestException:
-        return "unreachable", 0
+        return "unreachable", False
