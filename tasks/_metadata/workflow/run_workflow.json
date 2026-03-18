@@ -1,0 +1,86 @@
+{
+  "id": "run_workflow",
+  "source_file": "run_workflow.py",
+  "category": "workflow",
+  "display_name": "Run Workflow",
+  "description": "Task: Run Workflow",
+  "is_collapsed": false,
+  "previewable": true,
+  "inputs": {
+    "workflow_name": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: workflow_name"
+    },
+    "params": {
+      "type": "Dict[str, Any]",
+      "required": true,
+      "description": "Input parameter: params"
+    },
+    "agent_id": {
+      "type": "str",
+      "required": true,
+      "description": "Input parameter: agent_id"
+    },
+    "use_existing_instance": {
+      "type": "bool",
+      "required": false,
+      "description": "Input parameter: use_existing_instance",
+      "default": false
+    },
+    "instance_guid": {
+      "type": "Optional[str]",
+      "required": false,
+      "description": "Input parameter: instance_guid",
+      "default": null
+    },
+    "execution_mode": {
+      "type": "str",
+      "required": false,
+      "description": "Input parameter: execution_mode",
+      "default": "sync"
+    },
+    "ttl_seconds": {
+      "type": "int",
+      "required": false,
+      "description": "Input parameter: ttl_seconds",
+      "default": 3600
+    },
+    "session_guid": {
+      "type": "Optional[str]",
+      "required": false,
+      "description": "Input parameter: session_guid",
+      "default": null
+    }
+  },
+  "outputs": {
+    "execution_id": {
+      "type": "str",
+      "description": "Output: execution_id"
+    },
+    "status": {
+      "type": "str",
+      "description": "Output: status"
+    },
+    "outputs": {
+      "type": "dict",
+      "description": "Output: outputs"
+    },
+    "instance_guid": {
+      "type": "str",
+      "description": "Output: instance_guid"
+    }
+  },
+  "dependencies": {
+    "python": [],
+    "system": []
+  },
+  "version": "1.0.0",
+  "author": "FabricFlow Team",
+  "contributors": [],
+  "created_at": "2026-03-18",
+  "updated_at": "2026-03-18",
+  "tags": [
+    "workflow"
+  ]
+}
