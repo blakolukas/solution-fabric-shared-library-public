@@ -3,7 +3,6 @@
     {
       "name": "run_workflow",
       "task": "run_workflow",
-      "displayName": "Run Workflow",
       "inputs": {
         "workflow_name": "inputs.workflow_name",
         "agent_id": "inputs.agent_id",
