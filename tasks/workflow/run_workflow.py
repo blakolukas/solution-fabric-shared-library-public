@@ -159,20 +159,20 @@ def run_workflow(
         except HTTPError as error:
             if _is_workflow_not_found(error):
                 return (
-                    "",
-                    "workflow_not_found",
+                    "N/A",
+                    "not_exists",
                     {
-                        "message": f'Workflow "{workflow_name}" not found on agent.',
+                        "message": f'Workflow "{workflow_name}" does not exist on the agent.',
                         "workflow_name": workflow_name,
                     },
-                    "",
+                    "N/A",
                 )
             raise
     result = _execute_instance(base_url, active_instance_guid, params, execution_mode, active_session_guid)
 
     return (
         result.get("execution_id", ""),
-        result.get("status", ""),
+        "exists" if result.get("status") in ("completed", "success") else result.get("status", ""),
         result.get("outputs") or {},
         active_instance_guid,
     )
