@@ -137,10 +137,9 @@ def _execute_instance(
         "params": {
 
             "type": "dict",
-
-            "required": True,
-
-            "description": "Mutable input parameter dict forwarded to the workflow.",
+            "required": False,
+            "default": {},
+            "description": "Mutable input parameter dict forwarded to the workflow.Leave empty if the workflow require no inputs.",
 
         },
 
@@ -222,9 +221,9 @@ def run_workflow(
 
     workflow_name: str,
 
-    params: Dict[str, Any],
-
     agent_id: str,
+
+    params: Dict[str, Any] = {},
 
     use_existing_instance: bool = False,
 
