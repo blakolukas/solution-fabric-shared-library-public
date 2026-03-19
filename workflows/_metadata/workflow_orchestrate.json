@@ -72,28 +72,20 @@
   },
   "outputs": {
     "execution_id": {
-      "type": "str",
-      "description": "Workflow output: execution id",
-      "previewable": true,
-      "is_collapsed": true
+      "type": "any",
+      "description": "Workflow output: execution id"
     },
     "status": {
-      "type": "str",
-      "description": "Workflow output: exists | not_exists | failed",
-      "previewable": true,
-      "is_collapsed": false
+      "type": "any",
+      "description": "Workflow output: status"
     },
     "outputs": {
-      "type": "object",
-      "description": "Workflow output: outputs returned by the executed workflow",
-      "previewable": true,
-      "is_collapsed": true
+      "type": "any",
+      "description": "Workflow output: outputs"
     },
     "instance_guid": {
-      "type": "str",
-      "description": "Workflow output: instance guid",
-      "previewable": true,
-      "is_collapsed": true
+      "type": "any",
+      "description": "Workflow output: instance guid"
     }
   }
 }
