@@ -2,113 +2,90 @@
   "id": "workflow_orchestrate",
   "version": "1.0.0",
   "display_name": "Workflow Orchestrate",
-<<<<<<< HEAD
-  "description": "Runs any workflow on a FabricFlow agent, using an existing instance or creating a new one.",
-=======
   "description": "Workflow: Workflow Orchestrate",
->>>>>>> 1566c7a3c4931dbe4b6344474aef8d7e611d0b17
   "author": "FabricFlow Team",
   "contributors": [],
   "created_at": "2026-03-19",
   "updated_at": "2026-03-19",
   "tags": [
-<<<<<<< HEAD
-    "workflow",
-    "orchestration",
-    "automation"
-  ],
-  "category": "workflow",
-=======
     "computer-vision",
     "general",
     "ml"
   ],
   "category": "general",
->>>>>>> 1566c7a3c4931dbe4b6344474aef8d7e611d0b17
   "required_tasks": [
     "run_workflow"
   ],
   "dependencies": {
-<<<<<<< HEAD
-    "python": [
-      "requests>=2.28.0"
-    ],
+    "python": [],
     "models": []
   },
   "inputs": {
     "workflow_name": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default": "",
-      "description": "Name of the workflow to run."
+      "description": "Workflow input: workflow name"
     },
     "agent_id": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default": "http://127.0.0.1:8000",
-      "description": "Base URL of the FabricFlow agent to connect to (e.g. http://127.0.0.1:8000)."
+      "description": "Workflow input: agent id"
     },
     "params": {
-      "type": "dict",
+      "type": "object",
       "required": false,
       "default": {},
-      "description": "Input parameter dict forwarded to the workflow. Leave empty if the workflow requires no inputs."
+      "description": "Workflow input: params"
     },
     "use_existing_instance": {
       "type": "bool",
       "required": false,
       "default": false,
-      "description": "If true, reuse the instance identified by instance_guid instead of creating a new one."
+      "description": "Workflow input: use existing instance"
     },
     "instance_guid": {
       "type": "string",
       "required": false,
       "default": null,
-      "description": "GUID of an existing instance to reuse. Required when use_existing_instance is true."
+      "description": "Workflow input: instance guid"
     },
     "execution_mode": {
       "type": "string",
       "required": false,
       "default": "sync",
-      "description": "Execution mode: 'sync' (wait for result) or 'async' (return immediately)."
+      "description": "Workflow input: execution mode"
     },
     "ttl_seconds": {
       "type": "int",
       "required": false,
       "default": 3600,
-      "description": "Time-to-live for newly created instances, in seconds."
+      "description": "Workflow input: ttl seconds"
     },
     "session_guid": {
       "type": "string",
       "required": false,
       "default": null,
-      "description": "Existing session GUID to attach the instance to. A new session is created if not provided."
+      "description": "Workflow input: session guid"
     }
   },
   "outputs": {
     "execution_id": {
-      "type": "string",
-      "description": "ID of the execution."
+      "type": "any",
+      "description": "Workflow output: execution id"
     },
     "status": {
-      "type": "string",
-      "description": "Final status of the execution."
+      "type": "any",
+      "description": "Workflow output: status"
     },
     "outputs": {
-      "type": "dict",
-      "description": "Output values returned by the workflow."
+      "type": "any",
+      "description": "Workflow output: outputs"
     },
     "instance_guid": {
-      "type": "string",
-      "description": "GUID of the workflow instance used. Can be reused in subsequent runs."
+      "type": "any",
+      "description": "Workflow output: instance guid"
     }
   }
 }
-=======
-    "python": [],
-    "models": []
-  },
-  "inputs": {},
-  "outputs": {}
-}
->>>>>>> 1566c7a3c4931dbe4b6344474aef8d7e611d0b17
