@@ -1,0 +1,53 @@
+{
+  "tasks": [
+    {
+      "name": "run_workflow",
+      "task": "run_workflow",
+      "displayName": "Run Workflow",
+      "inputs": {
+        "workflow_name": "inputs.workflow_name",
+        "agent_id": "inputs.agent_id",
+        "params": "inputs.params",
+        "use_existing_instance": "inputs.use_existing_instance",
+        "instance_guid": "inputs.instance_guid",
+        "execution_mode": "inputs.execution_mode",
+        "ttl_seconds": "inputs.ttl_seconds",
+        "session_guid": "inputs.session_guid"
+      },
+      "outputs": [
+        "execution_id",
+        "status",
+        "outputs",
+        "instance_guid"
+      ]
+    }
+  ],
+  "inputs": {
+    "workflow_name": "",
+    "agent_id": "http://127.0.0.1:8000",
+    "params": {},
+    "use_existing_instance": false,
+    "instance_guid": null,
+    "execution_mode": "sync",
+    "ttl_seconds": 3600,
+    "session_guid": null
+  },
+  "outputs": {
+    "execution_id": "tasks.run_workflow.execution_id",
+    "status": "tasks.run_workflow.status",
+    "outputs": "tasks.run_workflow.outputs",
+    "instance_guid": "tasks.run_workflow.instance_guid"
+  },
+  "name": "Workflow Orchestrate",
+  "_designer": {
+    "layout": {
+      "run_workflow": {
+        "x": 300,
+        "y": 150
+      }
+    },
+    "taskDisplayNames": {
+      "run_workflow": "Run Workflow"
+    }
+  }
+}
