@@ -1,0 +1,27 @@
+{
+  "tasks": [
+    {
+      "name": "run_workflow",
+      "task": "run_workflow",
+      "displayName": "Run Workflow",
+      "outputs": [
+        "execution_id",
+        "status",
+        "outputs",
+        "instance_guid"
+      ]
+    }
+  ],
+  "name": "Untitled Workflow",
+  "_designer": {
+    "layout": {
+      "run_workflow": {
+        "x": 188,
+        "y": 209
+      }
+    },
+    "taskDisplayNames": {
+      "run_workflow": "Run Workflow"
+    }
+  }
+}
